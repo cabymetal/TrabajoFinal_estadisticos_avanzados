@@ -47,7 +47,7 @@ Para acceder a los datos de costos y gastos de ventas:
 • Entrar a http://pie.supersociedades.gov.co > MENÚ > Descarga Masiva de
 Información Descargar la información de los años 2016 a 2019
 
-
+Primera iteración:
 Código CIIU seleccionado: G4711
 Macrosector: Comercio
 Descripción: Comercio al por menor en establecimientos no especializados con surtido compuesto principalmente por alimentos, bebidas o tabaco.
@@ -58,25 +58,33 @@ Esta clase incluye:
 Esta clase excluye:
 • El expendio de comidas preparadas en restaurantes, cafeterías y por autoservicio. 
 
+Al realizar los cargues iniciales de información nos dimos cuenta de que nos cruzaban muy pocas empresas porlo que el conjunto de datos seleccionado no era suficiente.
 
-```{r}
+Iteración 2:
+Código CIIU seleccionado: B0722
+
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
+library("readxl")
+library("dplyr")
+
 ```
 
 1. Cargamos los datos básicos de las empresas
-```{r}
-library("readxl")
-#Nos ubicamos en la ruta donde se encuentran nuestras fuentes
-setwd("D:/OneDrive - Grupo EPM/EPM/Capacitaciones/Eafit/maestria/semestre2/Estadistica avanzada/evaluación")
+```{r warning=FALSE}
 
-file.show("datosBasicosComplete.xlsx")
+#Revisamos como son nuestros datos para saber si tenemos que realizar algún ajuste a la carga
+file.show("./data/datosBasicosComplete.xlsx")
 
 #Como el archivo no tiene forma de tabla al principio, debemos realizar la carga, ignorando las primeras filas del archivo.
 
 #Cargar los archivos a un dataframe
-pd_datos_basicos <- read_excel("datosBasicosComplete.xlsx", sheet = "Reporte", skip=8 )
+pd_datos_basicos <- read_excel("./data/datosBasicosComplete.xlsx", sheet = "Reporte", skip=8, col_types = c("text", "text", "text", "text", "text","text","text","text","text", "text","text","text","text","text","text","text","date", "text","date","text","date", "text", "text"))
 
-View(pd_datos_basicos)
+pd_datos_basicos %>% mutate(`Órgano Societario` = as.factor(`Órgano Societario`),
+                            `Etapa Situación` = as.factor(`Etapa Situación`)) -> pd_datos_basicos
+
+head(pd_datos_basicos)
 
 ```
 
@@ -87,9 +95,9 @@ pd_datos_basicos_flt <- pd_datos_basicos[,c("NIT","Razón social","Código CIIU"
 
 names (pd_datos_basicos_flt) = c("NIT","razon_social","CIIU","ciudad","departamento", "estado","situacion")
 
-pd_datos_basicos_flt <- filter(pd_datos_basicos_flt, CIIU == "G4711" & situacion == "ACTIVA")
+pd_datos_basicos_flt <- filter(pd_datos_basicos_flt, CIIU == "B0722" & situacion == "ACTIVA")
 
-View(pd_datos_basicos_flt)
+head(pd_datos_basicos_flt)
 
 ```
 
@@ -97,7 +105,7 @@ View(pd_datos_basicos_flt)
 
 ```{r}
 
-pd_datos_fin_2017 <- read_excel("Plenas - Individuales2017.xlsx", sheet = "Estado de Resultado Integral" )
+pd_datos_fin_2017 <- read_excel("./data/Plenas - Individuales2017.xlsx", sheet = "Estado de Resultado Integral" )
 
 pd_datos_fin_2017 <- pd_datos_fin_2017[,c("Nit", "Periodo", "Costo de ventas",  "Costos de distribución", "Gastos de administración", "Otros gastos, por función", "Costos financieros", "Gasto (ingreso) por impuestos, operaciones continuadas")]
 
@@ -112,7 +120,7 @@ Para efectos del ejercicio, no tomaremos el archivo de 2017, ya que el archivo 2
 
 ```{r}
 
-pd_datos_fin_2018 <- read_excel("Plenas - Individuales2018.xlsx", sheet = "ERI" )
+pd_datos_fin_2018 <- read_excel("./data/Plenas - Individuales2018.xlsx", sheet = "ERI" )
 
 pd_datos_fin_2018 <- pd_datos_fin_2018[,c("Nit", "Periodo", "Costo de ventas", "Gastos de ventas", "Gastos de administración", "Otros gastos", "Costos financieros", "Ingreso (gasto) por impuestos")]
 
@@ -129,7 +137,7 @@ datos_completos_2018$Periodo[datos_completos_2018$Periodo == "Periodo Actual"] <
 
 ```{r}
 
-pd_datos_fin_2019 <- read_excel("Plenas - Individuales2019.xlsx", sheet = "ERI" )
+pd_datos_fin_2019 <- read_excel("./data/Plenas - Individuales2019.xlsx", sheet = "ERI" )
 
 #Revisar Costos de distribución
 pd_datos_fin_2019 <- pd_datos_fin_2019[,c("Nit", "Periodo", "Costo de ventas", "Gastos de administración", "Otros gastos", "Costos financieros", "Ingreso (gasto) por impuestos")]
@@ -153,6 +161,20 @@ datos_completos = rbind(datos_completos, datos_completos_2018)
 
 ```
 
+```{r}
+library(ggplot2)
+library(lme4)
+
+summary(datos_completos)
+
+```
+```{r}
+
+
+
+#p1=ggplot(datos, aes(y=cd4,x=week,group=patid,colour=trtarm))
+#p1+geom_line()
+```
 
 REFERENCIAS:
 

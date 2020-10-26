@@ -1,0 +1,134 @@
+---
+title: "Datos"
+author: "DiCaBHe"
+date: "25/10/2020"
+output: html_document
+---
+
+\textbf{A continuación se preseenta el proceso que se ejecutó para generar un dataframe con las variables de PIB, Inflación, Desempleo, Balance Fiscal, Balance en Cuenta Corriente, Tasa de intervención, TRM}
+
+\textbf{Para el PIB:} Es un indicador económico que refleja el valor monetario de todos los bienes y servicios finales producidos por un país o región en un determinado periodo de tiempo, normalmente un año. Se utiliza para medir la riqueza que genera un país.
+
+```{r}
+library(dplyr)
+#Los datos son tomados de https://datosmacro.expansion.com/pib/colombia
+# vectores 
+anyo <- c("2016", "2017", "2018", "2019")
+PIB_M.E. <- c(289.239, 280.249, 275.999, 255.416)
+Var.PIB <- c(3.3, 2.5, 1.4, 2.1)
+#Crear dataframe de vectores
+PIB <- data.frame(anyo, PIB_M.E., Var.PIB)
+head(PIB)
+```
+
+\textbf{Para la inflación:} La inflación es un fenómeno que se observa en la economía de un país y está relacionado con el aumento desordenado de los precios de la mayor parte de los bienes y servicios que se comercian en sus mercados, por un periodo de tiempo prolongado.
+
+```{r}
+#Los datos son tomados de https://es.wikipedia.org/wiki/Anexo:Variaci%C3%B3n_de_la_inflaci%C3%B3n_de_Colombia_desde_1946
+# vectores 
+anyo <- c("2016", "2017", "2018", "2019")
+Inflacion <- c(5.75, 4.09, 3.18, 3.80)
+#Crear dataframe de vectores
+Inflacion <- data.frame(anyo, Inflacion)
+head(Inflacion)
+```
+
+\textbf{Para el desempleo:} Es otra de las variables mas importantes de la macroeconomía, porque afecta directamente el bienestar de las personas. El desempleo es el porcentaje de la fuerza de trabajo que está buscando trabajo activamente y que actualmente se encuentra desempleada.
+
+```{r}
+#Los datos son tomados de https://www.dane.gov.co/index.php/estadisticas-por-tema/mercado-laboral/empleo-y-desempleo
+# vectores 
+anyo <- c("2016", "2017", "2018", "2019")
+Desempleo <- c(9.2, 9.4, 9.7, 10.5)
+Var.Desempleo <- c(3.36, 1.99, 3.19, 8.25)
+#Crear dataframe de vectores
+Desempleo <- data.frame(anyo, Desempleo, Var.Desempleo)
+head(Desempleo)
+```
+
+
+\textbf{Para el balance fiscal:} Es la diferencia entre ingresos y gastos públicos en un determinado territorio.
+
+```{r}
+#Los datos son tomados de http://www.urf.gov.co/webcenter/portal/EntidadesFinancieras/pages_EntidadesFinancieras/PoliticaFiscal/bgg/balancefiscalgobiernocentral?_afrLoop=6729623401772216&_afrWindowMode=2&Adf-Window-Id=mof7t7k7j&_afrFS=16&_afrMT=screen&_afrMFW=768&_afrMFH=720&_afrMFDW=1536&_afrMFDH=864&_afrMFC=8&_afrMFCI=0&_afrMFM=0&_afrMFR=120&_afrMFG=0&_afrMFS=0&_afrMFO=0
+# vectores 
+anyo <- c("2016", "2017", "2018", "2019")
+GNC <- c(-4, -3.6, -3.1, -2.5)
+#Crear dataframe de vectores
+GNC <- data.frame(anyo,GNC)
+head(GNC)
+```
+
+
+
+\textbf{Para el balance en cuenta corriente:} Es el conjunto de transacciones de intercambio de bienes y servicios, rentas y transferencias (tanto corrientes como de capital), su saldo determina la capacidad o necesidad de financiación de un país.
+
+```{r}
+# vectores 
+anyo <- c("2016", "2017", "2018", "2019")
+Balance_Cuenta_Corriente <- c(-13747.75, -13117.66, -10240.88, -12036.18)
+#Crear dataframe de vectores
+Balance_Cuenta_Corriente <- data.frame(anyo, Balance_Cuenta_Corriente)
+head(Balance_Cuenta_Corriente)
+```
+
+\textbf{Para la tasa de intervención:} Corresponde a la tasa de interés mínima que le cobra el Banco de la República a las entidades financieras por los préstamos que les concede generalmente a un día y, además, sirve como referencia para establecer la tasa de interés máxima que les paga por recibirles dinero que tengan como excedente.
+
+
+```{r}
+#Los datos son tomados de https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria
+
+# vectores 
+anyo <- c("2016", "2017", "2018", "2019")
+TIM_promedio<- c(7.10, 6.13, 4.35, 4.25)
+#Crear dataframe de vectores
+TIM <- data.frame(anyo, TIM_promedio)
+head(TIM)
+```
+
+
+\textbf{Para la TRM:} La tasa de cambio representativa del mercado (TRM) es la cantidad de pesos colombianos por un dólar de los Estados Unidos. La TRM se calcula con base en las operaciones de compra y venta de divisas entre intermediarios financieros que transan en el mercado cambiario colombiano, con cumplimiento el mismo día cuando se realiza la negociación de las divisas.
+
+Actualmente la Superintendencia Financiera de Colombia es la que calcula y certifica diariamente la TRM con base en las operaciones registradas el día hábil inmediatamente anterior.
+
+```{r}
+#Se leen los datos - estos datos son tomados de https://www.dolar-colombia.com/historico
+dataset = read.csv('./data/TRM.csv', check.names = FALSE, encoding = "UTF-8", blank.lines.skip = FALSE, dec=",")
+
+#se conservam unicamente las columnas de año y TRM
+df = dataset[1]
+df['TRM'] = dataset[3]
+df$TRM <- as.numeric(as.character(df$TRM))
+
+#Se agrupa bajo la media
+media = df
+media = media %>%
+  group_by(media[1]) %>%
+  summarise(across(.cols = everything(), .fns = mean))
+
+#para la mediana
+mediana = df
+mediana = mediana %>%
+  group_by(mediana[1]) %>%
+  summarise(across(.cols = everything(), .fns = median))
+
+#Se genera un dataframe con los datos obtenidos
+df = media
+colnames(df)[2] <- 'TRM_media'
+df['TRM_mediana'] <- mediana[2]
+df
+```
+Se unen los datos en un solo dataframe
+
+```{r}
+df['PIB_M.E.'] = PIB[2]
+df['Var.PIB'] = PIB[3]
+df['Inflacion'] = Inflacion[2]
+df['Desempleo'] = Desempleo[2]
+df['var.Desempleo'] = Desempleo[3]
+df['GNC'] = GNC[2]
+df['Balance_Cuenta_Corriente'] = Balance_Cuenta_Corriente[2]
+df['TIM_promedio'] = TIM[2]
+head(df)
+```
+

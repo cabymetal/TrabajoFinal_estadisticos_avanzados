@@ -42,8 +42,8 @@ datos_completos%>%mutate(Periodo=as.numeric(as.character(Periodo))) %>% inner_jo
                                                                                                                                    otros_gastos=0, costos_financieros=0 , gasto_impuestos=0, ingresos_actividades_ordinarias=0,
                                                                                                                                    otros_ingresos = 0, ingresos_financieros=0)) -> datos_completos
 datos_completos %>% mutate(costos_gastos_totales = gastos_administracion + otros_gastos +gasto_impuestos + costo_ventas,
-                           ingresos_totales = ingresos_actividades_ordinarias + ingresos_financieros + otros_ingresos) %>% 
-                          select(-gastos_administracion, -otros_gastos, -gasto_impuestos, -costo_ventas, -otros_ingresos, -ingresos_actividades_ordinarias, -ingresos_financieros) -> base_modelado
+                           ingresos_totales = ingresos_actividades_ordinarias + ingresos_financieros + otros_ingresos) -> base_modelado
+                          #select(gastos_administracion, -otros_gastos, -gasto_impuestos, -costo_ventas, -otros_ingresos, -ingresos_actividades_ordinarias, -ingresos_financieros) 
 summary(base_modelado)
 
 ```

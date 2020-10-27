@@ -44,6 +44,14 @@ datos_completos%>%mutate(Periodo=as.numeric(as.character(Periodo))) %>% inner_jo
 datos_completos %>% mutate(costos_gastos_totales = gastos_administracion + otros_gastos +gasto_impuestos + costo_ventas,
                            ingresos_totales = ingresos_actividades_ordinarias + ingresos_financieros + otros_ingresos) %>% 
                           select(-gastos_administracion, -otros_gastos, -gasto_impuestos, -costo_ventas, -otros_ingresos, -ingresos_actividades_ordinarias, -ingresos_financieros) -> base_modelado
-base_modelado
+summary(base_modelado)
+
+```
+
+```{r}
+
+library(visdat)
+vis_miss(base_modelado)
+
 ```
 

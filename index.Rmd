@@ -1,0 +1,49 @@
+---
+output: 
+  pdf_document:
+    citation_package: natbib
+    keep_tex: true
+    fig_caption: true
+    latex_engine: pdflatex
+title: "Trabajo final Estadística Avanzada"
+
+author:
+- name: Cindy Guerra
+  affiliation: Universidad EAFIT
+- name: Luz Stella Florez
+  affiliation: Universidad EAFIT
+- name: Carlos Alberto Murillo Martínez
+  affiliation: Universidad EAFIT
+- name: Diana Carolina Benjumea
+  affiliation: universidad EAFIT
+abstract: "Este documento anliza los impactos de las variables macoreconómicas en los costos y gastos de una empresa en un determinado sector económico"
+keywords: "Maestria Ciencia Datos, , "
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+geometry: margin=1in
+fontfamily: mathpazo
+fontsize: 11pt
+toc: yes
+# spacing: double
+biblio-style: apsr
+---
+
+\{newpage}
+
+# Capítulo 1 Lectura de variables de empresa
+```{r child= 'evaluacion.Rmd'}
+```
+# Capítulo 2 Lectura y consolidación de variables económicas
+```{r child= 'Variables_macroeconomicas.Rmd'}
+```
+# Capítulo 3 Consolidación de la base
+En esta sección se unen las dos bases generadas en las fases anteriores en una sola base
+```{r}
+datos_completos%>%mutate(Periodo=as.numeric(as.character(Periodo))) %>% inner_join(df, by=c("Periodo" = "Anyo")) %>% replace_na(list(costo_ventas = 0, gastos_administracion = 0,
+                                                                                                                                   otros_gastos=0, costos_financieros=0 , gasto_impuestos=0, ingresos_actividades_ordinarias=0,
+                                                                                                                                   otros_ingresos = 0, ingresos_financieros=0)) -> datos_completos
+datos_completos %>% mutate(costos_gastos_totales = gastos_administracion + otros_gastos +gasto_impuestos + costo_ventas,
+                           ingresos_totales = ingresos_actividades_ordinarias + ingresos_financieros + otros_ingresos) %>% 
+                          select(-gastos_administracion, -otros_gastos, -gasto_impuestos, -costo_ventas, -otros_ingresos, -ingresos_actividades_ordinarias, -ingresos_financieros) -> base_modelado
+base_modelado
+```
+

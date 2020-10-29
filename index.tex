@@ -105,7 +105,7 @@
 
 \title{Trabajo final Estadística Avanzada}
 \author{true \and true \and true \and true}
-\date{octubre 26, 2020}
+\date{octubre 28, 2020}
 
 \begin{document}
 \maketitle
@@ -656,11 +656,6 @@ el día hábil inmediatamente anterior.
 \end{Shaded}
 
 \begin{verbatim}
-## Warning in env[[name]] <- x: unable to translate '<U+FEFF>Año' to native
-## encoding
-\end{verbatim}
-
-\begin{verbatim}
 ## `summarise()` ungrouping output (override with `.groups` argument)
 \end{verbatim}
 
@@ -673,11 +668,6 @@ el día hábil inmediatamente anterior.
 \StringTok{  }\KeywordTok{summarise}\NormalTok{(}\KeywordTok{across}\NormalTok{(}\DataTypeTok{.cols =} \KeywordTok{everything}\NormalTok{(), }\DataTypeTok{.fns =}\NormalTok{ median))}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## Warning in env[[name]] <- x: unable to translate '<U+FEFF>Año' to native
-## encoding
-\end{verbatim}
 
 \begin{verbatim}
 ## `summarise()` ungrouping output (override with `.groups` argument)
@@ -695,7 +685,7 @@ el día hábil inmediatamente anterior.
 
 \begin{verbatim}
 ## # A tibble: 4 x 3
-##   `<U+FEFF>Año` TRM_media TRM_mediana
+##    Anyo TRM_media TRM_mediana
 ##   <int>     <dbl>       <dbl>
 ## 1  2016     3051.       3003.
 ## 2  2017     2951.       2942.
@@ -721,7 +711,7 @@ Se unen los datos en un solo dataframe
 
 \begin{verbatim}
 ## # A tibble: 4 x 11
-##   `<U+FEFF>Año` TRM_media TRM_mediana PIB_M.E. Var.PIB Inflacion Desempleo var.Desempleo
+##    Anyo TRM_media TRM_mediana PIB_M.E. Var.PIB Inflacion Desempleo var.Desempleo
 ##   <int>     <dbl>       <dbl>    <dbl>   <dbl>     <dbl>     <dbl>         <dbl>
 ## 1  2016     3051.       3003.     289.     3.3      5.75       9.2          3.36
 ## 2  2017     2951.       2942.     280.     2.5      4.09       9.4          1.99
@@ -737,5 +727,165 @@ base}\label{capuxedtulo-3-consolidaciuxf3n-de-la-base}}
 
 En esta sección se unen las dos bases generadas en las fases anteriores
 en una sola base
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{datos_completos}\OperatorTok{%>%}\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Periodo=}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(Periodo))) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{inner_join}\NormalTok{(df, }\DataTypeTok{by=}\KeywordTok{c}\NormalTok{(}\StringTok{"Periodo"}\NormalTok{ =}\StringTok{ "Anyo"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{replace_na}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\DataTypeTok{costo_ventas =} \DecValTok{0}\NormalTok{, }\DataTypeTok{gastos_administracion =} \DecValTok{0}\NormalTok{,}
+                                                                                                                                   \DataTypeTok{otros_gastos=}\DecValTok{0}\NormalTok{, }\DataTypeTok{costos_financieros=}\DecValTok{0}\NormalTok{ , }\DataTypeTok{gasto_impuestos=}\DecValTok{0}\NormalTok{, }\DataTypeTok{ingresos_actividades_ordinarias=}\DecValTok{0}\NormalTok{,}
+                                                                                                                                   \DataTypeTok{otros_ingresos =} \DecValTok{0}\NormalTok{, }\DataTypeTok{ingresos_financieros=}\DecValTok{0}\NormalTok{)) ->}\StringTok{ }\NormalTok{datos_completos}
+\NormalTok{datos_completos }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{costos_gastos_totales =}\NormalTok{ gastos_administracion }\OperatorTok{+}\StringTok{ }\NormalTok{otros_gastos }\OperatorTok{+}\NormalTok{gasto_impuestos }\OperatorTok{+}\StringTok{ }\NormalTok{costo_ventas,}
+                           \DataTypeTok{ingresos_totales =}\NormalTok{ ingresos_actividades_ordinarias }\OperatorTok{+}\StringTok{ }\NormalTok{ingresos_financieros }\OperatorTok{+}\StringTok{ }\NormalTok{otros_ingresos) ->}\StringTok{ }\NormalTok{base_modelado}
+                          \CommentTok{#select(gastos_administracion, -otros_gastos, -gasto_impuestos, -costo_ventas, -otros_ingresos, -ingresos_actividades_ordinarias, -ingresos_financieros) }
+\NormalTok{base_modelado <-}\StringTok{ }\KeywordTok{droplevels}\NormalTok{(base_modelado)}
+\KeywordTok{summary}\NormalTok{(base_modelado)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      NIT                                                razon_social    CIIU   
+##  Length:82          ANGLOGOLD ASHANTI COLOMBIA S.A.           : 3    B0722:82  
+##  Class :character   CALDAS GOLD MARMATO S.A.S.                : 3              
+##  Mode  :character   CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA: 3              
+##                     ECO ORO MINERALS CORP                     : 3              
+##                     EXPLORACIONES CHAPARRAL COLOMBIA SAS      : 3              
+##                     EXPLORACIONES NORTHERN COLOMBIA S.A.S     : 3              
+##                     (Other)                                   :64              
+##           ciudad          departamento        estado    situacion 
+##  BOGOTÁ, D.C.:26   ANTIOQUIA    :44    INSPECCION:41   ACTIVA:82  
+##  BUCARAMANGA :12   BOGOTÁ, D. C.:26    VIGILANCIA:41              
+##  ENVIGADO    : 2   SANTANDER    :12                               
+##  MEDELLÍN    :42                                                  
+##                                                                   
+##                                                                   
+##                                                                   
+##                      organo_societario etapa_situacion    Periodo    
+##  ACTIVIDAD ECONOMICA DIFERENTE:82      ACTIVA:82       Min.   :2017  
+##                                                        1st Qu.:2017  
+##                                                        Median :2018  
+##                                                        Mean   :2018  
+##                                                        3rd Qu.:2019  
+##                                                        Max.   :2019  
+##                                                                      
+##   costo_ventas       gastos_administracion  otros_gastos     
+##  Min.   :        0   Min.   :        0     Min.   :       0  
+##  1st Qu.:        0   1st Qu.:    15366     1st Qu.:     848  
+##  Median :        0   Median :   560711     Median :  120317  
+##  Mean   : 23244524   Mean   : 12272119     Mean   : 3275946  
+##  3rd Qu.:  6666040   3rd Qu.:  5672411     3rd Qu.: 1736150  
+##  Max.   :408474390   Max.   :287863704     Max.   :46689684  
+##                                                              
+##  costos_financieros gasto_impuestos     ingresos_actividades_ordinarias
+##  Min.   :       0   Min.   : -8974634   Min.   :        0              
+##  1st Qu.:       0   1st Qu.:        0   1st Qu.:        0              
+##  Median :  168546   Median :     2546   Median :        0              
+##  Mean   : 2983081   Mean   :  4495562   Mean   : 34205451              
+##  3rd Qu.: 2383609   3rd Qu.:   141459   3rd Qu.:        0              
+##  Max.   :52689630   Max.   :131684824   Max.   :954650443              
+##                                                                        
+##  otros_ingresos     ingresos_financieros   TRM_media     TRM_mediana  
+##  Min.   :       0   Min.   :       0     Min.   :2951   Min.   :2898  
+##  1st Qu.:       0   1st Qu.:       0     1st Qu.:2951   1st Qu.:2898  
+##  Median :   36549   Median :    3942     Median :2956   Median :2942  
+##  Mean   :  836610   Mean   : 1285604     Mean   :3058   Mean   :3033  
+##  3rd Qu.:  601104   3rd Qu.:  850632     3rd Qu.:3281   3rd Qu.:3277  
+##  Max.   :11404344   Max.   :26100695     Max.   :3281   Max.   :3277  
+##                                                                       
+##     PIB_M.E.        Var.PIB        Inflacion       Desempleo     
+##  Min.   :255.4   Min.   :1.400   Min.   :3.180   Min.   : 9.400  
+##  1st Qu.:255.4   1st Qu.:1.400   1st Qu.:3.180   1st Qu.: 9.400  
+##  Median :276.0   Median :2.100   Median :3.800   Median : 9.700  
+##  Mean   :270.9   Mean   :1.998   Mean   :3.687   Mean   : 9.851  
+##  3rd Qu.:280.2   3rd Qu.:2.500   3rd Qu.:4.090   3rd Qu.:10.500  
+##  Max.   :280.2   Max.   :2.500   Max.   :4.090   Max.   :10.500  
+##                                                                  
+##  var.Desempleo        GNC        Balance_Cuenta_Corriente  TIM_promedio  
+##  Min.   :1.990   Min.   :-3.60   Min.   :-13118           Min.   :4.250  
+##  1st Qu.:1.990   1st Qu.:-3.60   1st Qu.:-13118           1st Qu.:4.250  
+##  Median :3.190   Median :-3.10   Median :-12036           Median :4.350  
+##  Mean   :4.385   Mean   :-3.08   Mean   :-11792           Mean   :4.926  
+##  3rd Qu.:8.250   3rd Qu.:-2.50   3rd Qu.:-10241           3rd Qu.:6.130  
+##  Max.   :8.250   Max.   :-2.50   Max.   :-10241           Max.   :6.130  
+##                                                                          
+##  costos_gastos_totales ingresos_totales   
+##  Min.   :     2869     Min.   :        0  
+##  1st Qu.:   528039     1st Qu.:    24364  
+##  Median :  4175588     Median :   587346  
+##  Mean   : 43288150     Mean   : 36327665  
+##  3rd Qu.: 26972121     3rd Qu.:  3698197  
+##  Max.   :700560590     Max.   :967119965  
+## 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(visdat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'visdat' was built under R version 4.0.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{vis_miss}\NormalTok{(base_modelado)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{index_files/figure-latex/unnamed-chunk-4-1.pdf} \#
+Capítulo 4: análisis descriptivo
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(tidyr)}
+\NormalTok{datosValidar <-}\StringTok{ }\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{group_by}\NormalTok{(NIT, razon_social) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{total=}\KeywordTok{n}\NormalTok{()) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` regrouping output by 'NIT' (override with `.groups` argument)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#crear histograma para ver la cantidad de periodos por empresa}
+\KeywordTok{ggplot}\NormalTok{(datosValidar, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{total)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_histogram}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{index_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{datosValidarDepartamento <-}\StringTok{ }\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{group_by}\NormalTok{(departamento, Periodo) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{costo_gasto_total_dep =} \KeywordTok{sum}\NormalTok{(costos_gastos_totales) }\OperatorTok{/}\StringTok{ }\DecValTok{1000000}\NormalTok{,}
+                                                                                           \DataTypeTok{ingresos_totales_dep =} \KeywordTok{sum}\NormalTok{(ingresos_totales) }\OperatorTok{/}\StringTok{ }\DecValTok{1000000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` regrouping output by 'departamento' (override with `.groups` argument)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(datosValidarDepartamento, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{ Periodo))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ costo_gasto_total_dep), }\DataTypeTok{color=}\StringTok{"darkred"}\NormalTok{, }\DataTypeTok{linetype=}\StringTok{"twodash"}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_label}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ costo_gasto_total_dep, }\DataTypeTok{label=}\NormalTok{costo_gasto_total_dep)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ ingresos_totales_dep, }\DataTypeTok{label=}\StringTok{"Ingresos"}\NormalTok{), }\DataTypeTok{color =} \StringTok{"steelblue"}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_label}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ ingresos_totales_dep, }\DataTypeTok{label=}\NormalTok{ingresos_totales_dep)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{departamento, }\DataTypeTok{scales =}\StringTok{"free_y"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Ignoring unknown aesthetics: label
+\end{verbatim}
+
+\includegraphics{index_files/figure-latex/unnamed-chunk-5-2.pdf}
 
 \end{document}

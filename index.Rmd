@@ -44,6 +44,7 @@ datos_completos%>%mutate(Periodo=as.numeric(as.character(Periodo))) %>% inner_jo
 datos_completos %>% mutate(costos_gastos_totales = gastos_administracion + otros_gastos +gasto_impuestos + costo_ventas,
                            ingresos_totales = ingresos_actividades_ordinarias + ingresos_financieros + otros_ingresos) -> base_modelado
                           #select(gastos_administracion, -otros_gastos, -gasto_impuestos, -costo_ventas, -otros_ingresos, -ingresos_actividades_ordinarias, -ingresos_financieros) 
+base_modelado <- droplevels(base_modelado)
 summary(base_modelado)
 
 ```
@@ -52,6 +53,34 @@ summary(base_modelado)
 
 library(visdat)
 vis_miss(base_modelado)
+
+```
+# Capítulo 4: análisis descriptivo
+
+```{r}
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+datosValidar <- base_modelado %>% group_by(NIT, razon_social) %>% summarise(total=n())
+base_modelado %>% anti_join(datosValidar %>% filter(total < 3) , by="NIT" ) %>% group_by(NIT, razon_social) %>% summarise(total=n()) %>% arrange(desc(total))
+base_modelado %>% anti_join(datosValidar %>% filter(total < 3) , by="NIT" ) ->  base_modelado
+base_modelado %>% filter(ingresos_totales == 0) %>% count(NIT) %>% filter(n==3) -> datosValidar
+base_modelado %>% anti_join(datosValidar, by="NIT" )  ->  base_modelado
+
+datosValidar <- base_modelado %>% group_by(NIT, razon_social) %>% summarise(total=n())
+
+
+datosValidarDepartamento <- base_modelado %>% group_by(departamento, Periodo) %>% summarise(costo_gasto_total_dep = sum(costos_gastos_totales) / 1000000,
+                                                                                           ingresos_totales_dep = sum(ingresos_totales) / 1000000)
+
+
+ggplot(datosValidarDepartamento, aes(x= Periodo))+
+  geom_line(aes(y = costo_gasto_total_dep), color="darkred", linetype="twodash")+
+  geom_label(aes(y = costo_gasto_total_dep, label=costo_gasto_total_dep)) + 
+  geom_line(aes(y = ingresos_totales_dep, label="Ingresos"), color = "steelblue")+
+  geom_label(aes(y = ingresos_totales_dep, label=ingresos_totales_dep)) + 
+  facet_wrap(~departamento, scales ="free_y")
+
 
 ```
 

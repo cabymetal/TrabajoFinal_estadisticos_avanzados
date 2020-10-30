@@ -1,0 +1,113 @@
+---
+title: "analisisDescriptivo"
+output: html_document
+---
+
+
+```{r}
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+
+datosValidar <- base_modelado %>% group_by(NIT, razon_social) %>% summarise(total=n())
+
+h <- hist(x = datosValidar$total, main = "Cantidad de periodos por empresa",  xlab = "Cantidad de periodos", ylab = "Empresas", breaks=3)
+
+text(h$mids,h$counts,labels=h$counts, adj=c(0.5, -0.5))
+
+```
+Podemos observar que hay empresas que no tienen los 3 periodos, solo trabajaremos con la empresas que tengan los periodos completos.
+
+```{r}
+
+base_modelado %>% anti_join(datosValidar %>% filter(total < 3) , by="NIT" ) %>% group_by(NIT, razon_social) %>% summarise(total=n()) %>% arrange(desc(total))
+base_modelado %>% anti_join(datosValidar %>% filter(total < 3) , by="NIT" ) ->  base_modelado
+base_modelado %>% filter(ingresos_totales == 0) %>% count(NIT) %>% filter(n==3) -> datosValidar
+base_modelado %>% anti_join(datosValidar, by="NIT" )  ->  base_modelado
+
+datosValidar <- base_modelado %>% group_by(NIT, razon_social) %>% summarise(total=n())
+
+table(datosValidar$total)
+
+```
+Ya podemos ver que tenemos 23 empresas con los 3 periodos. Veamos los ingresos y los costos por departamento.
+
+```{r}
+datosValidarDepartamento <- base_modelado %>% group_by(departamento, Periodo) %>% summarise(costo_gasto_total_dep = sum(costos_gastos_totales) / 1000000,
+                                                                                           ingresos_totales_dep = sum(ingresos_totales) / 1000000)
+
+
+ggplot(datosValidarDepartamento, aes(x= Periodo))+
+  geom_line(aes(y = costo_gasto_total_dep), color="darkred", linetype="twodash")+
+  geom_label(aes(y = costo_gasto_total_dep, label=costo_gasto_total_dep)) + 
+  geom_line(aes(y = ingresos_totales_dep, label="Ingresos"), color = "steelblue")+
+  geom_label(aes(y = ingresos_totales_dep, label=ingresos_totales_dep)) + 
+  facet_wrap(~departamento, scales ="free_y")
+
+
+```
+```{r}
+base_modelado$NIT=as.factor(base_modelado$NIT)
+base_modelado$Periodo=as.factor(base_modelado$Periodo)
+
+p1=ggplot(base_modelado, aes(y=costos_gastos_totales,x=Periodo,group=NIT,colour=departamento))
+p1+geom_line()
+```
+Se pueden ver algunos comportamientos diferentes por departamento, sin embargo separemos el gráfico para ver mejor:
+```{r}
+p1+geom_line()+facet_grid(.~departamento)
+```
+El gráfico anterior nos muestra que cada empresa tiene costos/gastos totales particulares. Adicionalmente, hay una empresa de Medellín que tiene costos/gastos totales mas altos, comparada con las otras. Tratemos de identificar las empresas que tienen un comportamiento más diferente a las demás.
+
+```{r}
+theme_set(theme_bw(base_size = 8))
+
+qplot(NIT, costos_gastos_totales, facets = . ~ departamento, 
+      colour = NIT, geom = "boxplot", data = base_modelado)
+```
+Al parecer solo hay 1 empresa que tiene comportamiento de costos/gastos totales mucho mas diferente a las demás.
+
+Realizaremos el ejercicio de eliminar (solo para efectos visuales) la empresa que es mas diferente a las demas.
+
+```{r}
+datosValidar <- filter(base_modelado, NIT!=900306309)
+p1=ggplot(datosValidar, aes(y=costos_gastos_totales/1000,x=Periodo,group=NIT,colour=departamento))
+p1+geom_line()+facet_grid(.~departamento)
+```
+Confirmamos que los costos/gastos totales son particulares de cada empresa.
+Cambiemos la escala de los datos y volvamos a graficar, para poder apreciar mejor el comportamiento de las otras empresas que tienen costos/gastos totales mas bajos, pero con el set de empresas completo.
+```{r}
+theme_set(theme_bw(base_size = 8))
+
+qplot(NIT, costos_gastos_totales, facets = . ~ departamento, 
+      colour = NIT, geom = "boxplot", data = base_modelado) +
+  scale_y_log10() + 
+  geom_hline(aes(yintercept = mean(costos_gastos_totales)), color = "steelblue") +
+  
+  geom_hline(aes(yintercept = median(costos_gastos_totales)), color = "red")
+```
+Ahora podemos ver mejor que cada empresa tiene unos costos/gastos totales particulares, así como costos promedio diferentes. Además, encontramos que solamente hay 5 empresas que tienen un comportamiento general en sus costos/gastos totales.
+Ahora revisemos los costos/gastos totales con el estado.
+
+```{r}
+theme_set(theme_bw(base_size = 8))
+
+qplot(NIT, costos_gastos_totales/1000, facets = . ~ estado, 
+      colour = NIT, geom = "boxplot", data = base_modelado) 
+
+```
+
+Podemos ver que las empresas con estado inspección presentan costos/gastos totales menores que las empresas con estado vigilancia.
+
+Veamos ahora la dispersion de nuestra variable objetivo.
+
+```{r}
+plot(base_modelado$costos_gastos_totales, main="Costos/gastos totales",
+	type="b", ylab="Costos/gastos totales/10000", pch= 20, lwd=2)
+abline(h=mean(base_modelado$costos_gastos_totales), lwd=2, col= "red")
+grid()
+
+```
+Con esto confirmamos que la dispersion de los costos/gastos totales no tiene un comportamiento general.
+
+

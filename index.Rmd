@@ -5,9 +5,13 @@ output:
     keep_tex: true
     fig_caption: true
     latex_engine: pdflatex
+    toc: false
 title: "Trabajo final Estadística Avanzada"
-
-abstract: "Este documento anliza los impactos de las variables macoreconómicas en los costos y gastos de una empresa en un determinado sector económico"
+author:
+  - Carlos Alberto Murillo M
+  - Luz Stella Florez
+  - Diana Carolina Benjumea
+  - Cindy Guerra
 keywords: "Maestria Ciencia Datos, , "
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 geometry: margin=1in
@@ -16,27 +20,70 @@ fontsize: 11pt
 toc: yes
 # spacing: double
 biblio-style: apsr
+documentclass: book
 ---
 
-\{newpage}
+# Abstract {-}
+Este documento anliza los impactos de las variables macoreconómicas en los costos y gastos de una empresa en un determinado sector económico, para nuestro estudio seleccionamos el sector minero
 
-# Capítulo 1 Lectura de variables de empresa
+
+# Objetivos y Lineamientos
+
+Caracterizar las relaciones entre algunos indicadores macroeconómicos y los costos y gastos de ventas de las empresas colombianas vigiladas por la SuperSociedades.
+
+Lineamientos:
+
+1. Con ayuda de un modelo lineal modele cree un modelo o varios modelos que
+permitan caracterizar la relación entre las variables PIB, Inflación, Desempleo, Tasa de Cambio, Balance Fiscal, Balance en Cuenta Corriente, Tasa de intervención, TRM y los costos y gastos de ventas.
+
+2. Se debe escoger mínimo un tipo de empresas (Clasificación Industrial Internacional Uniforme) que tenga más de 20 empresas y tomar al menos los últimos tres años de información disponible.
+
+3. Se debe evaluar el ajuste y la capacidad predictiva.
+
+4. Se deben explicar todas las transformaciones de variables requeridas por el
+modelo.
+
+5. Se deben explicar todos los pasos para la construcción de la base de datos:
+descarga de información, concatenación, etc.
+
+6. Se debe incluir un análisis descriptivo.
+
+7. Se debe incluir un análsis de la razonabilidad de las cifras.
+
+8. Se debe redactar un reporte técnico documentando lo anterior. La sugerencia es utilizar un formato que permita la inclusión de gráficos basados en html o
+JavaScript (por ejemplo hmtl a partir de Rmarkdown). El código se debe subir a un repositorio Git y referenciarlo en el reporte. El reporte debe incluir una estimación del esfuerzo de las actividades de 1) consolidación de información, 3) transformación de varibles y análisis descriptivo, 4) ajuste y validación de modelos y 5) redacción del reporte.
+
+9. El trabajo se debe subir al canal del curso en Teams y se debe notificar por correo a la dirección judaospi@bancolombia.com.co.
+
+10. La fecha de entrega es el viernes 30 de octubre y el trabajo se puede presentar en equipos de máximo cinco estudiantes.
+
+Para acceder a los datos de costos y gastos de ventas:
+• Entrar a http://pie.supersociedades.gov.co > MENÚ > Descarga Masiva de
+Información Descargar la información de los años 2016 a 2019
+
+# Capítulo 1. Lectura de variables de empresa
 ```{r child= 'carga_datos.Rmd'}
 ```
-# Capítulo 2 Lectura y consolidación de variables económicas
+# Capítulo 2. Lectura y consolidación de variables económicas
 ```{r child= 'Variables_macroeconomicas.Rmd'}
 ```
-# Capítulo 3 Consolidación de la base
+# Capítulo 3. Consolidación de la base
 En esta sección se unen las dos bases generadas en las fases anteriores en una sola base
 ```{r}
 library(dplyr)
 library(tidyr)
-datos_completos%>%mutate(Periodo=as.numeric(as.character(Periodo))) %>% inner_join(df, by=c("Periodo" = "Anyo")) %>% replace_na(list(costo_ventas = 0, gastos_administracion = 0,
-                                                                                                                                   otros_gastos=0, costos_financieros=0 , gasto_impuestos=0, ingresos_actividades_ordinarias=0,
-                                                                                                                                   otros_ingresos = 0, ingresos_financieros=0)) -> datos_completos2
-datos_completos2 %>% mutate(costos_gastos_totales = gastos_administracion + otros_gastos +gasto_impuestos + costo_ventas,
-                           ingresos_totales = ingresos_actividades_ordinarias + ingresos_financieros + otros_ingresos) -> base_modelado
-                          #select(gastos_administracion, -otros_gastos, -gasto_impuestos, -costo_ventas, -otros_ingresos, -ingresos_actividades_ordinarias, -ingresos_financieros) 
+datos_completos%>%mutate(Periodo=as.numeric(as.character(Periodo))) %>% 
+  inner_join(df, by=c("Periodo" = "Anyo")) %>% replace_na(list(costo_ventas = 0, 
+  gastos_administracion = 0, otros_gastos=0, costos_financieros=0 , 
+  gasto_impuestos=0, ingresos_actividades_ordinarias=0, otros_ingresos = 0, 
+  ingresos_financieros=0)) -> datos_completos2
+
+
+datos_completos2 %>% mutate(costos_gastos_totales = gastos_administracion + 
+                        otros_gastos +gasto_impuestos + costo_ventas,
+                        ingresos_totales = ingresos_actividades_ordinarias + 
+                        ingresos_financieros + otros_ingresos) -> base_modelado
+
 base_modelado <- droplevels(base_modelado)
 summary(base_modelado)
 
@@ -48,28 +95,34 @@ vis_miss(base_modelado)
 ```
 Esta gráfica nos ayuda a visualizar que no hay datos perdidos en la data.
 
-# Capítulo 4: Análisis_descriptivo
+# Capítulo 4. Análisis_descriptivo
 ```{r child= 'analisis_descriptivo.Rmd'}
 ```
-# Capítulo 5: Correlaciones
+# Capítulo 5. Correlaciones
 ```{r child='Correlaciones.Rmd'}
 
 ```
 
 ```{r}
-base_modelado %>% select(departamento, estado, Periodo, costos_gastos_totales, ciudad, ingresos_totales, NIT, razon_social,otros_ingresos ,    ingresos_financieros) -> base_modelo_lineal
+base_modelado %>% select(departamento, estado, Periodo, costos_gastos_totales,
+  ciudad, ingresos_totales, NIT, razon_social,otros_ingresos ,
+  ingresos_financieros) -> base_modelo_lineal
+
 #definir variable de tamaño de la empresa
 bussiness_size <- cut(base_modelo_lineal$costos_gastos_totales, breaks=4)
-levels(bussiness_size) <- list(small = "(-6.98e+05,1.75e+08]", medium = "(1.75e+08,3.5e+08]", big = "(3.5e+08,5.25e+08]", very_big="(5.25e+08,7.01e+08]")
+levels(bussiness_size) <- list(small = "(-6.98e+05,1.75e+08]", 
+                               medium = "(1.75e+08,3.5e+08]", 
+                               big = "(3.5e+08,5.25e+08]", 
+                               very_big="(5.25e+08,7.01e+08]")
 base_modelo_lineal['tamano_empresa'] <- bussiness_size
 base_modelo_lineal %>% filter(NIT != 900306309) -> base_modelo_lineal
 head(base_modelo_lineal)
 ```
 
-# Capítulo 6 Aplicación de modelo
+# Capítulo 6. Aplicación de modelo
 
 
-### Primer modelo regresión Lineal
+### 6.1. Modelo regresión Lineal
 ```{r}
 library(broom)
 
@@ -82,21 +135,23 @@ calculamos el resumen del modelo 1
 summary(mod1)
 ```
 
-### Segundo Modelo Regresión lineal Sin efectos aleatorios
+### 6.2. Modelo Regresión lineal Sin efectos aleatorios
 
 ```{r}
-mod2 <- lm(costos_gastos_totales ~ estado + ingresos_totales, data= base_modelo_lineal) 
+mod2 <- lm(costos_gastos_totales ~ estado + ingresos_totales, 
+           data= base_modelo_lineal) 
 anova(mod2)
 ```
 ```{r}
 summary(mod2)
 ```
 
-### Modelo lineal con intercepto aleatorio
+### 6.3. Modelo lineal con intercepto aleatorio
 
 ```{r}
 library(lme4)
-mod4 <- lmer(costos_gastos_totales ~ ingresos_totales + (1|departamento), data= base_modelo_lineal) 
+mod4 <- lmer(costos_gastos_totales ~ ingresos_totales + (1|departamento), 
+             data= base_modelo_lineal) 
 
 anova(mod4)
 ```
@@ -104,7 +159,20 @@ anova(mod4)
 summary(mod4)
 ```
 
-# Capítulo 7: Conclusiones
+
+# Capítulo 7. Estimación de esfuerzo
+
+
+Para las actividades se realiza la siguiente estimación de esfuerzo:
+
+
+1) Consolidación de información: 12h
+2) Transformación de varibles y análisis descriptivo: 7h
+3) Ajuste y validación de modelos 8 h
+4) Redacción del reporte: 4h
+
+
+# Capítulo 8. Conclusiones
 
 Se verificaron tres tipos de modelos el primero con una sola variable explicativa llamada `estado` el cual tiene un aporte al costo y al gasto de forma positiva,
 el segundo modelo se encuentra que agregando la variable de ingresos totales y el estado el modelo un mejor ajuste de explicación del gasto y el costo para el sector minero.

@@ -4,7 +4,7 @@
 %
 \documentclass[
   11pt,
-]{article}
+]{book}
 \usepackage[]{mathpazo}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -38,6 +38,7 @@
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
   pdftitle={Trabajo final Estadística Avanzada},
+  pdfauthor={Carlos Alberto Murillo M; Luz Stella Florez; Diana Carolina Benjumea; Cindy Guerra},
   pdfkeywords={Maestria Ciencia Datos, ,},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -104,46 +105,43 @@
 \bibliographystyle{apsr}
 
 \title{Trabajo final Estadística Avanzada}
-\author{true \and true \and true \and true}
-\date{octubre 29, 2020}
+\author{Carlos Alberto Murillo M \and Luz Stella Florez \and Diana Carolina Benjumea \and Cindy Guerra}
+\date{octubre 30, 2020}
 
 \begin{document}
+\frontmatter
 \maketitle
-\begin{abstract}
-Este documento anliza los impactos de las variables macoreconómicas en
-los costos y gastos de una empresa en un determinado sector económico
-\end{abstract}
 
 {
-\setcounter{tocdepth}{3}
+\setcounter{tocdepth}{2}
 \tableofcontents
 }
-\{newpage\}
+\mainmatter
+\hypertarget{abstract}{%
+\chapter*{Abstract}\label{abstract}}
+\addcontentsline{toc}{chapter}{Abstract}
 
-\hypertarget{capuxedtulo-1-lectura-de-variables-de-empresa}{%
-\section{Capítulo 1 Lectura de variables de
-empresa}\label{capuxedtulo-1-lectura-de-variables-de-empresa}}
+Este documento anliza los impactos de las variables macoreconómicas en
+los costos y gastos de una empresa en un determinado sector económico,
+para nuestro estudio seleccionamos el sector minero
 
-Actividad de evaluación de la asignatura Métodos Estadísticos Avanzados
-Profesor: Juan David Ospina Arango Estudiantes: Cindy Guerra, Diana
-Benjumea, Carlos Murillo, Luz Florez
+\hypertarget{objetivos-y-lineamientos}{%
+\chapter{Objetivos y Lineamientos}\label{objetivos-y-lineamientos}}
 
-Métodos Estadísticos Avanzados Maestría en Ciencia de los Datos
-Universidad EAFIT
+Caracterizar las relaciones entre algunos indicadores macroeconómicos y
+los costos y gastos de ventas de las empresas colombianas vigiladas por
+la SuperSociedades.
 
-Objetivo Caracterizar las relaciones entre algunos indicadores
-macroeconómicos y los costos y gastos de ventas de las empresas
-colombianas vigiladas por la SuperSociedades.
-
-Lineamientos: 1. Con ayuda de un modelo lineal modele cree un modelo o
-varios modelos que permitan caracterizar la relación entre las variables
-PIB, Inflación, Desempleo, Tasa de Cambio, Balance Fiscal, Balance en
-Cuenta Corriente, Tasa de intervención, TRM y los costos y gastos de
-ventas.
+Lineamientos:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{1}
+\item
+  Con ayuda de un modelo lineal modele cree un modelo o varios modelos
+  que permitan caracterizar la relación entre las variables PIB,
+  Inflación, Desempleo, Tasa de Cambio, Balance Fiscal, Balance en
+  Cuenta Corriente, Tasa de intervención, TRM y los costos y gastos de
+  ventas.
 \item
   Se debe escoger mínimo un tipo de empresas (Clasificación Industrial
   Internacional Uniforme) que tenga más de 20 empresas y tomar al menos
@@ -183,79 +181,77 @@ Para acceder a los datos de costos y gastos de ventas: • Entrar a
 \textgreater{} Descarga Masiva de Información Descargar la información
 de los años 2016 a 2019
 
+\hypertarget{capuxedtulo-1.-lectura-de-variables-de-empresa}{%
+\chapter{Capítulo 1. Lectura de variables de
+empresa}\label{capuxedtulo-1.-lectura-de-variables-de-empresa}}
+
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-Para las actividades se realiza la siguiente estimación de esfuerzo:
+\hypertarget{selecciuxf3n-de-las-fuentes-de-informaciuxf3n}{%
+\section{Selección de las fuentes de
+información}\label{selecciuxf3n-de-las-fuentes-de-informaciuxf3n}}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi})}
-\tightlist
-\item
-  Consolidación de información: 12h
-\item
-  Transformación de varibles y análisis descriptivo: 7h
-\item
-  Ajuste y validación de modelos 8 h
-\item
-  Redacción del reporte: 4h
-\end{enumerate}
-
-Para los datos basicos y financieros de las empresas tomamos los
+Para los datos básicos y financieros de las empresas, tomamos los
 siguientes archivos de la página de la Supersociedades:
-datosBasicosComplete.xlsx Plenas - Individuales2017.xlsx Plenas -
-Individuales2018.xlsx Plenas - Individuales2019.xlsx
 
-Primera iteración: Código CIIU seleccionado: G4711 Macrosector: Comercio
+\begin{itemize}
+\item datosBasicosComplete.xlsx
+\item Plenas - Individuales2017.xlsx
+\item Plenas - Individuales2018.xlsx
+\item Plenas - Individuales2019.xlsx
+\end{itemize}
+
+Primera iteración:
+
+Código CIIU seleccionado: G4711
+
+Macrosector: Comercio
+
 Descripción: Comercio al por menor en establecimientos no especializados
 con surtido compuesto principalmente por alimentos, bebidas o tabaco.
 
-Esta clase incluye: • Los establecimientos no especializados de comercio
-al por menor de productos cuyo surtido está compuesto principalmente de
-alimentos (víveres en general), bebidas o tabaco. No obstante, expenden
-otras mercancías para consumo de los hogares tales como vestuario,
-electrodomésticos, muebles, artículos de ferretería, cosméticos, entre
-otros. Suelen realizar este tipo de actividad los denominados
-supermercados, cooperativas de consumidores, comisariatos y otros
-establecimientos similares. También se incluyen las tiendas, los
-graneros, entre otros, que se encuentran en los pueblos o en barrios
-tradicionales.
+Esta clase incluye:
 
-Esta clase excluye: • El expendio de comidas preparadas en restaurantes,
-cafeterías y por autoservicio.
+\begin{itemize}
+\item Los establecimientos no especializados de comercio al por menor de productos cuyo surtido está compuesto principalmente de alimentos (víveres en general), bebidas o tabaco. No obstante, expenden otras mercancías para consumo de los hogares tales como vestuario, electrodomésticos, muebles, artículos de ferretería, cosméticos, entre otros. Suelen realizar este tipo de actividad los denominados supermercados, cooperativas de consumidores, comisariatos y otros establecimientos similares. También se incluyen las tiendas, los graneros, entre otros, que se encuentran en los pueblos o en barrios tradicionales.
+\end{itemize}
 
-Al realizar los cargues iniciales de información nos dimos cuenta de que
-nos cruzaban muy pocas empresas porlo que el conjunto de datos
-seleccionado no era suficiente.
+Esta clase excluye:
 
-Iteración 2: Código CIIU seleccionado: B0722 Extracción de oro y otros
-metales preciosos
+\begin{itemize}
+\item El expendio de comidas preparadas en restaurantes, cafeterías y por autoservicio.
+\end{itemize}
 
-Esta clase incluye: • La extracción de oro, plata y otros metales del
-grupo del platino (osmio, iridio, rodio, rutenio y paladio). • Las
-actividades realizadas para extraer el oro existente en los lechos de
-los ríos sin importar el sistema de extracción empleado (barequeo,
-motobombas, draguetas, dragas, elevadores, monitores u otros). • La
-extracción de los metales preciosos se realiza a través de dos métodos:
-de veta o filón, que consiste en la extracción manual, mecanizada o
-semimecanizada de oro y de plata presentes en las rocas formando venas,
-vetas o filones. • Las actividades o procesos físicos necesarios para
-separar el oro de la roca que lo contiene, conocidos como procesos de
-beneficio del mineral, de los cuales los más comunes son la trituración
-y la molienda (pulverización). • Otros procesos tales como lavado
-(mazamorreo) hasta separar el oro y la plata de otros elementos o
-impurezas, siempre y cuando se realicen por cuenta del explotador y en
-sitios cercanos a la mina. • El segundo método consiste en la extracción
-de oro o platino de aluviones (concentración de mineral en el lecho de
-los ríos), el cual se realiza por diferentes sistemas de extracción,
-tales como: barequeo (mazamorreo); pequeña minería, representada por
-grupos de trabajadores que utilizan motobombas, elevadores y draguetas;
-mediana minería, utilizando maquinaria como retroexcavadoras y
-buldózeres, y la gran minería que realiza la extracción de metales
-preciosos por medio de dragas de cucharas.
+Al realizar los cargues iniciales de información, nos dimos cuenta de
+que cruzaban muy pocas empresas, el conjunto de datos seleccionado no
+era suficiente, por lo que decidimos utilizar otro CIIU.
 
-Esta clase excluye: • Los servicios de apoyo para la extracción de oro y
-metales preciosos. Se incluyen en la clase 0990, «Actividades de apoyo
-para otras actividades de explotación de minas y canteras».
+Segunda iteración:
+
+Código CIIU seleccionado: B0722
+
+Descripción: Extracción de oro y otros metales preciosos
+
+Esta clase incluye:
+
+\begin{itemize}
+\item La extracción de oro, plata y otros metales del grupo del platino (osmio, iridio, rodio, rutenio y paladio).
+\item Las actividades realizadas para extraer el oro existente en los lechos de los ríos sin importar el sistema de extracción empleado (barequeo, motobombas, draguetas, dragas, elevadores, monitores u otros).
+\item La extracción de los metales preciosos se realiza a través de dos métodos: de veta o filón, que consiste en la extracción manual, mecanizada o semimecanizada de oro y de plata presentes en las rocas formando venas, vetas o filones.
+\item Las actividades o procesos físicos necesarios para separar el oro de la roca que lo contiene, conocidos como procesos de beneficio del mineral, de los cuales los más comunes son la trituración y la molienda (pulverización).
+\item Otros procesos tales como lavado (mazamorreo) hasta separar el oro y la plata de otros elementos o impurezas, siempre y cuando se realicen por cuenta del explotador y en sitios cercanos a la mina.
+\item El segundo método consiste en la extracción de oro o platino de aluviones (concentración de mineral en el lecho de los ríos), el cual se realiza por diferentes sistemas de extracción, tales como: barequeo (mazamorreo); pequeña minería, representada por grupos de trabajadores que utilizan motobombas, elevadores y draguetas; mediana minería, utilizando maquinaria como retroexcavadoras y buldózeres, y la gran minería que realiza la extracción de metales preciosos por medio de dragas de cucharas.
+\end{itemize}
+
+Esta clase excluye:
+
+\begin{itemize}
+\item Los servicios de apoyo para la extracción de oro y metales preciosos. Se incluyen en la clase 0990, «Actividades de apoyo para otras actividades de explotación de minas y canteras».
+\end{itemize}
+
+\hypertarget{proceso-de-carga-de-los-datos}{%
+\section{Proceso de carga de los
+datos}\label{proceso-de-carga-de-los-datos}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -274,18 +270,23 @@ para otras actividades de explotación de minas y canteras».
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Revisamos como son nuestros datos para saber si tenemos que realizar algún ajuste a la carga}
-\KeywordTok{file.show}\NormalTok{(}\StringTok{"./data/datosBasicosComplete.xlsx"}\NormalTok{)}
+\CommentTok{#Revisamos como son nuestros datos para saber si tenemos que realizar algún }
+\CommentTok{#ajuste a la carga}
+\CommentTok{#file.show("./data/datosBasicosComplete.xlsx")}
 
-\CommentTok{#Como el archivo no tiene forma de tabla al principio, debemos realizar la carga, ignorando las primeras filas del archivo.}
+\CommentTok{#Como el archivo no tiene forma de tabla al principio, debemos realizar la }
+\CommentTok{#carga, ignorando las primeras filas del archivo.}
 
 \CommentTok{#Cargar los archivos a un dataframe}
-\NormalTok{pd_datos_basicos <-}\StringTok{ }\KeywordTok{read_excel}\NormalTok{(}\StringTok{"./data/datosBasicosComplete.xlsx"}\NormalTok{, }\DataTypeTok{sheet =} \StringTok{"Reporte"}\NormalTok{, }\DataTypeTok{skip=}\DecValTok{8}\NormalTok{, }\DataTypeTok{col_types =} \KeywordTok{c}\NormalTok{(}\StringTok{"text"}\NormalTok{, }
-\StringTok{"text"}\NormalTok{, }\StringTok{"text"}\NormalTok{, }\StringTok{"text"}\NormalTok{, }\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{, }\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"date"}\NormalTok{,}
-\StringTok{"text"}\NormalTok{,}\StringTok{"date"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"date"}\NormalTok{, }\StringTok{"text"}\NormalTok{, }\StringTok{"text"}\NormalTok{))}
+\NormalTok{pd_datos_basicos <-}\StringTok{ }\KeywordTok{read_excel}\NormalTok{(}\StringTok{"./data/datosBasicosComplete.xlsx"}\NormalTok{, }
+                               \DataTypeTok{sheet =} \StringTok{"Reporte"}\NormalTok{, }\DataTypeTok{skip=}\DecValTok{8}\NormalTok{, }\DataTypeTok{col_types =} \KeywordTok{c}\NormalTok{(}\StringTok{"text"}\NormalTok{, }
+\StringTok{"text"}\NormalTok{, }\StringTok{"text"}\NormalTok{, }\StringTok{"text"}\NormalTok{, }\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{, }\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}
+\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"date"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"date"}\NormalTok{,}\StringTok{"text"}\NormalTok{,}\StringTok{"date"}\NormalTok{, }\StringTok{"text"}\NormalTok{,}
+\StringTok{"text"}\NormalTok{))}
 
-\NormalTok{pd_datos_basicos }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\StringTok{`}\DataTypeTok{Órgano Societario}\StringTok{`}\NormalTok{ =}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(}\StringTok{`}\DataTypeTok{Órgano Societario}\StringTok{`}\NormalTok{),}
-                            \StringTok{`}\DataTypeTok{Etapa Situación` = as.factor(}\StringTok{`}\NormalTok{Etapa Situación`)}\ErrorTok{)}\NormalTok{ ->}\StringTok{ }\NormalTok{pd_datos_basicos}
+\NormalTok{pd_datos_basicos }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\StringTok{`}\DataTypeTok{Órgano Societario}\StringTok{`}\NormalTok{ =}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(}\StringTok{`}\DataTypeTok{Órgano Societario}\StringTok{`}\NormalTok{),}
+      \StringTok{`}\DataTypeTok{Etapa Situación` = as.factor(}\StringTok{`}\NormalTok{Etapa Situación`)}\ErrorTok{)}\NormalTok{ ->}\StringTok{ }\NormalTok{pd_datos_basicos}
 
 \KeywordTok{head}\NormalTok{(pd_datos_basicos)}
 \end{Highlighting}
@@ -323,12 +324,16 @@ para otras actividades de explotación de minas y canteras».
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(dplyr)}
 
-\NormalTok{pd_datos_basicos_flt <-}\StringTok{ }\NormalTok{pd_datos_basicos[,}\KeywordTok{c}\NormalTok{(}\StringTok{"NIT"}\NormalTok{,}\StringTok{"Razón social"}\NormalTok{,}\StringTok{"Código CIIU"}\NormalTok{,}\StringTok{"Ciudad Domicilio"}\NormalTok{,}\StringTok{"Departamento Domicilio"}\NormalTok{, }\StringTok{"Estado"}\NormalTok{,}\StringTok{"Situación", "}\NormalTok{Órgano Societario}\StringTok{", "}\NormalTok{Etapa Situación")]}
+\NormalTok{pd_datos_basicos_flt <-}\StringTok{ }\NormalTok{pd_datos_basicos[,}\KeywordTok{c}\NormalTok{(}\StringTok{"NIT"}\NormalTok{,}\StringTok{"Razón social"}\NormalTok{,}\StringTok{"Código CIIU"}\NormalTok{,}
+      \StringTok{"Ciudad Domicilio"}\NormalTok{,}\StringTok{"Departamento Domicilio"}\NormalTok{, }\StringTok{"Estado"}\NormalTok{,}\StringTok{"Situación", }
+\StringTok{      "}\NormalTok{Órgano Societario}\StringTok{", "}\NormalTok{Etapa Situación")]}
 
-\KeywordTok{names}\NormalTok{ (pd_datos_basicos_flt) =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"NIT"}\NormalTok{,}\StringTok{"razon_social"}\NormalTok{,}\StringTok{"CIIU"}\NormalTok{,}\StringTok{"ciudad"}\NormalTok{,}\StringTok{"departamento"}\NormalTok{, }\StringTok{"estado"}\NormalTok{,}\StringTok{"situacion"}\NormalTok{, }\StringTok{"organo_societario"}\NormalTok{,}
-                                 \StringTok{"etapa_situacion"}\NormalTok{)}
+\KeywordTok{names}\NormalTok{ (pd_datos_basicos_flt) =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"NIT"}\NormalTok{,}\StringTok{"razon_social"}\NormalTok{,}\StringTok{"CIIU"}\NormalTok{,}\StringTok{"ciudad"}\NormalTok{,}
+                                 \StringTok{"departamento"}\NormalTok{, }\StringTok{"estado"}\NormalTok{,}\StringTok{"situacion"}\NormalTok{, }
+                                 \StringTok{"organo_societario"}\NormalTok{, }\StringTok{"etapa_situacion"}\NormalTok{)}
 
-\NormalTok{pd_datos_basicos_flt <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(pd_datos_basicos_flt, CIIU }\OperatorTok{==}\StringTok{ "B0722"} \OperatorTok{&}\StringTok{ }\NormalTok{situacion }\OperatorTok{==}\StringTok{ "ACTIVA"}\NormalTok{)}
+\NormalTok{pd_datos_basicos_flt <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(pd_datos_basicos_flt, CIIU }\OperatorTok{==}\StringTok{ "B0722"} \OperatorTok{&}\StringTok{ }
+\StringTok{                                 }\NormalTok{situacion }\OperatorTok{==}\StringTok{ "ACTIVA"}\NormalTok{)}
 
 \KeywordTok{head}\NormalTok{(pd_datos_basicos_flt)}
 \end{Highlighting}
@@ -357,14 +362,23 @@ para otras actividades de explotación de minas y canteras».
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pd_datos_fin_}\DecValTok{2017}\NormalTok{ <-}\StringTok{ }\KeywordTok{read_excel}\NormalTok{(}\StringTok{"./data/Plenas - Individuales2017.xlsx"}\NormalTok{, }\DataTypeTok{sheet =} \StringTok{"Estado de Resultado Integral"}\NormalTok{ )}
+\NormalTok{pd_datos_fin_}\DecValTok{2017}\NormalTok{ <-}\StringTok{ }\KeywordTok{read_excel}\NormalTok{(}\StringTok{"./data/Plenas - Individuales2017.xlsx"}\NormalTok{, }
+                                \DataTypeTok{sheet =} \StringTok{"Estado de Resultado Integral"}\NormalTok{ )}
 
-\NormalTok{pd_datos_fin_}\DecValTok{2017}\NormalTok{ <-}\StringTok{ }\NormalTok{pd_datos_fin_}\DecValTok{2017}\NormalTok{[,}\KeywordTok{c}\NormalTok{(}\StringTok{"Nit"}\NormalTok{, }\StringTok{"Periodo"}\NormalTok{, }\StringTok{"Costo de ventas"}\NormalTok{,  }\StringTok{"Costos de distribución", "}\NormalTok{Gastos de administración", }\StringTok{"Otros gastos, por función", "}\NormalTok{Costos financieros}\StringTok{", "}\KeywordTok{Gasto}\NormalTok{ (ingreso) por impuestos, operaciones continuadas}\StringTok{", "}\NormalTok{Ingresos de actividades ordinarias}\StringTok{", "}\NormalTok{Otros ingresos}\StringTok{", "}\NormalTok{Ingresos financieros}\StringTok{")]}
+\NormalTok{pd_datos_fin_}\DecValTok{2017}\NormalTok{ <-}\StringTok{ }\NormalTok{pd_datos_fin_}\DecValTok{2017}\NormalTok{[,}\KeywordTok{c}\NormalTok{(}\StringTok{"Nit"}\NormalTok{, }\StringTok{"Periodo"}\NormalTok{, }\StringTok{"Costo de ventas"}\NormalTok{,  }
+\StringTok{"Costos de distribución", "}\NormalTok{Gastos de administración", }\StringTok{"Otros gastos, por función",}
+\StringTok{"}\NormalTok{Costos financieros}\StringTok{", "}\KeywordTok{Gasto}\NormalTok{ (ingreso) por impuestos, operaciones continuadas}\StringTok{",}
+\StringTok{"}\NormalTok{Ingresos de actividades ordinarias}\StringTok{", "}\NormalTok{Otros ingresos}\StringTok{", "}\NormalTok{Ingresos financieros}\StringTok{")]}
 
-\StringTok{names (pd_datos_fin_2017) = c("}\NormalTok{NIT}\StringTok{", "}\NormalTok{Periodo}\StringTok{", "}\NormalTok{costo_ventas}\StringTok{",  "}\NormalTok{costo_distribucion}\StringTok{", "}\NormalTok{gastos_administracion}\StringTok{", "}\NormalTok{otros_gastos}\StringTok{", "}\NormalTok{costos_financieros}\StringTok{", "}\NormalTok{gasto_impuestos_operaciones}\StringTok{", "}\NormalTok{ingresos_actividades_ordinarias}\StringTok{", "}\NormalTok{otros_ingresos}\StringTok{", "}\NormalTok{ingresos_financieros}\StringTok{")}
+
+\StringTok{names (pd_datos_fin_2017) = c("}\NormalTok{NIT}\StringTok{", "}\NormalTok{Periodo}\StringTok{", "}\NormalTok{costo_ventas}\StringTok{",  }
+\StringTok{  "}\NormalTok{costo_distribucion}\StringTok{", "}\NormalTok{gastos_administracion}\StringTok{", "}\NormalTok{otros_gastos}\StringTok{", }
+\StringTok{  "}\NormalTok{costos_financieros}\StringTok{", "}\NormalTok{gasto_impuestos_operaciones}\StringTok{", }
+\StringTok{  "}\NormalTok{ingresos_actividades_ordinarias}\StringTok{", "}\NormalTok{otros_ingresos}\StringTok{", "}\NormalTok{ingresos_financieros}\StringTok{")}
 
 
-\StringTok{datos_completos_fin <- merge (pd_datos_basicos_flt, pd_datos_fin_2017, by.x="}\NormalTok{NIT}\StringTok{", by.y="}\NormalTok{NIT}\StringTok{")}
+\StringTok{datos_completos_fin <- merge (pd_datos_basicos_flt, pd_datos_fin_2017, }
+\StringTok{                              by.x="}\NormalTok{NIT}\StringTok{", by.y="}\NormalTok{NIT}\StringTok{")}
 \end{Highlighting}
 \end{Shaded}
 
@@ -373,31 +387,48 @@ archivo 2018 tiene los datos de 2017 con la nueva norma.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pd_datos_fin_}\DecValTok{2018}\NormalTok{ <-}\StringTok{ }\KeywordTok{read_excel}\NormalTok{(}\StringTok{"./data/Plenas - Individuales2018.xlsx"}\NormalTok{, }\DataTypeTok{sheet =} \StringTok{"ERI"}\NormalTok{ )}
+\NormalTok{pd_datos_fin_}\DecValTok{2018}\NormalTok{ <-}\StringTok{ }\KeywordTok{read_excel}\NormalTok{(}\StringTok{"./data/Plenas - Individuales2018.xlsx"}\NormalTok{, }
+                                \DataTypeTok{sheet =} \StringTok{"ERI"}\NormalTok{ )}
 
-\NormalTok{pd_datos_fin_}\DecValTok{2018}\NormalTok{ <-}\StringTok{ }\NormalTok{pd_datos_fin_}\DecValTok{2018}\NormalTok{[,}\KeywordTok{c}\NormalTok{(}\StringTok{"Nit"}\NormalTok{, }\StringTok{"Periodo"}\NormalTok{, }\StringTok{"Costo de ventas"}\NormalTok{, }\StringTok{"Gastos de ventas"}\NormalTok{, }\StringTok{"Gastos de administración", "}\NormalTok{Otros gastos}\StringTok{", "}\NormalTok{Costos financieros}\StringTok{", "}\KeywordTok{Ingreso}\NormalTok{ (gasto) por impuestos}\StringTok{", "}\NormalTok{Ingresos de actividades ordinarias}\StringTok{", "}\NormalTok{Otros ingresos}\StringTok{", "}\NormalTok{Ingresos financieros}\StringTok{")]}
+\NormalTok{pd_datos_fin_}\DecValTok{2018}\NormalTok{ <-}\StringTok{ }\NormalTok{pd_datos_fin_}\DecValTok{2018}\NormalTok{[,}\KeywordTok{c}\NormalTok{(}\StringTok{"Nit"}\NormalTok{, }\StringTok{"Periodo"}\NormalTok{, }\StringTok{"Costo de ventas"}\NormalTok{, }
+  \StringTok{"Gastos de ventas"}\NormalTok{, }\StringTok{"Gastos de administración", "}\NormalTok{Otros gastos}\StringTok{", }
+\StringTok{  "}\NormalTok{Costos financieros}\StringTok{", "}\KeywordTok{Ingreso}\NormalTok{ (gasto) por impuestos}\StringTok{", }
+\StringTok{  "}\NormalTok{Ingresos de actividades ordinarias}\StringTok{", "}\NormalTok{Otros ingresos}\StringTok{", "}\NormalTok{Ingresos financieros}\StringTok{")]}
 
-\StringTok{names (pd_datos_fin_2018) = c("}\NormalTok{NIT}\StringTok{", "}\NormalTok{Periodo}\StringTok{", "}\NormalTok{costo_ventas}\StringTok{", "}\NormalTok{gastos_ventas}\StringTok{", "}\NormalTok{gastos_administracion}\StringTok{", "}\NormalTok{otros_gastos}\StringTok{", "}\NormalTok{costos_financieros}\StringTok{", "}\NormalTok{gasto_impuestos}\StringTok{", "}\NormalTok{ingresos_actividades_ordinarias}\StringTok{", "}\NormalTok{otros_ingresos}\StringTok{", "}\NormalTok{ingresos_financieros}\StringTok{" )}
+\StringTok{names (pd_datos_fin_2018) = c("}\NormalTok{NIT}\StringTok{", "}\NormalTok{Periodo}\StringTok{", "}\NormalTok{costo_ventas}\StringTok{", "}\NormalTok{gastos_ventas}\StringTok{",}
+\StringTok{  "}\NormalTok{gastos_administracion}\StringTok{", "}\NormalTok{otros_gastos}\StringTok{", "}\NormalTok{costos_financieros}\StringTok{", "}\NormalTok{gasto_impuestos}\StringTok{",}
+\StringTok{  "}\NormalTok{ingresos_actividades_ordinarias}\StringTok{", "}\NormalTok{otros_ingresos}\StringTok{", "}\NormalTok{ingresos_financieros}\StringTok{" )}
 
-\StringTok{datos_completos_2018 <- merge (pd_datos_basicos_flt, pd_datos_fin_2018, by.x="}\NormalTok{NIT}\StringTok{", by.y="}\NormalTok{NIT}\StringTok{")}
+\StringTok{datos_completos_2018 <- merge (pd_datos_basicos_flt, pd_datos_fin_2018,}
+\StringTok{                               by.x="}\NormalTok{NIT}\StringTok{", by.y="}\NormalTok{NIT}\StringTok{")}
 
 \StringTok{#Le damos formato a los periodos}
 
-\StringTok{datos_completos_2018$Periodo[datos_completos_2018$Periodo == "}\NormalTok{Periodo Anterior}\StringTok{"] <- "}\DecValTok{2017}\StringTok{"}
-\StringTok{datos_completos_2018$Periodo[datos_completos_2018$Periodo == "}\NormalTok{Periodo Actual}\StringTok{"] <- "}\DecValTok{2018}\StringTok{"}
+\StringTok{datos_completos_2018$Periodo[datos_completos_2018$Periodo == "}\NormalTok{Periodo Anterior}\StringTok{"] <- }
+\StringTok{  "}\DecValTok{2017}\StringTok{"}
+\StringTok{datos_completos_2018$Periodo[datos_completos_2018$Periodo == "}\NormalTok{Periodo Actual}\StringTok{"] <- }
+\StringTok{  "}\DecValTok{2018}\StringTok{"}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pd_datos_fin_}\DecValTok{2019}\NormalTok{ <-}\StringTok{ }\KeywordTok{read_excel}\NormalTok{(}\StringTok{"./data/Plenas - Individuales2019.xlsx"}\NormalTok{, }\DataTypeTok{sheet =} \StringTok{"ERI"}\NormalTok{ )}
+\NormalTok{pd_datos_fin_}\DecValTok{2019}\NormalTok{ <-}\StringTok{ }\KeywordTok{read_excel}\NormalTok{(}\StringTok{"./data/Plenas - Individuales2019.xlsx"}\NormalTok{,}
+                                \DataTypeTok{sheet =} \StringTok{"ERI"}\NormalTok{ )}
 
 \CommentTok{#Revisar Costos de distribución}
-\NormalTok{pd_datos_fin_}\DecValTok{2019}\NormalTok{ <-}\StringTok{ }\NormalTok{pd_datos_fin_}\DecValTok{2019}\NormalTok{[,}\KeywordTok{c}\NormalTok{(}\StringTok{"Nit"}\NormalTok{, }\StringTok{"Periodo"}\NormalTok{, }\StringTok{"Costo de ventas"}\NormalTok{, }\StringTok{"Gastos de administración", "}\NormalTok{Otros gastos}\StringTok{", "}\NormalTok{Costos financieros}\StringTok{", "}\KeywordTok{Ingreso}\NormalTok{ (gasto) por impuestos}\StringTok{", "}\NormalTok{Ingresos de actividades ordinarias}\StringTok{", "}\NormalTok{Otros ingresos}\StringTok{", "}\NormalTok{Ingresos financieros}\StringTok{")]}
+\NormalTok{pd_datos_fin_}\DecValTok{2019}\NormalTok{ <-}\StringTok{ }\NormalTok{pd_datos_fin_}\DecValTok{2019}\NormalTok{[,}\KeywordTok{c}\NormalTok{(}\StringTok{"Nit"}\NormalTok{, }\StringTok{"Periodo"}\NormalTok{, }\StringTok{"Costo de ventas"}\NormalTok{, }
+  \StringTok{"Gastos de administración", "}\NormalTok{Otros gastos}\StringTok{", "}\NormalTok{Costos financieros}\StringTok{", }
+\StringTok{  "}\KeywordTok{Ingreso}\NormalTok{ (gasto) por impuestos}\StringTok{", "}\NormalTok{Ingresos de actividades ordinarias}\StringTok{", }
+\StringTok{  "}\NormalTok{Otros ingresos}\StringTok{", "}\NormalTok{Ingresos financieros}\StringTok{")]}
 
-\StringTok{names (pd_datos_fin_2019) = c("}\NormalTok{NIT}\StringTok{", "}\NormalTok{Periodo}\StringTok{", "}\NormalTok{costo_ventas}\StringTok{", "}\NormalTok{gastos_administracion}\StringTok{", "}\NormalTok{otros_gastos}\StringTok{", "}\NormalTok{costos_financieros}\StringTok{", "}\NormalTok{gasto_impuestos}\StringTok{", "}\NormalTok{ingresos_actividades_ordinarias}\StringTok{", "}\NormalTok{otros_ingresos}\StringTok{", "}\NormalTok{ingresos_financieros}\StringTok{" )}
+\StringTok{names (pd_datos_fin_2019) = c("}\NormalTok{NIT}\StringTok{", "}\NormalTok{Periodo}\StringTok{", "}\NormalTok{costo_ventas}\StringTok{", }
+\StringTok{  "}\NormalTok{gastos_administracion}\StringTok{", "}\NormalTok{otros_gastos}\StringTok{", "}\NormalTok{costos_financieros}\StringTok{", }
+\StringTok{  "}\NormalTok{gasto_impuestos}\StringTok{", "}\NormalTok{ingresos_actividades_ordinarias}\StringTok{", "}\NormalTok{otros_ingresos}\StringTok{",}
+\StringTok{  "}\NormalTok{ingresos_financieros}\StringTok{" )}
 
-\StringTok{datos_completos <- merge (pd_datos_basicos_flt, pd_datos_fin_2019, by.x="}\NormalTok{NIT}\StringTok{", by.y="}\NormalTok{NIT}\StringTok{")}
+\StringTok{datos_completos <- merge (pd_datos_basicos_flt, pd_datos_fin_2019,}
+\StringTok{                          by.x="}\NormalTok{NIT}\StringTok{", by.y="}\NormalTok{NIT}\StringTok{")}
 
 \StringTok{datos_completos$Periodo[datos_completos$Periodo == "}\NormalTok{Periodo Actual}\StringTok{"] <- "}\DecValTok{2019}\StringTok{"}
 
@@ -412,15 +443,17 @@ archivo 2018 tiene los datos de 2017 con la nueva norma.
 
 \CommentTok{#UNimos los 2 dataframes}
 \NormalTok{datos_completos =}\StringTok{ }\KeywordTok{rbind}\NormalTok{(datos_completos, datos_completos_}\DecValTok{2018}\NormalTok{)}
-\NormalTok{datos_completos }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{( }\DataTypeTok{razon_social =} \KeywordTok{as.factor}\NormalTok{(razon_social), }\DataTypeTok{CIIU =} \KeywordTok{as.factor}\NormalTok{(CIIU), }\DataTypeTok{ciudad =} \KeywordTok{as.factor}\NormalTok{(ciudad),}
-                          \DataTypeTok{departamento =} \KeywordTok{as.factor}\NormalTok{(departamento), }\DataTypeTok{estado =}\KeywordTok{as.factor}\NormalTok{(estado), }\DataTypeTok{Periodo =} \KeywordTok{as.factor}\NormalTok{(Periodo),}
+\NormalTok{datos_completos }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{( }\DataTypeTok{razon_social =} \KeywordTok{as.factor}\NormalTok{(razon_social), }
+                            \DataTypeTok{CIIU =} \KeywordTok{as.factor}\NormalTok{(CIIU), }\DataTypeTok{ciudad =} \KeywordTok{as.factor}\NormalTok{(ciudad),}
+                          \DataTypeTok{departamento =} \KeywordTok{as.factor}\NormalTok{(departamento), }
+                          \DataTypeTok{estado =}\KeywordTok{as.factor}\NormalTok{(estado), }\DataTypeTok{Periodo =} \KeywordTok{as.factor}\NormalTok{(Periodo),}
                           \DataTypeTok{situacion =} \KeywordTok{as.factor}\NormalTok{(situacion)) ->}\StringTok{ }\NormalTok{datos_completos}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{capuxedtulo-2-lectura-y-consolidaciuxf3n-de-variables-econuxf3micas}{%
-\section{Capítulo 2 Lectura y consolidación de variables
-económicas}\label{capuxedtulo-2-lectura-y-consolidaciuxf3n-de-variables-econuxf3micas}}
+\hypertarget{capuxedtulo-2.-lectura-y-consolidaciuxf3n-de-variables-econuxf3micas}{%
+\chapter{Capítulo 2. Lectura y consolidación de variables
+económicas}\label{capuxedtulo-2.-lectura-y-consolidaciuxf3n-de-variables-econuxf3micas}}
 
 \textbf{A continuación se preseenta el proceso que se ejecutó para generar un dataframe con las variables de PIB, Inflación, Desempleo, Balance Fiscal, Balance en Cuenta Corriente, Tasa de intervención, TRM}
 
@@ -455,10 +488,11 @@ utiliza para medir la riqueza que genera un país.
 en la economía de un país y está relacionado con el aumento desordenado
 de los precios de la mayor parte de los bienes y servicios que se
 comercian en sus mercados, por un periodo de tiempo prolongado.
+\href{https://es.wikipedia.org/wiki/Anexo:Variaci\%C3\%B3n_de_la_inflaci\%C3\%B3n_de_Colombia_desde_1946}{datos
+tomados de aquí}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Los datos son tomados de https://es.wikipedia.org/wiki/Anexo:Variaci%C3%B3n_de_la_inflaci%C3%B3n_de_Colombia_desde_1946}
 \CommentTok{# vectores }
 \NormalTok{anyo <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"2016"}\NormalTok{, }\StringTok{"2017"}\NormalTok{, }\StringTok{"2018"}\NormalTok{, }\StringTok{"2019"}\NormalTok{)}
 \NormalTok{Inflacion <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\FloatTok{5.75}\NormalTok{, }\FloatTok{4.09}\NormalTok{, }\FloatTok{3.18}\NormalTok{, }\FloatTok{3.80}\NormalTok{)}
@@ -480,10 +514,11 @@ comercian en sus mercados, por un periodo de tiempo prolongado.
 la macroeconomía, porque afecta directamente el bienestar de las
 personas. El desempleo es el porcentaje de la fuerza de trabajo que está
 buscando trabajo activamente y que actualmente se encuentra desempleada.
+\href{https://www.dane.gov.co/index.php/estadisticas-por-tema/mercado-laboral/empleo-y-desempleo}{datos
+tomados de aquí}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Los datos son tomados de https://www.dane.gov.co/index.php/estadisticas-por-tema/mercado-laboral/empleo-y-desempleo}
 \CommentTok{# vectores }
 \NormalTok{anyo <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"2016"}\NormalTok{, }\StringTok{"2017"}\NormalTok{, }\StringTok{"2018"}\NormalTok{, }\StringTok{"2019"}\NormalTok{)}
 \NormalTok{Desempleo <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\FloatTok{9.2}\NormalTok{, }\FloatTok{9.4}\NormalTok{, }\FloatTok{9.7}\NormalTok{, }\FloatTok{10.5}\NormalTok{)}
@@ -504,10 +539,11 @@ buscando trabajo activamente y que actualmente se encuentra desempleada.
 
 \textbf{Para el balance fiscal:} Es la diferencia entre ingresos y
 gastos públicos en un determinado territorio.
+\href{http://www.urf.gov.co/webcenter/portal/EntidadesFinancieras/pages_EntidadesFinancieras/PoliticaFiscal/bgg/balancefiscalgobiernocentral?_afrLoop=6729623401772216\&_afrWindowMode=2\&Adf-Window-Id=mof7t7k7j\&_afrFS=16\&_afrMT=screen\&_afrMFW=768\&_afrMFH=720\&_afrMFDW=1536\&_afrMFDH=864\&_afrMFC=8\&_afrMFCI=0\&_afrMFM=0\&_afrMFR=120\&_afrMFG=0\&_afrMFS=0\&_afrMFO=0}{datos
+tomados de aquí}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Los datos son tomados de http://www.urf.gov.co/webcenter/portal/EntidadesFinancieras/pages_EntidadesFinancieras/PoliticaFiscal/bgg/balancefiscalgobiernocentral?_afrLoop=6729623401772216&_afrWindowMode=2&Adf-Window-Id=mof7t7k7j&_afrFS=16&_afrMT=screen&_afrMFW=768&_afrMFH=720&_afrMFDW=1536&_afrMFDH=864&_afrMFC=8&_afrMFCI=0&_afrMFM=0&_afrMFR=120&_afrMFG=0&_afrMFS=0&_afrMFO=0}
 \CommentTok{# vectores }
 \NormalTok{anyo <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"2016"}\NormalTok{, }\StringTok{"2017"}\NormalTok{, }\StringTok{"2018"}\NormalTok{, }\StringTok{"2019"}\NormalTok{)}
 \NormalTok{GNC <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{4}\NormalTok{, }\FloatTok{-3.6}\NormalTok{, }\FloatTok{-3.1}\NormalTok{, }\FloatTok{-2.5}\NormalTok{)}
@@ -554,11 +590,11 @@ mínima que le cobra el Banco de la República a las entidades financieras
 por los préstamos que les concede generalmente a un día y, además, sirve
 como referencia para establecer la tasa de interés máxima que les paga
 por recibirles dinero que tengan como excedente.
+\href{https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria}{datos
+tomados de aquí}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Los datos son tomados de https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria}
-
 \CommentTok{# vectores }
 \NormalTok{anyo <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"2016"}\NormalTok{, }\StringTok{"2017"}\NormalTok{, }\StringTok{"2018"}\NormalTok{, }\StringTok{"2019"}\NormalTok{)}
 \NormalTok{TIM_promedio<-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\FloatTok{7.10}\NormalTok{, }\FloatTok{6.13}\NormalTok{, }\FloatTok{4.35}\NormalTok{, }\FloatTok{4.25}\NormalTok{)}
@@ -586,11 +622,13 @@ negociación de las divisas.
 Actualmente la Superintendencia Financiera de Colombia es la que calcula
 y certifica diariamente la TRM con base en las operaciones registradas
 el día hábil inmediatamente anterior.
+\href{https://www.dolar-colombia.com/historico}{datos tomados de aquí}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{#Se leen los datos - estos datos son tomados de https://www.dolar-colombia.com/historico}
-\NormalTok{dataset =}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'./data/TRM.csv'}\NormalTok{, }\DataTypeTok{check.names =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{encoding =} \StringTok{"UTF-8"}\NormalTok{, }\DataTypeTok{blank.lines.skip =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{dec=}\StringTok{","}\NormalTok{)}
+\CommentTok{#Se leen los datos -  }
+\NormalTok{dataset =}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'./data/TRM.csv'}\NormalTok{, }\DataTypeTok{check.names =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{encoding =} \StringTok{"UTF-8"}\NormalTok{, }
+                   \DataTypeTok{blank.lines.skip =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{dec=}\StringTok{","}\NormalTok{)}
 
 \CommentTok{#se conservam unicamente las columnas de año y TRM}
 \NormalTok{df =}\StringTok{ }\NormalTok{dataset[}\DecValTok{1}\NormalTok{]}
@@ -671,9 +709,9 @@ Se unen los datos en un solo dataframe
 ## #   TIM_promedio <dbl>
 \end{verbatim}
 
-\hypertarget{capuxedtulo-3-consolidaciuxf3n-de-la-base}{%
-\section{Capítulo 3 Consolidación de la
-base}\label{capuxedtulo-3-consolidaciuxf3n-de-la-base}}
+\hypertarget{capuxedtulo-3.-consolidaciuxf3n-de-la-base}{%
+\chapter{Capítulo 3. Consolidación de la
+base}\label{capuxedtulo-3.-consolidaciuxf3n-de-la-base}}
 
 En esta sección se unen las dos bases generadas en las fases anteriores
 en una sola base
@@ -682,12 +720,18 @@ en una sola base
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(dplyr)}
 \KeywordTok{library}\NormalTok{(tidyr)}
-\NormalTok{datos_completos}\OperatorTok{%>%}\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Periodo=}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(Periodo))) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{inner_join}\NormalTok{(df, }\DataTypeTok{by=}\KeywordTok{c}\NormalTok{(}\StringTok{"Periodo"}\NormalTok{ =}\StringTok{ "Anyo"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{replace_na}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\DataTypeTok{costo_ventas =} \DecValTok{0}\NormalTok{, }\DataTypeTok{gastos_administracion =} \DecValTok{0}\NormalTok{,}
-                                                                                                                                   \DataTypeTok{otros_gastos=}\DecValTok{0}\NormalTok{, }\DataTypeTok{costos_financieros=}\DecValTok{0}\NormalTok{ , }\DataTypeTok{gasto_impuestos=}\DecValTok{0}\NormalTok{, }\DataTypeTok{ingresos_actividades_ordinarias=}\DecValTok{0}\NormalTok{,}
-                                                                                                                                   \DataTypeTok{otros_ingresos =} \DecValTok{0}\NormalTok{, }\DataTypeTok{ingresos_financieros=}\DecValTok{0}\NormalTok{)) ->}\StringTok{ }\NormalTok{datos_completos2}
-\NormalTok{datos_completos2 }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{costos_gastos_totales =}\NormalTok{ gastos_administracion }\OperatorTok{+}\StringTok{ }\NormalTok{otros_gastos }\OperatorTok{+}\NormalTok{gasto_impuestos }\OperatorTok{+}\StringTok{ }\NormalTok{costo_ventas,}
-                           \DataTypeTok{ingresos_totales =}\NormalTok{ ingresos_actividades_ordinarias }\OperatorTok{+}\StringTok{ }\NormalTok{ingresos_financieros }\OperatorTok{+}\StringTok{ }\NormalTok{otros_ingresos) ->}\StringTok{ }\NormalTok{base_modelado}
-                          \CommentTok{#select(gastos_administracion, -otros_gastos, -gasto_impuestos, -costo_ventas, -otros_ingresos, -ingresos_actividades_ordinarias, -ingresos_financieros) }
+\NormalTok{datos_completos}\OperatorTok{%>%}\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Periodo=}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(Periodo))) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{inner_join}\NormalTok{(df, }\DataTypeTok{by=}\KeywordTok{c}\NormalTok{(}\StringTok{"Periodo"}\NormalTok{ =}\StringTok{ "Anyo"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{replace_na}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\DataTypeTok{costo_ventas =} \DecValTok{0}\NormalTok{, }
+  \DataTypeTok{gastos_administracion =} \DecValTok{0}\NormalTok{, }\DataTypeTok{otros_gastos=}\DecValTok{0}\NormalTok{, }\DataTypeTok{costos_financieros=}\DecValTok{0}\NormalTok{ , }
+  \DataTypeTok{gasto_impuestos=}\DecValTok{0}\NormalTok{, }\DataTypeTok{ingresos_actividades_ordinarias=}\DecValTok{0}\NormalTok{, }\DataTypeTok{otros_ingresos =} \DecValTok{0}\NormalTok{, }
+  \DataTypeTok{ingresos_financieros=}\DecValTok{0}\NormalTok{)) ->}\StringTok{ }\NormalTok{datos_completos2}
+
+
+\NormalTok{datos_completos2 }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{costos_gastos_totales =}\NormalTok{ gastos_administracion }\OperatorTok{+}\StringTok{ }
+\StringTok{                        }\NormalTok{otros_gastos }\OperatorTok{+}\NormalTok{gasto_impuestos }\OperatorTok{+}\StringTok{ }\NormalTok{costo_ventas,}
+                        \DataTypeTok{ingresos_totales =}\NormalTok{ ingresos_actividades_ordinarias }\OperatorTok{+}\StringTok{ }
+\StringTok{                        }\NormalTok{ingresos_financieros }\OperatorTok{+}\StringTok{ }\NormalTok{otros_ingresos) ->}\StringTok{ }\NormalTok{base_modelado}
+
 \NormalTok{base_modelado <-}\StringTok{ }\KeywordTok{droplevels}\NormalTok{(base_modelado)}
 \KeywordTok{summary}\NormalTok{(base_modelado)}
 \end{Highlighting}
@@ -787,9 +831,9 @@ en una sola base
 \includegraphics{index_files/figure-latex/unnamed-chunk-4-1.pdf} Esta
 gráfica nos ayuda a visualizar que no hay datos perdidos en la data.
 
-\hypertarget{capuxedtulo-4-anuxe1lisis_descriptivo}{%
-\section{Capítulo 4:
-Análisis\_descriptivo}\label{capuxedtulo-4-anuxe1lisis_descriptivo}}
+\hypertarget{capuxedtulo-4.-anuxe1lisis_descriptivo}{%
+\chapter{Capítulo 4.
+Análisis\_descriptivo}\label{capuxedtulo-4.-anuxe1lisis_descriptivo}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -797,7 +841,8 @@ Análisis\_descriptivo}\label{capuxedtulo-4-anuxe1lisis_descriptivo}}
 \KeywordTok{library}\NormalTok{(tidyr)}
 \KeywordTok{library}\NormalTok{(dplyr)}
 
-\NormalTok{datosValidar <-}\StringTok{ }\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{group_by}\NormalTok{(NIT, razon_social) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{total=}\KeywordTok{n}\NormalTok{())}
+\NormalTok{datosValidar <-}\StringTok{ }\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{group_by}\NormalTok{(NIT, razon_social) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{total=}\KeywordTok{n}\NormalTok{())}
 \end{Highlighting}
 \end{Shaded}
 
@@ -807,7 +852,8 @@ Análisis\_descriptivo}\label{capuxedtulo-4-anuxe1lisis_descriptivo}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{h <-}\StringTok{ }\KeywordTok{hist}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ datosValidar}\OperatorTok{$}\NormalTok{total, }\DataTypeTok{main =} \StringTok{"Cantidad de periodos por empresa"}\NormalTok{,  }\DataTypeTok{xlab =} \StringTok{"Cantidad de periodos"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"Empresas"}\NormalTok{, }\DataTypeTok{breaks=}\DecValTok{3}\NormalTok{)}
+\NormalTok{h <-}\StringTok{ }\KeywordTok{hist}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ datosValidar}\OperatorTok{$}\NormalTok{total, }\DataTypeTok{main =} \StringTok{"Cantidad de periodos por empresa"}\NormalTok{,}
+          \DataTypeTok{xlab =} \StringTok{"Cantidad de periodos"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"Empresas"}\NormalTok{, }\DataTypeTok{breaks=}\DecValTok{3}\NormalTok{)}
 
 \KeywordTok{text}\NormalTok{(h}\OperatorTok{$}\NormalTok{mids,h}\OperatorTok{$}\NormalTok{counts,}\DataTypeTok{labels=}\NormalTok{h}\OperatorTok{$}\NormalTok{counts, }\DataTypeTok{adj=}\KeywordTok{c}\NormalTok{(}\FloatTok{0.5}\NormalTok{, }\FloatTok{-0.5}\NormalTok{))}
 \end{Highlighting}
@@ -819,7 +865,8 @@ trabajaremos con la empresas que tengan los periodos completos.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{anti_join}\NormalTok{(datosValidar }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(total }\OperatorTok{<}\StringTok{ }\DecValTok{3}\NormalTok{) , }\DataTypeTok{by=}\StringTok{"NIT"}\NormalTok{ ) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{group_by}\NormalTok{(NIT, razon_social) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{total=}\KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(total))}
+\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{anti_join}\NormalTok{(datosValidar }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(total }\OperatorTok{<}\StringTok{ }\DecValTok{3}\NormalTok{) , }\DataTypeTok{by=}\StringTok{"NIT"}\NormalTok{ ) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(NIT, razon_social) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{total=}\KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(total))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -847,11 +894,14 @@ trabajaremos con la empresas que tengan los periodos completos.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{anti_join}\NormalTok{(datosValidar }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(total }\OperatorTok{<}\StringTok{ }\DecValTok{3}\NormalTok{) , }\DataTypeTok{by=}\StringTok{"NIT"}\NormalTok{ ) ->}\StringTok{  }\NormalTok{base_modelado}
-\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(ingresos_totales }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{count}\NormalTok{(NIT) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(n}\OperatorTok{==}\DecValTok{3}\NormalTok{) ->}\StringTok{ }\NormalTok{datosValidar}
+\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{anti_join}\NormalTok{(datosValidar }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(total }\OperatorTok{<}\StringTok{ }\DecValTok{3}\NormalTok{) , }\DataTypeTok{by=}\StringTok{"NIT"}\NormalTok{ ) ->}\StringTok{  }
+\StringTok{  }\NormalTok{base_modelado}
+\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(ingresos_totales }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{count}\NormalTok{(NIT) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(n}\OperatorTok{==}\DecValTok{3}\NormalTok{) ->}\StringTok{ }\NormalTok{datosValidar}
 \NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{anti_join}\NormalTok{(datosValidar, }\DataTypeTok{by=}\StringTok{"NIT"}\NormalTok{ )  ->}\StringTok{  }\NormalTok{base_modelado}
 
-\NormalTok{datosValidar <-}\StringTok{ }\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{group_by}\NormalTok{(NIT, razon_social) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{total=}\KeywordTok{n}\NormalTok{())}
+\NormalTok{datosValidar <-}\StringTok{ }\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{group_by}\NormalTok{(NIT, razon_social) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{total=}\KeywordTok{n}\NormalTok{())}
 \end{Highlighting}
 \end{Shaded}
 
@@ -876,8 +926,9 @@ ingresos y los costos por departamento.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{datosValidarDepartamento <-}\StringTok{ }\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{group_by}\NormalTok{(departamento, Periodo) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{costo_gasto_total_dep =} \KeywordTok{sum}\NormalTok{(costos_gastos_totales) }\OperatorTok{/}\StringTok{ }\DecValTok{1000000}\NormalTok{,}
-                                                                                           \DataTypeTok{ingresos_totales_dep =} \KeywordTok{sum}\NormalTok{(ingresos_totales) }\OperatorTok{/}\StringTok{ }\DecValTok{1000000}\NormalTok{)}
+\NormalTok{datosValidarDepartamento <-}\StringTok{ }\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{group_by}\NormalTok{(departamento, Periodo) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{costo_gasto_total_dep =} \KeywordTok{sum}\NormalTok{(costos_gastos_totales) }\OperatorTok{/}\StringTok{ }\DecValTok{1000000}\NormalTok{,}
+  \DataTypeTok{ingresos_totales_dep =} \KeywordTok{sum}\NormalTok{(ingresos_totales) }\OperatorTok{/}\StringTok{ }\DecValTok{1000000}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -948,7 +999,8 @@ empresa que es mas diferente a las demas.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{datosValidar <-}\StringTok{ }\KeywordTok{filter}\NormalTok{(base_modelado, NIT}\OperatorTok{!=}\DecValTok{900306309}\NormalTok{)}
-\NormalTok{p1=}\KeywordTok{ggplot}\NormalTok{(datosValidar, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y=}\NormalTok{costos_gastos_totales}\OperatorTok{/}\DecValTok{1000}\NormalTok{,}\DataTypeTok{x=}\NormalTok{Periodo,}\DataTypeTok{group=}\NormalTok{NIT,}\DataTypeTok{colour=}\NormalTok{departamento))}
+\NormalTok{p1=}\KeywordTok{ggplot}\NormalTok{(datosValidar, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y=}\NormalTok{costos_gastos_totales}\OperatorTok{/}\DecValTok{1000}\NormalTok{,}\DataTypeTok{x=}\NormalTok{Periodo,}\DataTypeTok{group=}\NormalTok{NIT,}
+                            \DataTypeTok{colour=}\NormalTok{departamento))}
 \NormalTok{p1}\OperatorTok{+}\KeywordTok{geom_line}\NormalTok{()}\OperatorTok{+}\KeywordTok{facet_grid}\NormalTok{(.}\OperatorTok{~}\NormalTok{departamento)}
 \end{Highlighting}
 \end{Shaded}
@@ -1008,8 +1060,8 @@ Veamos ahora la dispersion de nuestra variable objetivo.
 esto confirmamos que la dispersion de los costos/gastos totales no tiene
 un comportamiento general.
 
-\hypertarget{capuxedtulo-5-correlaciones}{%
-\section{Capítulo 5: Correlaciones}\label{capuxedtulo-5-correlaciones}}
+\hypertarget{capuxedtulo-5.-correlaciones}{%
+\chapter{Capítulo 5. Correlaciones}\label{capuxedtulo-5.-correlaciones}}
 
 \begin{verbatim}
 ## Warning: package 'Hmisc' was built under R version 4.0.3
@@ -1284,10 +1336,16 @@ macroeconomicas en los modelos.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(departamento, estado, Periodo, costos_gastos_totales, ciudad, ingresos_totales, NIT, razon_social,otros_ingresos ,    ingresos_financieros) ->}\StringTok{ }\NormalTok{base_modelo_lineal}
+\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(departamento, estado, Periodo, costos_gastos_totales,}
+\NormalTok{  ciudad, ingresos_totales, NIT, razon_social,otros_ingresos ,}
+\NormalTok{  ingresos_financieros) ->}\StringTok{ }\NormalTok{base_modelo_lineal}
+
 \CommentTok{#definir variable de tamaño de la empresa}
 \NormalTok{bussiness_size <-}\StringTok{ }\KeywordTok{cut}\NormalTok{(base_modelo_lineal}\OperatorTok{$}\NormalTok{costos_gastos_totales, }\DataTypeTok{breaks=}\DecValTok{4}\NormalTok{)}
-\KeywordTok{levels}\NormalTok{(bussiness_size) <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\DataTypeTok{small =} \StringTok{"(-6.98e+05,1.75e+08]"}\NormalTok{, }\DataTypeTok{medium =} \StringTok{"(1.75e+08,3.5e+08]"}\NormalTok{, }\DataTypeTok{big =} \StringTok{"(3.5e+08,5.25e+08]"}\NormalTok{, }\DataTypeTok{very_big=}\StringTok{"(5.25e+08,7.01e+08]"}\NormalTok{)}
+\KeywordTok{levels}\NormalTok{(bussiness_size) <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\DataTypeTok{small =} \StringTok{"(-6.98e+05,1.75e+08]"}\NormalTok{, }
+                               \DataTypeTok{medium =} \StringTok{"(1.75e+08,3.5e+08]"}\NormalTok{, }
+                               \DataTypeTok{big =} \StringTok{"(3.5e+08,5.25e+08]"}\NormalTok{, }
+                               \DataTypeTok{very_big=}\StringTok{"(5.25e+08,7.01e+08]"}\NormalTok{)}
 \NormalTok{base_modelo_lineal[}\StringTok{'tamano_empresa'}\NormalTok{] <-}\StringTok{ }\NormalTok{bussiness_size}
 \NormalTok{base_modelo_lineal }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(NIT }\OperatorTok{!=}\StringTok{ }\DecValTok{900306309}\NormalTok{) ->}\StringTok{ }\NormalTok{base_modelo_lineal}
 \KeywordTok{head}\NormalTok{(base_modelo_lineal)}
@@ -1318,13 +1376,13 @@ macroeconomicas en los modelos.
 ## 6                    0          small
 \end{verbatim}
 
-\hypertarget{capuxedtulo-6-aplicaciuxf3n-de-modelo}{%
-\section{Capítulo 6 Aplicación de
-modelo}\label{capuxedtulo-6-aplicaciuxf3n-de-modelo}}
+\hypertarget{capuxedtulo-6.-aplicaciuxf3n-de-modelo}{%
+\chapter{Capítulo 6. Aplicación de
+modelo}\label{capuxedtulo-6.-aplicaciuxf3n-de-modelo}}
 
-\hypertarget{primer-modelo-regresiuxf3n-lineal}{%
-\subsubsection{Primer modelo regresión
-Lineal}\label{primer-modelo-regresiuxf3n-lineal}}
+\hypertarget{modelo-regresiuxf3n-lineal}{%
+\subsection{6.1. Modelo regresión
+Lineal}\label{modelo-regresiuxf3n-lineal}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1375,13 +1433,14 @@ calculamos el resumen del modelo 1
 ## F-statistic: 30.86 on 1 and 64 DF,  p-value: 5.742e-07
 \end{verbatim}
 
-\hypertarget{segundo-modelo-regresiuxf3n-lineal-sin-efectos-aleatorios}{%
-\subsubsection{Segundo Modelo Regresión lineal Sin efectos
-aleatorios}\label{segundo-modelo-regresiuxf3n-lineal-sin-efectos-aleatorios}}
+\hypertarget{modelo-regresiuxf3n-lineal-sin-efectos-aleatorios}{%
+\subsection{6.2. Modelo Regresión lineal Sin efectos
+aleatorios}\label{modelo-regresiuxf3n-lineal-sin-efectos-aleatorios}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{mod2 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{ }\NormalTok{estado }\OperatorTok{+}\StringTok{ }\NormalTok{ingresos_totales, }\DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
+\NormalTok{mod2 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{ }\NormalTok{estado }\OperatorTok{+}\StringTok{ }\NormalTok{ingresos_totales, }
+           \DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
 \KeywordTok{anova}\NormalTok{(mod2)}
 \end{Highlighting}
 \end{Shaded}
@@ -1428,7 +1487,7 @@ aleatorios}\label{segundo-modelo-regresiuxf3n-lineal-sin-efectos-aleatorios}}
 \end{verbatim}
 
 \hypertarget{modelo-lineal-con-intercepto-aleatorio}{%
-\subsubsection{Modelo lineal con intercepto
+\subsection{6.3. Modelo lineal con intercepto
 aleatorio}\label{modelo-lineal-con-intercepto-aleatorio}}
 
 \begin{Shaded}
@@ -1458,7 +1517,8 @@ aleatorio}\label{modelo-lineal-con-intercepto-aleatorio}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{mod4 <-}\StringTok{ }\KeywordTok{lmer}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{ }\NormalTok{ingresos_totales }\OperatorTok{+}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{|}\NormalTok{departamento), }\DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
+\NormalTok{mod4 <-}\StringTok{ }\KeywordTok{lmer}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{ }\NormalTok{ingresos_totales }\OperatorTok{+}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{|}\NormalTok{departamento), }
+             \DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -1520,8 +1580,27 @@ aleatorio}\label{modelo-lineal-con-intercepto-aleatorio}}
 ## boundary (singular) fit: see ?isSingular
 \end{verbatim}
 
-\hypertarget{capuxedtulo-7-conclusiones}{%
-\section{Capítulo 7: Conclusiones}\label{capuxedtulo-7-conclusiones}}
+\hypertarget{capuxedtulo-7.-estimaciuxf3n-de-esfuerzo}{%
+\chapter{Capítulo 7. Estimación de
+esfuerzo}\label{capuxedtulo-7.-estimaciuxf3n-de-esfuerzo}}
+
+Para las actividades se realiza la siguiente estimación de esfuerzo:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\tightlist
+\item
+  Consolidación de información: 12h
+\item
+  Transformación de varibles y análisis descriptivo: 7h
+\item
+  Ajuste y validación de modelos 8 h
+\item
+  Redacción del reporte: 4h
+\end{enumerate}
+
+\hypertarget{capuxedtulo-8.-conclusiones}{%
+\chapter{Capítulo 8. Conclusiones}\label{capuxedtulo-8.-conclusiones}}
 
 Se verificaron tres tipos de modelos el primero con una sola variable
 explicativa llamada \texttt{estado} el cual tiene un aporte al costo y
@@ -1536,7 +1615,7 @@ anterior se selecciona como un posible modelo el modelo
 residual.
 
 \hypertarget{referencias}{%
-\section{REFERENCIAS:}\label{referencias}}
+\chapter{REFERENCIAS:}\label{referencias}}
 
 \url{https://www.dian.gov.co/ciiu/Documents/Resolucion_000139_21_Nov_2012.pdf}
 
@@ -1546,4 +1625,5 @@ residual.
 
 \url{https://www.supersociedades.gov.co/delegatura_aec/Paginas/Base-completa-EF-2019.aspx}
 
+\backmatter
 \end{document}

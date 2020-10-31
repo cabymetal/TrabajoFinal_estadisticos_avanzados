@@ -1,94 +1,103 @@
 ---
 title: "ModeloEvaluacion"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Actividad de evaluación de la asignatura Métodos Estadísticos Avanzados
-Profesor: Juan David Ospina Arango
-Estudiantes: Cindy Guerra, Diana Benjumea, Carlos Murillo, Luz Florez
 
-Métodos Estadísticos Avanzados
-Maestría en Ciencia de los Datos
-Universidad EAFIT
-
-Objetivo
-Caracterizar las relaciones entre algunos indicadores macroeconómicos y los costos y gastos de ventas de las empresas colombianas vigiladas por la SuperSociedades.
-
-Lineamientos:
-1. Con ayuda de un modelo lineal modele cree un modelo o varios modelos que
-permitan caracterizar la relación entre las variables PIB, Inflación, Desempleo, Tasa de Cambio, Balance Fiscal, Balance en Cuenta Corriente, Tasa de intervención, TRM y los costos y gastos de ventas.
-
-2. Se debe escoger mínimo un tipo de empresas (Clasificación Industrial Internacional Uniforme) que tenga más de 20 empresas y tomar al menos los últimos tres años de información disponible.
-
-3. Se debe evaluar el ajuste y la capacidad predictiva.
-
-4. Se deben explicar todas las transformaciones de variables requeridas por el
-modelo.
-
-5. Se deben explicar todos los pasos para la construcción de la base de datos:
-descarga de información, concatenación, etc.
-
-6. Se debe incluir un análisis descriptivo.
-
-7. Se debe incluir un análsis de la razonabilidad de las cifras.
-
-8. Se debe redactar un reporte técnico documentando lo anterior. La sugerencia es utilizar un formato que permita la inclusión de gráficos basados en html o
-JavaScript (por ejemplo hmtl a partir de Rmarkdown). El código se debe subir a un repositorio Git y referenciarlo en el reporte. El reporte debe incluir una estimación del esfuerzo de las actividades de 1) consolidación de información, 3) transformación de varibles y análisis descriptivo, 4) ajuste y validación de modelos y 5) redacción del reporte.
-
-9. El trabajo se debe subir al canal del curso en Teams y se debe notificar por correo a la dirección judaospi@bancolombia.com.co.
-
-10. La fecha de entrega es el viernes 30 de octubre y el trabajo se puede presentar en equipos de máximo cinco estudiantes.
-
-Para acceder a los datos de costos y gastos de ventas:
-• Entrar a http://pie.supersociedades.gov.co > MENÚ > Descarga Masiva de
-Información Descargar la información de los años 2016 a 2019
 
 -------------------------------------------------------------------------
-
-Para las actividades se realiza la siguiente estimación de esfuerzo:
-
-1) Consolidación de información: 12h
-2) Transformación de varibles y análisis descriptivo: 7h
-3) Ajuste y validación de modelos 8 h
-4) Redacción del reporte: 4h
+## Selección de las fuentes de información
 
 
-Para los datos basicos y financieros de las empresas tomamos los siguientes archivos de la página de la Supersociedades:
-datosBasicosComplete.xlsx
-Plenas - Individuales2017.xlsx
-Plenas - Individuales2018.xlsx
-Plenas - Individuales2019.xlsx
+
+Para los datos básicos y financieros de las empresas, tomamos los siguientes archivos de la página de la Supersociedades:
+\begin{itemize}
+\item datosBasicosComplete.xlsx
+\item Plenas - Individuales2017.xlsx
+\item Plenas - Individuales2018.xlsx
+\item Plenas - Individuales2019.xlsx
+\end{itemize}
 
 Primera iteración:
+
+
+
 Código CIIU seleccionado: G4711
+
+
+
 Macrosector: Comercio
+
+
+
 Descripción: Comercio al por menor en establecimientos no especializados con surtido compuesto principalmente por alimentos, bebidas o tabaco.
 
-Esta clase incluye:
-• Los establecimientos no especializados de comercio al por menor de productos cuyo surtido está compuesto principalmente de alimentos (víveres en general), bebidas o tabaco. No obstante, expenden otras mercancías para consumo de los hogares tales como vestuario, electrodomésticos, muebles, artículos de ferretería, cosméticos, entre otros. Suelen realizar este tipo de actividad los denominados supermercados, cooperativas de consumidores, comisariatos y otros establecimientos similares. También se incluyen las tiendas, los graneros, entre otros, que se encuentran en los pueblos o en barrios tradicionales.
 
-Esta clase excluye:
-• El expendio de comidas preparadas en restaurantes, cafeterías y por autoservicio. 
 
-Al realizar los cargues iniciales de información nos dimos cuenta de que nos cruzaban muy pocas empresas porlo que el conjunto de datos seleccionado no era suficiente.
-
-Iteración 2:
-Código CIIU seleccionado: B0722 Extracción de oro y otros metales preciosos
 
 Esta clase incluye:
-• La extracción de oro, plata y otros metales del grupo del platino (osmio, iridio, rodio, rutenio y paladio).
-• Las actividades realizadas para extraer el oro existente en los lechos de los ríos sin importar el sistema de extracción empleado (barequeo, motobombas, draguetas, dragas, elevadores, monitores u otros).
-• La extracción de los metales preciosos se realiza a través de dos métodos: de veta o filón, que consiste en la extracción manual, mecanizada o semimecanizada de oro y de plata presentes en las rocas formando venas, vetas o filones.
-• Las actividades o procesos físicos necesarios para separar el oro de la roca que lo contiene, conocidos como procesos de beneficio del mineral, de los cuales los más comunes son la trituración y la molienda (pulverización).
-• Otros procesos tales como lavado (mazamorreo) hasta separar el oro y la plata de otros elementos o impurezas, siempre y cuando se realicen por cuenta del explotador y en sitios cercanos a la mina.
-• El segundo método consiste en la extracción de oro o platino de aluviones (concentración de mineral en el lecho de los ríos), el cual se realiza por diferentes sistemas de extracción, tales como: barequeo (mazamorreo); pequeña minería, representada por grupos de trabajadores que utilizan motobombas, elevadores y draguetas; mediana minería, utilizando maquinaria como retroexcavadoras y buldózeres, y la gran minería que realiza la extracción de metales preciosos por medio de dragas de cucharas.
+\begin{itemize}
+\item Los establecimientos no especializados de comercio al por menor de productos cuyo surtido está compuesto principalmente de alimentos (víveres en general), bebidas o tabaco. No obstante, expenden otras mercancías para consumo de los hogares tales como vestuario, electrodomésticos, muebles, artículos de ferretería, cosméticos, entre otros. Suelen realizar este tipo de actividad los denominados supermercados, cooperativas de consumidores, comisariatos y otros establecimientos similares. También se incluyen las tiendas, los graneros, entre otros, que se encuentran en los pueblos o en barrios tradicionales.
+\end{itemize}
+
+
 
 Esta clase excluye:
-• Los servicios de apoyo para la extracción de oro y metales preciosos. Se incluyen en la clase 0990, «Actividades de apoyo para otras actividades de explotación de minas y canteras».
+\begin{itemize}
+\item El expendio de comidas preparadas en restaurantes, cafeterías y por autoservicio.
+\end{itemize}
+
+
+
+Al realizar los cargues iniciales de información, nos dimos cuenta de que cruzaban muy pocas empresas, el conjunto de datos seleccionado no era suficiente, por lo que decidimos utilizar otro CIIU.
+
+
+
+
+
+Segunda iteración:
+
+
+
+Código CIIU seleccionado: B0722
+
+
+
+Descripción: Extracción de oro y otros metales preciosos
+
+
+
+
+Esta clase incluye:
+\begin{itemize}
+\item La extracción de oro, plata y otros metales del grupo del platino (osmio, iridio, rodio, rutenio y paladio).
+\item Las actividades realizadas para extraer el oro existente en los lechos de los ríos sin importar el sistema de extracción empleado (barequeo, motobombas, draguetas, dragas, elevadores, monitores u otros).
+\item La extracción de los metales preciosos se realiza a través de dos métodos: de veta o filón, que consiste en la extracción manual, mecanizada o semimecanizada de oro y de plata presentes en las rocas formando venas, vetas o filones.
+\item Las actividades o procesos físicos necesarios para separar el oro de la roca que lo contiene, conocidos como procesos de beneficio del mineral, de los cuales los más comunes son la trituración y la molienda (pulverización).
+\item Otros procesos tales como lavado (mazamorreo) hasta separar el oro y la plata de otros elementos o impurezas, siempre y cuando se realicen por cuenta del explotador y en sitios cercanos a la mina.
+\item El segundo método consiste en la extracción de oro o platino de aluviones (concentración de mineral en el lecho de los ríos), el cual se realiza por diferentes sistemas de extracción, tales como: barequeo (mazamorreo); pequeña minería, representada por grupos de trabajadores que utilizan motobombas, elevadores y draguetas; mediana minería, utilizando maquinaria como retroexcavadoras y buldózeres, y la gran minería que realiza la extracción de metales preciosos por medio de dragas de cucharas.
+\end{itemize}
+
+
+
+Esta clase excluye:
+\begin{itemize}
+\item Los servicios de apoyo para la extracción de oro y metales preciosos. Se incluyen en la clase 0990, «Actividades de apoyo para otras actividades de explotación de minas y canteras».
+\end{itemize}
+
+
+
+
+## Proceso de carga de los datos
+
+
+
 
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -100,18 +109,23 @@ library("dplyr")
 1. Cargamos los datos básicos de las empresas
 ```{r warning=FALSE}
 
-#Revisamos como son nuestros datos para saber si tenemos que realizar algún ajuste a la carga
-file.show("./data/datosBasicosComplete.xlsx")
+#Revisamos como son nuestros datos para saber si tenemos que realizar algún 
+#ajuste a la carga
+#file.show("./data/datosBasicosComplete.xlsx")
 
-#Como el archivo no tiene forma de tabla al principio, debemos realizar la carga, ignorando las primeras filas del archivo.
+#Como el archivo no tiene forma de tabla al principio, debemos realizar la 
+#carga, ignorando las primeras filas del archivo.
 
 #Cargar los archivos a un dataframe
-pd_datos_basicos <- read_excel("./data/datosBasicosComplete.xlsx", sheet = "Reporte", skip=8, col_types = c("text", 
-"text", "text", "text", "text","text","text","text","text", "text","text","text","text","text","text","text","date",
-"text","date","text","date", "text", "text"))
+pd_datos_basicos <- read_excel("./data/datosBasicosComplete.xlsx", 
+                               sheet = "Reporte", skip=8, col_types = c("text", 
+"text", "text", "text", "text","text","text","text","text", "text","text",
+"text","text","text","text","text","date","text","date","text","date", "text",
+"text"))
 
-pd_datos_basicos %>% mutate(`Órgano Societario` = as.factor(`Órgano Societario`),
-                            `Etapa Situación` = as.factor(`Etapa Situación`)) -> pd_datos_basicos
+pd_datos_basicos %>% 
+  mutate(`Órgano Societario` = as.factor(`Órgano Societario`),
+      `Etapa Situación` = as.factor(`Etapa Situación`)) -> pd_datos_basicos
 
 head(pd_datos_basicos)
 
@@ -121,12 +135,16 @@ head(pd_datos_basicos)
 ```{r}
 library(dplyr)
 
-pd_datos_basicos_flt <- pd_datos_basicos[,c("NIT","Razón social","Código CIIU","Ciudad Domicilio","Departamento Domicilio", "Estado","Situación", "Órgano Societario", "Etapa Situación")]
+pd_datos_basicos_flt <- pd_datos_basicos[,c("NIT","Razón social","Código CIIU",
+      "Ciudad Domicilio","Departamento Domicilio", "Estado","Situación", 
+      "Órgano Societario", "Etapa Situación")]
 
-names (pd_datos_basicos_flt) = c("NIT","razon_social","CIIU","ciudad","departamento", "estado","situacion", "organo_societario",
-                                 "etapa_situacion")
+names (pd_datos_basicos_flt) = c("NIT","razon_social","CIIU","ciudad",
+                                 "departamento", "estado","situacion", 
+                                 "organo_societario", "etapa_situacion")
 
-pd_datos_basicos_flt <- filter(pd_datos_basicos_flt, CIIU == "B0722" & situacion == "ACTIVA")
+pd_datos_basicos_flt <- filter(pd_datos_basicos_flt, CIIU == "B0722" & 
+                                 situacion == "ACTIVA")
 
 head(pd_datos_basicos_flt)
 
@@ -136,44 +154,70 @@ head(pd_datos_basicos_flt)
 
 ```{r}
 
-pd_datos_fin_2017 <- read_excel("./data/Plenas - Individuales2017.xlsx", sheet = "Estado de Resultado Integral" )
+pd_datos_fin_2017 <- read_excel("./data/Plenas - Individuales2017.xlsx", 
+                                sheet = "Estado de Resultado Integral" )
 
-pd_datos_fin_2017 <- pd_datos_fin_2017[,c("Nit", "Periodo", "Costo de ventas",  "Costos de distribución", "Gastos de administración", "Otros gastos, por función", "Costos financieros", "Gasto (ingreso) por impuestos, operaciones continuadas", "Ingresos de actividades ordinarias", "Otros ingresos", "Ingresos financieros")]
+pd_datos_fin_2017 <- pd_datos_fin_2017[,c("Nit", "Periodo", "Costo de ventas",  
+"Costos de distribución", "Gastos de administración", "Otros gastos, por función",
+"Costos financieros", "Gasto (ingreso) por impuestos, operaciones continuadas",
+"Ingresos de actividades ordinarias", "Otros ingresos", "Ingresos financieros")]
 
-names (pd_datos_fin_2017) = c("NIT", "Periodo", "costo_ventas",  "costo_distribucion", "gastos_administracion", "otros_gastos", "costos_financieros", "gasto_impuestos_operaciones", "ingresos_actividades_ordinarias", "otros_ingresos", "ingresos_financieros")
+
+names (pd_datos_fin_2017) = c("NIT", "Periodo", "costo_ventas",  
+  "costo_distribucion", "gastos_administracion", "otros_gastos", 
+  "costos_financieros", "gasto_impuestos_operaciones", 
+  "ingresos_actividades_ordinarias", "otros_ingresos", "ingresos_financieros")
 
 
-datos_completos_fin <- merge (pd_datos_basicos_flt, pd_datos_fin_2017, by.x="NIT", by.y="NIT")
+datos_completos_fin <- merge (pd_datos_basicos_flt, pd_datos_fin_2017, 
+                              by.x="NIT", by.y="NIT")
 
 ```
 
 Para efectos del ejercicio, no tomaremos el archivo de 2017, ya que el archivo 2018 tiene los datos de 2017 con la nueva norma.
 
 ```{r}
-pd_datos_fin_2018 <- read_excel("./data/Plenas - Individuales2018.xlsx", sheet = "ERI" )
+pd_datos_fin_2018 <- read_excel("./data/Plenas - Individuales2018.xlsx", 
+                                sheet = "ERI" )
 
-pd_datos_fin_2018 <- pd_datos_fin_2018[,c("Nit", "Periodo", "Costo de ventas", "Gastos de ventas", "Gastos de administración", "Otros gastos", "Costos financieros", "Ingreso (gasto) por impuestos", "Ingresos de actividades ordinarias", "Otros ingresos", "Ingresos financieros")]
+pd_datos_fin_2018 <- pd_datos_fin_2018[,c("Nit", "Periodo", "Costo de ventas", 
+  "Gastos de ventas", "Gastos de administración", "Otros gastos", 
+  "Costos financieros", "Ingreso (gasto) por impuestos", 
+  "Ingresos de actividades ordinarias", "Otros ingresos", "Ingresos financieros")]
 
-names (pd_datos_fin_2018) = c("NIT", "Periodo", "costo_ventas", "gastos_ventas", "gastos_administracion", "otros_gastos", "costos_financieros", "gasto_impuestos", "ingresos_actividades_ordinarias", "otros_ingresos", "ingresos_financieros" )
+names (pd_datos_fin_2018) = c("NIT", "Periodo", "costo_ventas", "gastos_ventas",
+  "gastos_administracion", "otros_gastos", "costos_financieros", "gasto_impuestos",
+  "ingresos_actividades_ordinarias", "otros_ingresos", "ingresos_financieros" )
 
-datos_completos_2018 <- merge (pd_datos_basicos_flt, pd_datos_fin_2018, by.x="NIT", by.y="NIT")
+datos_completos_2018 <- merge (pd_datos_basicos_flt, pd_datos_fin_2018,
+                               by.x="NIT", by.y="NIT")
 
 #Le damos formato a los periodos
 
-datos_completos_2018$Periodo[datos_completos_2018$Periodo == "Periodo Anterior"] <- "2017"
-datos_completos_2018$Periodo[datos_completos_2018$Periodo == "Periodo Actual"] <- "2018"
+datos_completos_2018$Periodo[datos_completos_2018$Periodo == "Periodo Anterior"] <- 
+  "2017"
+datos_completos_2018$Periodo[datos_completos_2018$Periodo == "Periodo Actual"] <- 
+  "2018"
 
 ```
 
 ```{r}
-pd_datos_fin_2019 <- read_excel("./data/Plenas - Individuales2019.xlsx", sheet = "ERI" )
+pd_datos_fin_2019 <- read_excel("./data/Plenas - Individuales2019.xlsx",
+                                sheet = "ERI" )
 
 #Revisar Costos de distribución
-pd_datos_fin_2019 <- pd_datos_fin_2019[,c("Nit", "Periodo", "Costo de ventas", "Gastos de administración", "Otros gastos", "Costos financieros", "Ingreso (gasto) por impuestos", "Ingresos de actividades ordinarias", "Otros ingresos", "Ingresos financieros")]
+pd_datos_fin_2019 <- pd_datos_fin_2019[,c("Nit", "Periodo", "Costo de ventas", 
+  "Gastos de administración", "Otros gastos", "Costos financieros", 
+  "Ingreso (gasto) por impuestos", "Ingresos de actividades ordinarias", 
+  "Otros ingresos", "Ingresos financieros")]
 
-names (pd_datos_fin_2019) = c("NIT", "Periodo", "costo_ventas", "gastos_administracion", "otros_gastos", "costos_financieros", "gasto_impuestos", "ingresos_actividades_ordinarias", "otros_ingresos", "ingresos_financieros" )
+names (pd_datos_fin_2019) = c("NIT", "Periodo", "costo_ventas", 
+  "gastos_administracion", "otros_gastos", "costos_financieros", 
+  "gasto_impuestos", "ingresos_actividades_ordinarias", "otros_ingresos",
+  "ingresos_financieros" )
 
-datos_completos <- merge (pd_datos_basicos_flt, pd_datos_fin_2019, by.x="NIT", by.y="NIT")
+datos_completos <- merge (pd_datos_basicos_flt, pd_datos_fin_2019,
+                          by.x="NIT", by.y="NIT")
 
 datos_completos$Periodo[datos_completos$Periodo == "Periodo Actual"] <- "2019"
 
@@ -187,8 +231,10 @@ datos_completos_2018 <- select(datos_completos_2018, -gastos_ventas)
 
 #UNimos los 2 dataframes
 datos_completos = rbind(datos_completos, datos_completos_2018)
-datos_completos %>% mutate( razon_social = as.factor(razon_social), CIIU = as.factor(CIIU), ciudad = as.factor(ciudad),
-                          departamento = as.factor(departamento), estado =as.factor(estado), Periodo = as.factor(Periodo),
+datos_completos %>% mutate( razon_social = as.factor(razon_social), 
+                            CIIU = as.factor(CIIU), ciudad = as.factor(ciudad),
+                          departamento = as.factor(departamento), 
+                          estado =as.factor(estado), Periodo = as.factor(Periodo),
                           situacion = as.factor(situacion)) -> datos_completos
 
 ```

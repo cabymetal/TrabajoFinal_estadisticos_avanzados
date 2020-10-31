@@ -9,9 +9,11 @@ library(ggplot2)
 library(tidyr)
 library(dplyr)
 
-datosValidar <- base_modelado %>% group_by(NIT, razon_social) %>% summarise(total=n())
+datosValidar <- base_modelado %>% group_by(NIT, razon_social) %>% 
+  summarise(total=n())
 
-h <- hist(x = datosValidar$total, main = "Cantidad de periodos por empresa",  xlab = "Cantidad de periodos", ylab = "Empresas", breaks=3)
+h <- hist(x = datosValidar$total, main = "Cantidad de periodos por empresa",
+          xlab = "Cantidad de periodos", ylab = "Empresas", breaks=3)
 
 text(h$mids,h$counts,labels=h$counts, adj=c(0.5, -0.5))
 
@@ -20,12 +22,16 @@ Podemos observar que hay empresas que no tienen los 3 periodos, solo trabajaremo
 
 ```{r}
 
-base_modelado %>% anti_join(datosValidar %>% filter(total < 3) , by="NIT" ) %>% group_by(NIT, razon_social) %>% summarise(total=n()) %>% arrange(desc(total))
-base_modelado %>% anti_join(datosValidar %>% filter(total < 3) , by="NIT" ) ->  base_modelado
-base_modelado %>% filter(ingresos_totales == 0) %>% count(NIT) %>% filter(n==3) -> datosValidar
+base_modelado %>% anti_join(datosValidar %>% filter(total < 3) , by="NIT" ) %>% 
+  group_by(NIT, razon_social) %>% summarise(total=n()) %>% arrange(desc(total))
+base_modelado %>% anti_join(datosValidar %>% filter(total < 3) , by="NIT" ) ->  
+  base_modelado
+base_modelado %>% filter(ingresos_totales == 0) %>% count(NIT) %>% 
+  filter(n==3) -> datosValidar
 base_modelado %>% anti_join(datosValidar, by="NIT" )  ->  base_modelado
 
-datosValidar <- base_modelado %>% group_by(NIT, razon_social) %>% summarise(total=n())
+datosValidar <- base_modelado %>% group_by(NIT, razon_social) %>% 
+  summarise(total=n())
 
 table(datosValidar$total)
 
@@ -33,8 +39,9 @@ table(datosValidar$total)
 Ya podemos ver que tenemos 23 empresas con los 3 periodos. Veamos los ingresos y los costos por departamento.
 
 ```{r}
-datosValidarDepartamento <- base_modelado %>% group_by(departamento, Periodo) %>% summarise(costo_gasto_total_dep = sum(costos_gastos_totales) / 1000000,
-                                                                                           ingresos_totales_dep = sum(ingresos_totales) / 1000000)
+datosValidarDepartamento <- base_modelado %>% group_by(departamento, Periodo) %>% 
+  summarise(costo_gasto_total_dep = sum(costos_gastos_totales) / 1000000,
+  ingresos_totales_dep = sum(ingresos_totales) / 1000000)
 
 
 ggplot(datosValidarDepartamento, aes(x= Periodo))+
@@ -71,7 +78,8 @@ Realizaremos el ejercicio de eliminar (solo para efectos visuales) la empresa qu
 
 ```{r}
 datosValidar <- filter(base_modelado, NIT!=900306309)
-p1=ggplot(datosValidar, aes(y=costos_gastos_totales/1000,x=Periodo,group=NIT,colour=departamento))
+p1=ggplot(datosValidar, aes(y=costos_gastos_totales/1000,x=Periodo,group=NIT,
+                            colour=departamento))
 p1+geom_line()+facet_grid(.~departamento)
 ```
 Confirmamos que los costos/gastos totales son particulares de cada empresa.

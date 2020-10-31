@@ -24,7 +24,7 @@ documentclass: book
 ---
 
 # Abstract {-}
-Este documento anliza los impactos de las variables macoreconómicas en los costos y gastos de una empresa en un determinado sector económico, para nuestro estudio seleccionamos el sector minero
+Este documento anliza los impactos de las variables macoreconómicas en los costos y gastos de una empresa en un determinado sector económico, para nuestro estudio seleccionamos el sector minero, el código de este trabajo se encuentra almacenado en el repositorio de Github : https://github.com/cabymetal/TrabajoFinal_estadisticos_avanzados
 
 
 # Objetivos y Lineamientos
@@ -166,10 +166,10 @@ summary(mod4)
 Para las actividades se realiza la siguiente estimación de esfuerzo:
 
 
-1) Consolidación de información: 12h
+1) Consolidación de información: 14h
 2) Transformación de varibles y análisis descriptivo: 7h
-3) Ajuste y validación de modelos 8 h
-4) Redacción del reporte: 4h
+3) Ajuste y validación de modelos 8h
+4) Redacción del reporte: 8h
 
 
 # Capítulo 8. Conclusiones

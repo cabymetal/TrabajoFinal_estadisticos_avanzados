@@ -5,9 +5,10 @@ date: "25/10/2020"
 output: html_document
 ---
 
-\textbf{A continuación se preseenta el proceso que se ejecutó para generar un dataframe con las variables de PIB, Inflación, Desempleo, Balance Fiscal, Balance en Cuenta Corriente, Tasa de intervención, TRM}
+A continuación se preseenta el proceso que se ejecutó para generar un dataframe con las variables de PIB, Inflación, Desempleo, Balance Fiscal, Balance en Cuenta Corriente, Tasa de intervención, TRM
 
-\textbf{Para el PIB:} Es un indicador económico que refleja el valor monetario de todos los bienes y servicios finales producidos por un país o región en un determinado periodo de tiempo, normalmente un año. Se utiliza para medir la riqueza que genera un país.
+\textbf{PIB:} Es un indicador económico que refleja el valor monetario de todos los bienes y servicios finales producidos por un país o región en un determinado periodo de tiempo, normalmente un año. Se utiliza para medir la riqueza que genera un país.
+[Datos tomados de aquí](https://datosmacro.expansion.com/pib/colombia). Para cada año se tomó el promedio de los datos diarios.
 
 ```{r}
 library(dplyr)
@@ -21,7 +22,7 @@ PIB <- data.frame(anyo, PIB_M.E., Var.PIB)
 head(PIB)
 ```
 
-\textbf{Para la inflación:} La inflación es un fenómeno que se observa en la economía de un país y está relacionado con el aumento desordenado de los precios de la mayor parte de los bienes y servicios que se comercian en sus mercados, por un periodo de tiempo prolongado. [datos tomados de aquí](https://es.wikipedia.org/wiki/Anexo:Variaci%C3%B3n_de_la_inflaci%C3%B3n_de_Colombia_desde_1946)
+\textbf{Inflación:} La inflación es un fenómeno que se observa en la economía de un país y está relacionado con el aumento desordenado de los precios de la mayor parte de los bienes y servicios que se comercian en sus mercados, por un periodo de tiempo prolongado. [Datos tomados de aquí](https://es.wikipedia.org/wiki/Anexo:Variaci%C3%B3n_de_la_inflaci%C3%B3n_de_Colombia_desde_1946)
 
 ```{r}
 # vectores 
@@ -32,7 +33,7 @@ Inflacion <- data.frame(anyo, Inflacion)
 head(Inflacion)
 ```
 
-\textbf{Para el desempleo:} Es otra de las variables mas importantes de la macroeconomía, porque afecta directamente el bienestar de las personas. El desempleo es el porcentaje de la fuerza de trabajo que está buscando trabajo activamente y que actualmente se encuentra desempleada. [datos tomados de aquí](https://www.dane.gov.co/index.php/estadisticas-por-tema/mercado-laboral/empleo-y-desempleo)
+\textbf{Desempleo:} Es otra de las variables mas importantes de la macroeconomía, porque afecta directamente el bienestar de las personas. El desempleo es el porcentaje de la fuerza de trabajo que está buscando trabajo activamente y que actualmente se encuentra desempleada. [Datos tomados de aquí](https://www.dane.gov.co/index.php/estadisticas-por-tema/mercado-laboral/empleo-y-desempleo). Se toma el promedio anual
 
 ```{r}
 # vectores 
@@ -45,8 +46,8 @@ head(Desempleo)
 ```
 
 
-\textbf{Para el balance fiscal:} Es la diferencia entre ingresos y gastos públicos en un determinado territorio.
-[datos tomados de aquí](http://www.urf.gov.co/webcenter/portal/EntidadesFinancieras/pages_EntidadesFinancieras/PoliticaFiscal/bgg/balancefiscalgobiernocentral?_afrLoop=6729623401772216&_afrWindowMode=2&Adf-Window-Id=mof7t7k7j&_afrFS=16&_afrMT=screen&_afrMFW=768&_afrMFH=720&_afrMFDW=1536&_afrMFDH=864&_afrMFC=8&_afrMFCI=0&_afrMFM=0&_afrMFR=120&_afrMFG=0&_afrMFS=0&_afrMFO=0)
+\textbf{Balance fiscal:} Es la diferencia entre ingresos y gastos públicos en un determinado territorio.
+[Datos tomados de aquí](http://www.urf.gov.co/webcenter/portal/EntidadesFinancieras/pages_EntidadesFinancieras/PoliticaFiscal/bgg/balancefiscalgobiernocentral?_afrLoop=6729623401772216&_afrWindowMode=2&Adf-Window-Id=mof7t7k7j&_afrFS=16&_afrMT=screen&_afrMFW=768&_afrMFH=720&_afrMFDW=1536&_afrMFDH=864&_afrMFC=8&_afrMFCI=0&_afrMFM=0&_afrMFR=120&_afrMFG=0&_afrMFS=0&_afrMFO=0)
 
 ```{r}
 
@@ -60,7 +61,7 @@ head(GNC)
 
 
 
-\textbf{Para el balance en cuenta corriente:} Es el conjunto de transacciones de intercambio de bienes y servicios, rentas y transferencias (tanto corrientes como de capital), su saldo determina la capacidad o necesidad de financiación de un país.
+\textbf{Balance en cuenta corriente:} Es el conjunto de transacciones de intercambio de bienes y servicios, rentas y transferencias (tanto corrientes como de capital), su saldo determina la capacidad o necesidad de financiación de un país. [Datos tomados aquí](https://www.banrep.gov.co/es/estadisticas/balanza-pagos). El dato fue tomado de la cuenta corriente de la balanza de pagos de periodicidad anual
 
 ```{r}
 # vectores 
@@ -71,7 +72,7 @@ Balance_Cuenta_Corriente <- data.frame(anyo, Balance_Cuenta_Corriente)
 head(Balance_Cuenta_Corriente)
 ```
 
-\textbf{Para la tasa de intervención:} Corresponde a la tasa de interés mínima que le cobra el Banco de la República a las entidades financieras por los préstamos que les concede generalmente a un día y, además, sirve como referencia para establecer la tasa de interés máxima que les paga por recibirles dinero que tengan como excedente. [datos tomados de aquí](https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria)
+\textbf{Tasa de intervención:} Corresponde a la tasa de interés mínima que le cobra el Banco de la República a las entidades financieras por los préstamos que les concede generalmente a un día y, además, sirve como referencia para establecer la tasa de interés máxima que les paga por recibirles dinero que tengan como excedente. [Datos tomados de aquí](https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria). Se toma promedio anual de datos diarias
 
 
 ```{r}
@@ -85,7 +86,7 @@ head(TIM)
 ```
 
 
-\textbf{Para la TRM:} La tasa de cambio representativa del mercado (TRM) es la cantidad de pesos colombianos por un dólar de los Estados Unidos. La TRM se calcula con base en las operaciones de compra y venta de divisas entre intermediarios financieros que transan en el mercado cambiario colombiano, con cumplimiento el mismo día cuando se realiza la negociación de las divisas.
+\textbf{TRM:} La tasa de cambio representativa del mercado (TRM) es la cantidad de pesos colombianos por un dólar de los Estados Unidos. La TRM se calcula con base en las operaciones de compra y venta de divisas entre intermediarios financieros que transan en el mercado cambiario colombiano, con cumplimiento el mismo día cuando se realiza la negociación de las divisas.
 
 Actualmente la Superintendencia Financiera de Colombia es la que calcula y certifica diariamente la TRM con base en las operaciones registradas el día hábil inmediatamente anterior.
 [datos tomados de aquí](https://www.dolar-colombia.com/historico)
@@ -135,7 +136,7 @@ head(df)
 ```
 
 
-\textbf{Variables sector minero:} Se adicionan variables relacionadas con el sector minero, para mejorar la efectividad de los modelos
+\textbf{Variables sector minero:} Se adicionan variables relacionadas con el sector minero, para mejorar la efectividad de los modelos. [Datos tomados de aquí](https://www.banrep.gov.co/es/estadisticas/precios-del-dia-para-el-gramo-oro-plata-y-platino). Para cada año se toma el promedio de los datos diarios
 
 ```{r}
 library(dplyr)

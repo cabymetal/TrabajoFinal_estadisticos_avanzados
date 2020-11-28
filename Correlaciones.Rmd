@@ -6,7 +6,7 @@ output: html_document
 ---
 
 
-```{r echo=FALSE}
+```{r echo=FALSE,  warning=FALSE}
 #Cargar paquetes
 library(readxl)
 library(dplyr)
@@ -18,30 +18,31 @@ library(PerformanceAnalytics)
 
 Se presenta la base de datos
 
-```{r}
+```{r message=FALSE}
 head(base_modelado)
 ```
-Para el análisis de correlaciones se toman las variables macroeconomicas (PIB, Inflación, Desempleo, GNC, Balance de cuenta corriente y TIM) y se comparan respecto a los costos de ventas.
+Para el análisis de correlaciones se toman las variables macroeconomicas (PIB, Inflación, Desempleo, GNC, Balance de cuenta corriente y TIM), compa y venta de metales preciosos y se comparan respecto a la variable objetivo.
 
-```{r}
+```{r echo=FALSE}
 #A continuación se agrupan las variables de interés en un nuevo dataframe
 
 base = base_modelado[,19:34]
 base['Var.objetivo']= base_modelado[35]
-head(base)
+#head(base)
 ```
 
 #Calcular el coeficiente de correlación
 Este comando calcula la matriz de correlación:
-```{r}
+```{r echo=FALSE}
 round(cor(base),2)  
 ```
 
-Podemos interpretar que, la correlación entre las varianbles macroeconomicas y la variable objetivo no son explicativas, si nivel de significancia es cercano a cero. Es decir, no hay una ascociación entre estas variables y la variable objetivo, que nos ayude a predecir o explicar el comportamiento de los costos y gastos totales.
+Podemos interpretar que, la correlación entre las varianbles macroeconomicas, compra y venta de metales preciosos con la variable objetivo no son explicativas, si nivel de significancia es cercano a cero. Es decir, no hay una ascociación entre estas variables y la variable objetivo, que nos ayude a predecir o explicar el comportamiento de los costos y gastos totales.
 
 
-#Ver la matriz de forma gráfica
-Podemos graficar con el comando corrplot. Ver más en este enlace:
+#Visualizar matriz de correlación
+
+Podemos utilizar el comando corrplot.
 Lo primero es calcular la matriz de correlación y guardarla en un objeto y luego graficarlo. En este caso vamos a graficar los coeficientes.
 
 ```{r}
@@ -49,7 +50,7 @@ correlacion<-round(cor(base), 1)
 
 corrplot(correlacion, method="number", type="upper")
 ```
-Se realizo un análisis de correlación con el estadístico de Pearson, con las variables originales y estandarizadas con el fin de evidenciar las variables explicativas de la variable objetivo construida, encontrando como resultado
+Se realizó el análisis de correlación con el estadístico de Pearson, con las variables originales y estandarizadas con el fin de evidenciar las variables explicativas de la variable objetivo construida, encontrando como resultado
 la no significancia para explicar el comportamiento de los costos y gastos del sector minero.
 
 A continuación se grafican los datos de la Variable objetivo (costos y gastos totales) con respecto a var.PIB (Variación del PIB)
@@ -58,22 +59,6 @@ A continuación se grafican los datos de la Variable objetivo (costos y gastos t
 ggplot(base, aes(x=Var.PIB, y=Var.objetivo)) +geom_point()+scale_y_log10()
 
 ```
-Podemos apreciar que no se presenta un comportamiento lineal entre las variables. Por tal motivo se decide no trabajar con las variables macroeconomicas en los modelos.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Podemos apreciar que no se presenta un comportamiento lineal entre las variables. Por tal motivo se decide no trabajar con las variables macroeconomicas venta y compra de metales preciosos en los modelos.
 
 

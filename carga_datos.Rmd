@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
--------------------------------------------------------------------------
+
 ## Selección de las fuentes de información
 
 
@@ -224,12 +224,12 @@ datos_completos$Periodo[datos_completos$Periodo == "Periodo Actual"] <- "2019"
 datos_completos <- filter(datos_completos, Periodo == "2019")
 
 ```
-
+Se realizará el análisis con los periodos: Se realizará el análisis con los periodos: 2017, 2018, 2019
 ```{r}
 #Eliminamos variable diferente a 2019
 datos_completos_2018 <- select(datos_completos_2018, -gastos_ventas)
 
-#Se realizará el análisis con los periodos: Se realizará el análisis con los periodos: 2017, 2018, 2019
+
 datos_completos = rbind(datos_completos, datos_completos_2018)
 datos_completos %>% mutate( razon_social = as.factor(razon_social), 
                             CIIU = as.factor(CIIU), ciudad = as.factor(ciudad),
@@ -238,7 +238,8 @@ datos_completos %>% mutate( razon_social = as.factor(razon_social),
                           situacion = as.factor(situacion)) -> datos_completos
 
 ```
-Por lo tanto utilizaremos las siguientes variables:
+
+Utilizaremos las siguientes variables:
 ```{r}
 as.data.frame(colnames(datos_completos))
 ```

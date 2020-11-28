@@ -1,10 +1,12 @@
 ---
 title: "analisisDescriptivo"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 library(ggplot2)
 library(tidyr)
 library(dplyr)
@@ -20,7 +22,7 @@ text(h$mids,h$counts,labels=h$counts, adj=c(0.5, -0.5))
 ```
 Podemos observar que hay empresas que no tienen los 3 periodos, solo trabajaremos con la empresas que tengan los periodos completos.
 
-```{r}
+```{r, message=FALSE}
 
 base_modelado %>% anti_join(datosValidar %>% filter(total < 3) , by="NIT" ) %>% 
   group_by(NIT, razon_social) %>% summarise(total=n()) %>% arrange(desc(total))
@@ -38,7 +40,7 @@ table(datosValidar$total)
 ```
 Ya podemos ver que tenemos 23 empresas con los 3 periodos. Veamos los ingresos y los costos por departamento.
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 datosValidarDepartamento <- base_modelado %>% group_by(departamento, Periodo) %>% 
   summarise(costo_gasto_total_dep = sum(costos_gastos_totales) / 1000000,
   ingresos_totales_dep = sum(ingresos_totales) / 1000000)

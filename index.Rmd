@@ -22,6 +22,7 @@ geometry: margin=1in
 keywords: 'Maestria Ciencia Datos, , '
 documentclass: book
 biblio-style: apsr
+papersize: a4
 toc: yes
 ---
 
@@ -71,7 +72,7 @@ Información Descargar la información de los años 2016 a 2019
 ```
 # Capítulo 3. Consolidación de la base
 En esta sección se unen las dos bases generadas en las fases anteriores en una sola base
-```{r}
+```{r  warning=FALSE}
 library(dplyr)
 library(tidyr)
 datos_completos%>%mutate(Periodo=as.numeric(as.character(Periodo))) %>% 
@@ -92,26 +93,33 @@ summary(base_modelado)
 ```
 
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 library(visdat)
 vis_miss(base_modelado)
 ```
 Esta gráfica nos ayuda a visualizar que no hay datos perdidos en la data.
 
-# Capítulo 4. Análisis_descriptivo
+# Capítulo 4. Análisis descriptivo
+
+A continuación se realiza un análisis descriptivo de los datos
+
 ```{r child= 'analisis_descriptivo.Rmd'}
 ```
 
 ## Estandarización de variables
-```{r}
+```{r  warning=FALSE, , message=FALSE}
 library(scales)
 library(kableExtra)
 library(tibble)
-base.escalada<- scale(base_modelado[,c(11,12, 13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36)],center=T,scale=T)
+base.escalada<- scale(base_modelado[,c(11,12, 13,14,15,16,17,18,19,20,21,22,23,
+                    24,25,26,27,28,29,30,31,32,33,34,35,36)],center=T,scale=T)
 base.escalada<- as.data.frame(base.escalada)
 base.escalada<- rownames_to_column(base.escalada)
-tmp <- rownames_to_column(base_modelado %>% select(c("NIT", "razon_social", "CIIU", "ciudad","departamento", "estado", "situacion", "organo_societario", "etapa_situacion", "Periodo")))
-tmp %>% left_join(base.escalada, by="rowname")%>% select(-c("rowname")) -> base_modelado
+tmp <- rownames_to_column(base_modelado %>% select(c("NIT", "razon_social", 
+  "CIIU", "ciudad","departamento", "estado", "situacion", "organo_societario",
+  "etapa_situacion", "Periodo")))
+base_modelado <- tmp %>% left_join(base.escalada, by="rowname") %>% 
+  select(-c("rowname"))
 ```
 # Capítulo 5. Correlaciones
 ```{r child='Correlaciones.Rmd'}
@@ -121,7 +129,8 @@ tmp %>% left_join(base.escalada, by="rowname")%>% select(-c("rowname")) -> base_
 ```{r}
 base_modelado %>% select(departamento, estado, Periodo, costos_gastos_totales,
   ciudad, ingresos_totales, NIT, razon_social,otros_ingresos ,
-  ingresos_financieros, compra_Oro, compra_Plata, compra_Platino, venta_Oro, venta_Plata, venta_Platino) -> base_modelo_lineal
+  ingresos_financieros, compra_Oro, compra_Plata, compra_Platino, venta_Oro, 
+  venta_Plata, venta_Platino) -> base_modelo_lineal
 
 #definir variable de tamaño de la empresa
 bussiness_size <- cut(base_modelo_lineal$costos_gastos_totales, breaks=4)
@@ -144,7 +153,9 @@ En este modelo se intenta explicar los costos y gastos en función de las variab
 ```{r}
 library(broom)
 
-mod1 <- lm(costos_gastos_totales ~  compra_Oro + compra_Plata + compra_Platino + venta_Oro + venta_Plata + venta_Platino + ingresos_totales, data= base_modelo_lineal) 
+mod1 <- lm(costos_gastos_totales ~  compra_Oro + compra_Plata + compra_Platino + 
+        venta_Oro + venta_Plata + venta_Platino + ingresos_totales, 
+        data= base_modelo_lineal) 
 anova(mod1)
 ```
 
@@ -162,7 +173,9 @@ ggplot(a, aes(x=1:length(.resid), y=.resid))+
 
 ```
 
-### AIC BIC y R2
+Evaluación de los modelos: AIC BIC y R2.
+
+El AIC NO es una prueba de hipótesis sobre el ajuste de un modelo sino más bien un criterio paramétrico comparativo entre modelos y representa por esto una herramienta para selección de modelos. Dado un conjunto de datos, es posible encontrar varios modelos que se ajustan a ellos. La idea es ranquearlos de acuerdo al AIC.
 ```{r}
 glance(mod1)
 ```
@@ -173,7 +186,7 @@ glance(mod1)
 
 
 ### 6.1. Modelo regresión Lineal
-```{r}
+```{r  warning=FALSE,message=FALSE}
 library(broom)
 library("broom.mixed")
 
@@ -196,7 +209,7 @@ ggplot(a, aes(x=1:length(.resid), y=.resid))+
 
 ```
 
-### AIC BIC y R2
+Evaluación de los modelos: AIC, BIC y R2
 ```{r}
 glance(mod1)
 
@@ -220,25 +233,16 @@ ggplot(a, aes(x=1:length(.resid), y=.resid))+
 
 ```
 
-### AIC BIC y R2
+Evaluación de los modelos: AIC, BIC y R2
 ```{r}
 glance(mod2)
 
 ```
 
 
-
-
-
-
-
-
-
-
-
 ### 6.3. Modelo lineal con intercepto aleatorio
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 library(lme4)
 mod4 <- lmer(costos_gastos_totales ~ ingresos_totales + (1|departamento), 
              data= base_modelo_lineal) 
@@ -260,7 +264,8 @@ ggplot(a, aes(x=1:length(.resid), y=.resid))+
 
 ```
 
-### AIC BIC y R2
+Evaluación de los modelos: AIC, BIC y R2
+
 ```{r}
 broom.mixed::glance(mod4)
 
@@ -272,7 +277,7 @@ broom.mixed::glance(mod4)
 
 
 ### 6.4. Modelo Lineal con intercepto aleatorio a nivel de departamento
-```{r}
+```{r warning=FALSE, message=FALSE}
 
 library(lme4)
 mod5 <- lmer(costos_gastos_totales ~ I(ingresos_totales):estado +  compra_Oro + compra_Plata + compra_Platino + venta_Oro + venta_Plata + venta_Platino + ingresos_totales+(1|NIT), data= base_modelo_lineal) 
@@ -291,8 +296,7 @@ ggplot(a, aes(x=1:length(.resid), y=.resid))+
   geom_hline(yintercept = 0, lwd=2, col= "red")
 
 ```
-
-### AIC BIC y R2
+Evaluación de los modelos: AIC, BIC y R2
 ```{r}
 broom.mixed::glance(mod5)
 
@@ -305,6 +309,8 @@ En el segundo modelo, se encuentra que, agregando la variable de ingresos totale
 Para el tercer modelo, que es el que tiene "departamento" evidenciamos que no es un modelo apropiado para predecir los costos y gastos del sector minero, debido a que las variables no son significativas. 
 Los otros modelos evaluados, no presentan mejoría al ingresarle las variables macroeconómicas estandarizadas y ejecutar el modelo con efectos aleatorios en función de cada compañía y/o el departamento.
 Por lo anterior, se selecciona como un posible modelo el modelo "número 2 sin efecto aleatorio" el cual presenta el menor residual.
+
+
 
 
 
@@ -352,3 +358,7 @@ https://siis.ia.supersociedades.gov.co/
 
 
 https://www.supersociedades.gov.co/delegatura_aec/Paginas/Base-completa-EF-2019.aspx
+
+
+
+https://www.researchgate.net/publication/314536942_Introduccion_a_los_modelos_mixtos_Introduction_to_mixed_models

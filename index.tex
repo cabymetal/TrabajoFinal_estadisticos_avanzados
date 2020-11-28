@@ -4,6 +4,7 @@
 %
 \documentclass[
   11pt,
+  a4paper,
 ]{book}
 \usepackage[]{mathpazo}
 \usepackage{amssymb,amsmath}
@@ -201,8 +202,6 @@ de los años 2016 a 2019
 \hypertarget{capuxedtulo-1.-lectura-de-variables-de-empresa}{%
 \chapter{Capítulo 1. Lectura de variables de
 empresa}\label{capuxedtulo-1.-lectura-de-variables-de-empresa}}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \hypertarget{selecciuxf3n-de-las-fuentes-de-informaciuxf3n}{%
 \section{Selección de las fuentes de
@@ -453,12 +452,15 @@ archivo 2018 tiene los datos de 2017 con la nueva norma.
 \end{Highlighting}
 \end{Shaded}
 
+Se realizará el análisis con los periodos: Se realizará el análisis con
+los periodos: 2017, 2018, 2019
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{#Eliminamos variable diferente a 2019}
 \NormalTok{datos_completos_}\DecValTok{2018}\NormalTok{ <-}\StringTok{ }\KeywordTok{select}\NormalTok{(datos_completos_}\DecValTok{2018}\NormalTok{, }\OperatorTok{-}\NormalTok{gastos_ventas)}
 
-\CommentTok{#Se realizará el análisis con los periodos: Se realizará el análisis con los periodos: 2017, 2018, 2019}
+
 \NormalTok{datos_completos =}\StringTok{ }\KeywordTok{rbind}\NormalTok{(datos_completos, datos_completos_}\DecValTok{2018}\NormalTok{)}
 \NormalTok{datos_completos }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{( }\DataTypeTok{razon_social =} \KeywordTok{as.factor}\NormalTok{(razon_social), }
                             \DataTypeTok{CIIU =} \KeywordTok{as.factor}\NormalTok{(CIIU), }\DataTypeTok{ciudad =} \KeywordTok{as.factor}\NormalTok{(ciudad),}
@@ -468,7 +470,7 @@ archivo 2018 tiene los datos de 2017 con la nueva norma.
 \end{Highlighting}
 \end{Shaded}
 
-Por lo tanto utilizaremos las siguientes variables:
+Utilizaremos las siguientes variables:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -502,12 +504,16 @@ Por lo tanto utilizaremos las siguientes variables:
 \chapter{Capítulo 2. Lectura y consolidación de variables
 económicas}\label{capuxedtulo-2.-lectura-y-consolidaciuxf3n-de-variables-econuxf3micas}}
 
-\textbf{A continuación se preseenta el proceso que se ejecutó para generar un dataframe con las variables de PIB, Inflación, Desempleo, Balance Fiscal, Balance en Cuenta Corriente, Tasa de intervención, TRM}
+A continuación se preseenta el proceso que se ejecutó para generar un
+dataframe con las variables de PIB, Inflación, Desempleo, Balance
+Fiscal, Balance en Cuenta Corriente, Tasa de intervención, TRM
 
-\textbf{Para el PIB:} Es un indicador económico que refleja el valor
-monetario de todos los bienes y servicios finales producidos por un país
-o región en un determinado periodo de tiempo, normalmente un año. Se
-utiliza para medir la riqueza que genera un país.
+\textbf{PIB:} Es un indicador económico que refleja el valor monetario
+de todos los bienes y servicios finales producidos por un país o región
+en un determinado periodo de tiempo, normalmente un año. Se utiliza para
+medir la riqueza que genera un país.
+\href{https://datosmacro.expansion.com/pib/colombia}{Datos tomados de
+aquí}. Para cada año se tomó el promedio de los datos diarios.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -531,11 +537,11 @@ utiliza para medir la riqueza que genera un país.
 ## 4 2019  255.416     2.1
 \end{verbatim}
 
-\textbf{Para la inflación:} La inflación es un fenómeno que se observa
-en la economía de un país y está relacionado con el aumento desordenado
-de los precios de la mayor parte de los bienes y servicios que se
-comercian en sus mercados, por un periodo de tiempo prolongado.
-\href{https://es.wikipedia.org/wiki/Anexo:Variaci\%C3\%B3n_de_la_inflaci\%C3\%B3n_de_Colombia_desde_1946}{datos
+\textbf{Inflación:} La inflación es un fenómeno que se observa en la
+economía de un país y está relacionado con el aumento desordenado de los
+precios de la mayor parte de los bienes y servicios que se comercian en
+sus mercados, por un periodo de tiempo prolongado.
+\href{https://es.wikipedia.org/wiki/Anexo:Variaci\%C3\%B3n_de_la_inflaci\%C3\%B3n_de_Colombia_desde_1946}{Datos
 tomados de aquí}
 
 \begin{Shaded}
@@ -557,12 +563,12 @@ tomados de aquí}
 ## 4 2019      3.80
 \end{verbatim}
 
-\textbf{Para el desempleo:} Es otra de las variables mas importantes de
-la macroeconomía, porque afecta directamente el bienestar de las
-personas. El desempleo es el porcentaje de la fuerza de trabajo que está
-buscando trabajo activamente y que actualmente se encuentra desempleada.
-\href{https://www.dane.gov.co/index.php/estadisticas-por-tema/mercado-laboral/empleo-y-desempleo}{datos
-tomados de aquí}
+\textbf{Desempleo:} Es otra de las variables mas importantes de la
+macroeconomía, porque afecta directamente el bienestar de las personas.
+El desempleo es el porcentaje de la fuerza de trabajo que está buscando
+trabajo activamente y que actualmente se encuentra desempleada.
+\href{https://www.dane.gov.co/index.php/estadisticas-por-tema/mercado-laboral/empleo-y-desempleo}{Datos
+tomados de aquí}. Se toma el promedio anual
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -584,9 +590,9 @@ tomados de aquí}
 ## 4 2019      10.5          8.25
 \end{verbatim}
 
-\textbf{Para el balance fiscal:} Es la diferencia entre ingresos y
-gastos públicos en un determinado territorio.
-\href{http://www.urf.gov.co/webcenter/portal/EntidadesFinancieras/pages_EntidadesFinancieras/PoliticaFiscal/bgg/balancefiscalgobiernocentral?_afrLoop=6729623401772216\&_afrWindowMode=2\&Adf-Window-Id=mof7t7k7j\&_afrFS=16\&_afrMT=screen\&_afrMFW=768\&_afrMFH=720\&_afrMFDW=1536\&_afrMFDH=864\&_afrMFC=8\&_afrMFCI=0\&_afrMFM=0\&_afrMFR=120\&_afrMFG=0\&_afrMFS=0\&_afrMFO=0}{datos
+\textbf{Balance fiscal:} Es la diferencia entre ingresos y gastos
+públicos en un determinado territorio.
+\href{http://www.urf.gov.co/webcenter/portal/EntidadesFinancieras/pages_EntidadesFinancieras/PoliticaFiscal/bgg/balancefiscalgobiernocentral?_afrLoop=6729623401772216\&_afrWindowMode=2\&Adf-Window-Id=mof7t7k7j\&_afrFS=16\&_afrMT=screen\&_afrMFW=768\&_afrMFH=720\&_afrMFDW=1536\&_afrMFDH=864\&_afrMFC=8\&_afrMFCI=0\&_afrMFM=0\&_afrMFR=120\&_afrMFG=0\&_afrMFS=0\&_afrMFO=0}{Datos
 tomados de aquí}
 
 \begin{Shaded}
@@ -608,10 +614,13 @@ tomados de aquí}
 ## 4 2019 -2.5
 \end{verbatim}
 
-\textbf{Para el balance en cuenta corriente:} Es el conjunto de
-transacciones de intercambio de bienes y servicios, rentas y
-transferencias (tanto corrientes como de capital), su saldo determina la
-capacidad o necesidad de financiación de un país.
+\textbf{Balance en cuenta corriente:} Es el conjunto de transacciones de
+intercambio de bienes y servicios, rentas y transferencias (tanto
+corrientes como de capital), su saldo determina la capacidad o necesidad
+de financiación de un país.
+\href{https://www.banrep.gov.co/es/estadisticas/balanza-pagos}{Datos
+tomados aquí}. El dato fue tomado de la cuenta corriente de la balanza
+de pagos de periodicidad anual
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -632,13 +641,13 @@ capacidad o necesidad de financiación de un país.
 ## 4 2019                -12036.18
 \end{verbatim}
 
-\textbf{Para la tasa de intervención:} Corresponde a la tasa de interés
-mínima que le cobra el Banco de la República a las entidades financieras
-por los préstamos que les concede generalmente a un día y, además, sirve
+\textbf{Tasa de intervención:} Corresponde a la tasa de interés mínima
+que le cobra el Banco de la República a las entidades financieras por
+los préstamos que les concede generalmente a un día y, además, sirve
 como referencia para establecer la tasa de interés máxima que les paga
 por recibirles dinero que tengan como excedente.
-\href{https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria}{datos
-tomados de aquí}
+\href{https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria}{Datos
+tomados de aquí}. Se toma promedio anual de datos diarias
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -659,11 +668,11 @@ tomados de aquí}
 ## 4 2019         4.25
 \end{verbatim}
 
-\textbf{Para la TRM:} La tasa de cambio representativa del mercado (TRM)
-es la cantidad de pesos colombianos por un dólar de los Estados Unidos.
-La TRM se calcula con base en las operaciones de compra y venta de
-divisas entre intermediarios financieros que transan en el mercado
-cambiario colombiano, con cumplimiento el mismo día cuando se realiza la
+\textbf{TRM:} La tasa de cambio representativa del mercado (TRM) es la
+cantidad de pesos colombianos por un dólar de los Estados Unidos. La TRM
+se calcula con base en las operaciones de compra y venta de divisas
+entre intermediarios financieros que transan en el mercado cambiario
+colombiano, con cumplimiento el mismo día cuando se realiza la
 negociación de las divisas.
 
 Actualmente la Superintendencia Financiera de Colombia es la que calcula
@@ -757,7 +766,9 @@ Se unen los datos en un solo dataframe
 \end{verbatim}
 
 \textbf{Variables sector minero:} Se adicionan variables relacionadas
-con el sector minero, para mejorar la efectividad de los modelos
+con el sector minero, para mejorar la efectividad de los modelos.
+\href{https://www.banrep.gov.co/es/estadisticas/precios-del-dia-para-el-gramo-oro-plata-y-platino}{Datos
+tomados de aquí}. Para cada año se toma el promedio de los datos diarios
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -898,15 +909,6 @@ en una sola base
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(visdat)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Warning: package 'visdat' was built under R version 4.0.3
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{vis_miss}\NormalTok{(base_modelado)}
 \end{Highlighting}
 \end{Shaded}
@@ -914,9 +916,11 @@ en una sola base
 \includegraphics{index_files/figure-latex/unnamed-chunk-4-1.pdf} Esta
 gráfica nos ayuda a visualizar que no hay datos perdidos en la data.
 
-\hypertarget{capuxedtulo-4.-anuxe1lisis_descriptivo}{%
-\chapter{Capítulo 4.
-Análisis\_descriptivo}\label{capuxedtulo-4.-anuxe1lisis_descriptivo}}
+\hypertarget{capuxedtulo-4.-anuxe1lisis-descriptivo}{%
+\chapter{Capítulo 4. Análisis
+descriptivo}\label{capuxedtulo-4.-anuxe1lisis-descriptivo}}
+
+A continuación se realiza un análisis descriptivo de los datos
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -926,15 +930,7 @@ Análisis\_descriptivo}\label{capuxedtulo-4.-anuxe1lisis_descriptivo}}
 
 \NormalTok{datosValidar <-}\StringTok{ }\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{group_by}\NormalTok{(NIT, razon_social) }\OperatorTok{%>%}\StringTok{ }
 \StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{total=}\KeywordTok{n}\NormalTok{())}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-## `summarise()` regrouping output by 'NIT' (override with `.groups` argument)
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{h <-}\StringTok{ }\KeywordTok{hist}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ datosValidar}\OperatorTok{$}\NormalTok{total, }\DataTypeTok{main =} \StringTok{"Cantidad de periodos por empresa"}\NormalTok{,}
           \DataTypeTok{xlab =} \StringTok{"Cantidad de periodos"}\NormalTok{, }\DataTypeTok{ylab =} \StringTok{"Empresas"}\NormalTok{, }\DataTypeTok{breaks=}\DecValTok{3}\NormalTok{)}
 
@@ -952,10 +948,6 @@ trabajaremos con la empresas que tengan los periodos completos.
 \StringTok{  }\KeywordTok{group_by}\NormalTok{(NIT, razon_social) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{total=}\KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(total))}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## `summarise()` regrouping output by 'NIT' (override with `.groups` argument)
-\end{verbatim}
 
 \begin{verbatim}
 ## # A tibble: 24 x 3
@@ -985,15 +977,7 @@ trabajaremos con la empresas que tengan los periodos completos.
 
 \NormalTok{datosValidar <-}\StringTok{ }\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{group_by}\NormalTok{(NIT, razon_social) }\OperatorTok{%>%}\StringTok{ }
 \StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{total=}\KeywordTok{n}\NormalTok{())}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-## `summarise()` regrouping output by 'NIT' (override with `.groups` argument)
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{table}\NormalTok{(datosValidar}\OperatorTok{$}\NormalTok{total)}
 \end{Highlighting}
 \end{Shaded}
@@ -1012,15 +996,8 @@ ingresos y los costos por departamento.
 \NormalTok{datosValidarDepartamento <-}\StringTok{ }\NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{group_by}\NormalTok{(departamento, Periodo) }\OperatorTok{%>%}\StringTok{ }
 \StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{costo_gasto_total_dep =} \KeywordTok{sum}\NormalTok{(costos_gastos_totales) }\OperatorTok{/}\StringTok{ }\DecValTok{1000000}\NormalTok{,}
   \DataTypeTok{ingresos_totales_dep =} \KeywordTok{sum}\NormalTok{(ingresos_totales) }\OperatorTok{/}\StringTok{ }\DecValTok{1000000}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-## `summarise()` regrouping output by 'departamento' (override with `.groups` argument)
-\end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{ggplot}\NormalTok{(datosValidarDepartamento, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{ Periodo))}\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ costo_gasto_total_dep), }\DataTypeTok{color=}\StringTok{"darkred"}\NormalTok{, }\DataTypeTok{linetype=}\StringTok{"twodash"}\NormalTok{)}\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom_label}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ costo_gasto_total_dep, }\DataTypeTok{label=}\NormalTok{costo_gasto_total_dep)) }\OperatorTok{+}\StringTok{ }
@@ -1029,10 +1006,6 @@ ingresos y los costos por departamento.
 \StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{departamento, }\DataTypeTok{scales =}\StringTok{"free_y"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## Warning: Ignoring unknown aesthetics: label
-\end{verbatim}
 
 \includegraphics{index_files/figure-latex/unnamed-chunk-48-1.pdf}
 
@@ -1150,64 +1123,22 @@ variables}\label{estandarizaciuxf3n-de-variables}}
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(scales)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 
-## Attaching package: 'scales'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:purrr':
-## 
-##     discard
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:readr':
-## 
-##     col_factor
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(kableExtra)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Warning: package 'kableExtra' was built under R version 4.0.3
-\end{verbatim}
-
-\begin{verbatim}
-## 
-## Attaching package: 'kableExtra'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:dplyr':
-## 
-##     group_rows
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(tibble)}
-\NormalTok{base.escalada<-}\StringTok{ }\KeywordTok{scale}\NormalTok{(base_modelado[,}\KeywordTok{c}\NormalTok{(}\DecValTok{11}\NormalTok{,}\DecValTok{12}\NormalTok{, }\DecValTok{13}\NormalTok{,}\DecValTok{14}\NormalTok{,}\DecValTok{15}\NormalTok{,}\DecValTok{16}\NormalTok{,}\DecValTok{17}\NormalTok{,}\DecValTok{18}\NormalTok{,}\DecValTok{19}\NormalTok{,}\DecValTok{20}\NormalTok{,}\DecValTok{21}\NormalTok{,}\DecValTok{22}\NormalTok{,}\DecValTok{23}\NormalTok{,}\DecValTok{24}\NormalTok{,}\DecValTok{25}\NormalTok{,}\DecValTok{26}\NormalTok{,}\DecValTok{27}\NormalTok{,}\DecValTok{28}\NormalTok{,}\DecValTok{29}\NormalTok{,}\DecValTok{30}\NormalTok{,}\DecValTok{31}\NormalTok{,}\DecValTok{32}\NormalTok{,}\DecValTok{33}\NormalTok{,}\DecValTok{34}\NormalTok{,}\DecValTok{35}\NormalTok{,}\DecValTok{36}\NormalTok{)],}\DataTypeTok{center=}\NormalTok{T,}\DataTypeTok{scale=}\NormalTok{T)}
+\NormalTok{base.escalada<-}\StringTok{ }\KeywordTok{scale}\NormalTok{(base_modelado[,}\KeywordTok{c}\NormalTok{(}\DecValTok{11}\NormalTok{,}\DecValTok{12}\NormalTok{, }\DecValTok{13}\NormalTok{,}\DecValTok{14}\NormalTok{,}\DecValTok{15}\NormalTok{,}\DecValTok{16}\NormalTok{,}\DecValTok{17}\NormalTok{,}\DecValTok{18}\NormalTok{,}\DecValTok{19}\NormalTok{,}\DecValTok{20}\NormalTok{,}\DecValTok{21}\NormalTok{,}\DecValTok{22}\NormalTok{,}\DecValTok{23}\NormalTok{,}
+                    \DecValTok{24}\NormalTok{,}\DecValTok{25}\NormalTok{,}\DecValTok{26}\NormalTok{,}\DecValTok{27}\NormalTok{,}\DecValTok{28}\NormalTok{,}\DecValTok{29}\NormalTok{,}\DecValTok{30}\NormalTok{,}\DecValTok{31}\NormalTok{,}\DecValTok{32}\NormalTok{,}\DecValTok{33}\NormalTok{,}\DecValTok{34}\NormalTok{,}\DecValTok{35}\NormalTok{,}\DecValTok{36}\NormalTok{)],}\DataTypeTok{center=}\NormalTok{T,}\DataTypeTok{scale=}\NormalTok{T)}
 \NormalTok{base.escalada<-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(base.escalada)}
 \NormalTok{base.escalada<-}\StringTok{ }\KeywordTok{rownames_to_column}\NormalTok{(base.escalada)}
-\NormalTok{tmp <-}\StringTok{ }\KeywordTok{rownames_to_column}\NormalTok{(base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"NIT"}\NormalTok{, }\StringTok{"razon_social"}\NormalTok{, }\StringTok{"CIIU"}\NormalTok{, }\StringTok{"ciudad"}\NormalTok{,}\StringTok{"departamento"}\NormalTok{, }\StringTok{"estado"}\NormalTok{, }\StringTok{"situacion"}\NormalTok{, }\StringTok{"organo_societario"}\NormalTok{, }\StringTok{"etapa_situacion"}\NormalTok{, }\StringTok{"Periodo"}\NormalTok{)))}
-\NormalTok{tmp }\OperatorTok{%>%}\StringTok{ }\KeywordTok{left_join}\NormalTok{(base.escalada, }\DataTypeTok{by=}\StringTok{"rowname"}\NormalTok{)}\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\KeywordTok{c}\NormalTok{(}\StringTok{"rowname"}\NormalTok{)) ->}\StringTok{ }\NormalTok{base_modelado}
+\NormalTok{tmp <-}\StringTok{ }\KeywordTok{rownames_to_column}\NormalTok{(base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"NIT"}\NormalTok{, }\StringTok{"razon_social"}\NormalTok{, }
+  \StringTok{"CIIU"}\NormalTok{, }\StringTok{"ciudad"}\NormalTok{,}\StringTok{"departamento"}\NormalTok{, }\StringTok{"estado"}\NormalTok{, }\StringTok{"situacion"}\NormalTok{, }\StringTok{"organo_societario"}\NormalTok{,}
+  \StringTok{"etapa_situacion"}\NormalTok{, }\StringTok{"Periodo"}\NormalTok{)))}
+\NormalTok{base_modelado <-}\StringTok{ }\NormalTok{tmp }\OperatorTok{%>%}\StringTok{ }\KeywordTok{left_join}\NormalTok{(base.escalada, }\DataTypeTok{by=}\StringTok{"rowname"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\KeywordTok{c}\NormalTok{(}\StringTok{"rowname"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
 \hypertarget{capuxedtulo-5.-correlaciones}{%
 \chapter{Capítulo 5. Correlaciones}\label{capuxedtulo-5.-correlaciones}}
-
-\begin{verbatim}
-## Warning: package 'Hmisc' was built under R version 4.0.3
-\end{verbatim}
 
 \begin{verbatim}
 ## Loading required package: lattice
@@ -1219,10 +1150,6 @@ variables}\label{estandarizaciuxf3n-de-variables}}
 
 \begin{verbatim}
 ## Loading required package: Formula
-\end{verbatim}
-
-\begin{verbatim}
-## Warning: package 'Formula' was built under R version 4.0.3
 \end{verbatim}
 
 \begin{verbatim}
@@ -1243,15 +1170,7 @@ variables}\label{estandarizaciuxf3n-de-variables}}
 \end{verbatim}
 
 \begin{verbatim}
-## Warning: package 'corrplot' was built under R version 4.0.3
-\end{verbatim}
-
-\begin{verbatim}
 ## corrplot 0.84 loaded
-\end{verbatim}
-
-\begin{verbatim}
-## Warning: package 'PerformanceAnalytics' was built under R version 4.0.3
 \end{verbatim}
 
 \begin{verbatim}
@@ -1259,15 +1178,7 @@ variables}\label{estandarizaciuxf3n-de-variables}}
 \end{verbatim}
 
 \begin{verbatim}
-## Warning: package 'xts' was built under R version 4.0.3
-\end{verbatim}
-
-\begin{verbatim}
 ## Loading required package: zoo
-\end{verbatim}
-
-\begin{verbatim}
-## Warning: package 'zoo' was built under R version 4.0.3
 \end{verbatim}
 
 \begin{verbatim}
@@ -1371,51 +1282,12 @@ Se presenta la base de datos
 \end{verbatim}
 
 Para el análisis de correlaciones se toman las variables macroeconomicas
-(PIB, Inflación, Desempleo, GNC, Balance de cuenta corriente y TIM) y se
-comparan respecto a los costos de ventas.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{#A continuación se agrupan las variables de interés en un nuevo dataframe}
-
-\NormalTok{base =}\StringTok{ }\NormalTok{base_modelado[,}\DecValTok{19}\OperatorTok{:}\DecValTok{34}\NormalTok{]}
-\NormalTok{base[}\StringTok{'Var.objetivo'}\NormalTok{]=}\StringTok{ }\NormalTok{base_modelado[}\DecValTok{35}\NormalTok{]}
-\KeywordTok{head}\NormalTok{(base)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##   TRM_media TRM_mediana  PIB_M.E.   Var.PIB Inflacion Desempleo var.Desempleo
-## 1    1.4038     1.39604 -1.385842 0.2183709 0.2877006  1.354199      1.380845
-## 2    1.4038     1.39604 -1.385842 0.2183709 0.2877006  1.354199      1.380845
-## 3    1.4038     1.39604 -1.385842 0.2183709 0.2877006  1.354199      1.380845
-## 4    1.4038     1.39604 -1.385842 0.2183709 0.2877006  1.354199      1.380845
-## 5    1.4038     1.39604 -1.385842 0.2183709 0.2877006  1.354199      1.380845
-## 6    1.4038     1.39604 -1.385842 0.2183709 0.2877006  1.354199      1.380845
-##        GNC Balance_Cuenta_Corriente TIM_promedio compra_Oro compra_Plata
-## 1 1.250959               -0.1990925   -0.7586531   1.403075     1.151478
-## 2 1.250959               -0.1990925   -0.7586531   1.403075     1.151478
-## 3 1.250959               -0.1990925   -0.7586531   1.403075     1.151478
-## 4 1.250959               -0.1990925   -0.7586531   1.403075     1.151478
-## 5 1.250959               -0.1990925   -0.7586531   1.403075     1.151478
-## 6 1.250959               -0.1990925   -0.7586531   1.403075     1.151478
-##   compra_Platino venta_Oro venta_Plata venta_Platino Var.objetivo
-## 1      0.8708067  1.403075     1.15238     0.8708068  -0.36104643
-## 2      0.8708067  1.403075     1.15238     0.8708068  -0.16782320
-## 3      0.8708067  1.403075     1.15238     0.8708068  -0.06283635
-## 4      0.8708067  1.403075     1.15238     0.8708068  -0.21786041
-## 5      0.8708067  1.403075     1.15238     0.8708068   0.52255596
-## 6      0.8708067  1.403075     1.15238     0.8708068  -0.35276218
-\end{verbatim}
+(PIB, Inflación, Desempleo, GNC, Balance de cuenta corriente y TIM),
+compa y venta de metales preciosos y se comparan respecto a la variable
+objetivo.
 
 \#Calcular el coeficiente de correlación Este comando calcula la matriz
 de correlación:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{round}\NormalTok{(}\KeywordTok{cor}\NormalTok{(base),}\DecValTok{2}\NormalTok{)  }
-\end{Highlighting}
-\end{Shaded}
 
 \begin{verbatim}
 ##                          TRM_media TRM_mediana PIB_M.E. Var.PIB Inflacion
@@ -1493,14 +1365,16 @@ de correlación:
 \end{verbatim}
 
 Podemos interpretar que, la correlación entre las varianbles
-macroeconomicas y la variable objetivo no son explicativas, si nivel de
-significancia es cercano a cero. Es decir, no hay una ascociación entre
-estas variables y la variable objetivo, que nos ayude a predecir o
-explicar el comportamiento de los costos y gastos totales.
+macroeconomicas, compra y venta de metales preciosos con la variable
+objetivo no son explicativas, si nivel de significancia es cercano a
+cero. Es decir, no hay una ascociación entre estas variables y la
+variable objetivo, que nos ayude a predecir o explicar el comportamiento
+de los costos y gastos totales.
 
-\#Ver la matriz de forma gráfica Podemos graficar con el comando
-corrplot. Ver más en este enlace: Lo primero es calcular la matriz de
-correlación y guardarla en un objeto y luego graficarlo. En este caso
+\#Visualizar matriz de correlación
+
+Podemos utilizar el comando corrplot. Lo primero es calcular la matriz
+de correlación y guardarla en un objeto y luego graficarlo. En este caso
 vamos a graficar los coeficientes.
 
 \begin{Shaded}
@@ -1512,7 +1386,7 @@ vamos a graficar los coeficientes.
 \end{Shaded}
 
 \includegraphics{index_files/figure-latex/unnamed-chunk-60-1.pdf} Se
-realizo un análisis de correlación con el estadístico de Pearson, con
+realizó el análisis de correlación con el estadístico de Pearson, con
 las variables originales y estandarizadas con el fin de evidenciar las
 variables explicativas de la variable objetivo construida, encontrando
 como resultado la no significancia para explicar el comportamiento de
@@ -1542,13 +1416,14 @@ gastos totales) con respecto a var.PIB (Variación del PIB)
 \includegraphics{index_files/figure-latex/unnamed-chunk-61-1.pdf}
 Podemos apreciar que no se presenta un comportamiento lineal entre las
 variables. Por tal motivo se decide no trabajar con las variables
-macroeconomicas en los modelos.
+macroeconomicas venta y compra de metales preciosos en los modelos.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(departamento, estado, Periodo, costos_gastos_totales,}
 \NormalTok{  ciudad, ingresos_totales, NIT, razon_social,otros_ingresos ,}
-\NormalTok{  ingresos_financieros, compra_Oro, compra_Plata, compra_Platino, venta_Oro, venta_Plata, venta_Platino) ->}\StringTok{ }\NormalTok{base_modelo_lineal}
+\NormalTok{  ingresos_financieros, compra_Oro, compra_Plata, compra_Platino, venta_Oro, }
+\NormalTok{  venta_Plata, venta_Platino) ->}\StringTok{ }\NormalTok{base_modelo_lineal}
 
 \CommentTok{#definir variable de tamaño de la empresa}
 \NormalTok{bussiness_size <-}\StringTok{ }\KeywordTok{cut}\NormalTok{(base_modelo_lineal}\OperatorTok{$}\NormalTok{costos_gastos_totales, }\DataTypeTok{breaks=}\DecValTok{4}\NormalTok{)}
@@ -1609,7 +1484,9 @@ variables de compra y venta de metales preciosos,
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(broom)}
 
-\NormalTok{mod1 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{  }\NormalTok{compra_Oro }\OperatorTok{+}\StringTok{ }\NormalTok{compra_Plata }\OperatorTok{+}\StringTok{ }\NormalTok{compra_Platino }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Oro }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Plata }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Platino }\OperatorTok{+}\StringTok{ }\NormalTok{ingresos_totales, }\DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
+\NormalTok{mod1 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{  }\NormalTok{compra_Oro }\OperatorTok{+}\StringTok{ }\NormalTok{compra_Plata }\OperatorTok{+}\StringTok{ }\NormalTok{compra_Platino }\OperatorTok{+}\StringTok{ }
+\StringTok{        }\NormalTok{venta_Oro }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Plata }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Platino }\OperatorTok{+}\StringTok{ }\NormalTok{ingresos_totales, }
+        \DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
 \KeywordTok{anova}\NormalTok{(mod1)}
 \end{Highlighting}
 \end{Shaded}
@@ -1675,8 +1552,13 @@ calculamos el resumen del modelo 1
 
 \includegraphics{index_files/figure-latex/unnamed-chunk-11-1.pdf}
 
-\hypertarget{aic-bic-y-r2}{%
-\subsection{AIC BIC y R2}\label{aic-bic-y-r2}}
+Evaluación de los modelos: AIC BIC y R2.
+
+El AIC NO es una prueba de hipótesis sobre el ajuste de un modelo sino
+más bien un criterio paramétrico comparativo entre modelos y representa
+por esto una herramienta para selección de modelos. Dado un conjunto de
+datos, es posible encontrar varios modelos que se ajustan a ellos. La
+idea es ranquearlos de acuerdo al AIC.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1700,21 +1582,7 @@ Lineal}\label{modelo-regresiuxf3n-lineal}}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(broom)}
 \KeywordTok{library}\NormalTok{(}\StringTok{"broom.mixed"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-## Warning: package 'broom.mixed' was built under R version 4.0.3
-\end{verbatim}
-
-\begin{verbatim}
-## Registered S3 method overwritten by 'broom.mixed':
-##   method      from 
-##   tidy.gamlss broom
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{mod1 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{  }\NormalTok{estado, }\DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
 \KeywordTok{anova}\NormalTok{(mod1)}
 \end{Highlighting}
@@ -1771,8 +1639,7 @@ calculamos el resumen del modelo 1
 
 \includegraphics{index_files/figure-latex/unnamed-chunk-15-1.pdf}
 
-\hypertarget{aic-bic-y-r2-1}{%
-\subsection{AIC BIC y R2}\label{aic-bic-y-r2-1}}
+Evaluación de los modelos: AIC, BIC y R2
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1852,8 +1719,7 @@ aleatorios}\label{modelo-regresiuxf3n-lineal-sin-efectos-aleatorios}}
 
 \includegraphics{index_files/figure-latex/unnamed-chunk-19-1.pdf}
 
-\hypertarget{aic-bic-y-r2-2}{%
-\subsection{AIC BIC y R2}\label{aic-bic-y-r2-2}}
+Evaluación de los modelos: AIC, BIC y R2
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1876,41 +1742,9 @@ aleatorio}\label{modelo-lineal-con-intercepto-aleatorio}}
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(lme4)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Warning: package 'lme4' was built under R version 4.0.3
-\end{verbatim}
-
-\begin{verbatim}
-## Loading required package: Matrix
-\end{verbatim}
-
-\begin{verbatim}
-## 
-## Attaching package: 'Matrix'
-\end{verbatim}
-
-\begin{verbatim}
-## The following objects are masked from 'package:tidyr':
-## 
-##     expand, pack, unpack
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{mod4 <-}\StringTok{ }\KeywordTok{lmer}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{ }\NormalTok{ingresos_totales }\OperatorTok{+}\StringTok{ }\NormalTok{(}\DecValTok{1}\OperatorTok{|}\NormalTok{departamento), }
              \DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-## boundary (singular) fit: see ?isSingular
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{anova}\NormalTok{(mod4)}
 \end{Highlighting}
 \end{Shaded}
@@ -1967,8 +1801,7 @@ aleatorio}\label{modelo-lineal-con-intercepto-aleatorio}}
 
 \includegraphics{index_files/figure-latex/unnamed-chunk-23-1.pdf}
 
-\hypertarget{aic-bic-y-r2-3}{%
-\subsection{AIC BIC y R2}\label{aic-bic-y-r2-3}}
+Evaluación de los modelos: AIC, BIC y R2
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1991,15 +1824,7 @@ departamento}\label{modelo-lineal-con-intercepto-aleatorio-a-nivel-de-departamen
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(lme4)}
 \NormalTok{mod5 <-}\StringTok{ }\KeywordTok{lmer}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{ }\KeywordTok{I}\NormalTok{(ingresos_totales)}\OperatorTok{:}\NormalTok{estado }\OperatorTok{+}\StringTok{  }\NormalTok{compra_Oro }\OperatorTok{+}\StringTok{ }\NormalTok{compra_Plata }\OperatorTok{+}\StringTok{ }\NormalTok{compra_Platino }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Oro }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Plata }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Platino }\OperatorTok{+}\StringTok{ }\NormalTok{ingresos_totales}\OperatorTok{+}\NormalTok{(}\DecValTok{1}\OperatorTok{|}\NormalTok{NIT), }\DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-## fixed-effect model matrix is rank deficient so dropping 5 columns / coefficients
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{anova}\NormalTok{(mod5)}
 \end{Highlighting}
 \end{Shaded}
@@ -2066,9 +1891,7 @@ departamento}\label{modelo-lineal-con-intercepto-aleatorio-a-nivel-de-departamen
 \end{Shaded}
 
 \includegraphics{index_files/figure-latex/unnamed-chunk-27-1.pdf}
-
-\hypertarget{aic-bic-y-r2-4}{%
-\subsection{AIC BIC y R2}\label{aic-bic-y-r2-4}}
+Evaluación de los modelos: AIC, BIC y R2
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2160,6 +1983,8 @@ Para las actividades se realiza la siguiente estimación de esfuerzo:
 \url{https://siis.ia.supersociedades.gov.co/}
 
 \url{https://www.supersociedades.gov.co/delegatura_aec/Paginas/Base-completa-EF-2019.aspx}
+
+\url{https://www.researchgate.net/publication/314536942_Introduccion_a_los_modelos_mixtos_Introduction_to_mixed_models}
 
 \backmatter
 \end{document}

@@ -7,14 +7,14 @@ author:
 - Cindy Guerra
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output:
-  html_document:
-    df_print: paged
-    toc: no
   pdf_document:
     citation_package: natbib
     fig_caption: yes
     keep_tex: yes
     latex_engine: pdflatex
+    toc: no
+  html_document:
+    df_print: paged
     toc: no
 fontfamily: mathpazo
 fontsize: 11pt
@@ -189,8 +189,8 @@ summary(mod1)
 
 
 ```{r}
-
-ggplot(augment(mod1), aes(x=1:79, y=.resid))+
+a <- augment(mod1)
+ggplot(a, aes(x=1:length(.resid), y=.resid))+
   geom_point() + 
   geom_hline(yintercept = 0, lwd=2, col= "red")
 
@@ -213,8 +213,8 @@ summary(mod2)
 ```
 
 ```{r}
-
-ggplot(augment(mod2), aes(x=1:79, y=.resid))+
+a <- augment(mod2)
+ggplot(a, aes(x=1:length(.resid), y=.resid))+
   geom_point() + 
   geom_hline(yintercept = 0, lwd=2, col= "red")
 
@@ -253,8 +253,8 @@ summary(mod4)
 
 
 ```{r}
-
-ggplot(broom.mixed::augment(mod4), aes(x=1:79, y=.resid))+
+a <- broom.mixed::augment(mod4) 
+ggplot(a, aes(x=1:length(.resid), y=.resid))+
   geom_point() + 
   geom_hline(yintercept = 0, lwd=2, col= "red")
 
@@ -285,8 +285,8 @@ summary(mod5)
 
 
 ```{r}
-
-ggplot(broom.mixed::augment(mod5), aes(x=1:79, y=.resid))+
+a <- broom.mixed::augment(mod5)
+ggplot(a, aes(x=1:length(.resid), y=.resid))+
   geom_point() + 
   geom_hline(yintercept = 0, lwd=2, col= "red")
 

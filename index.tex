@@ -101,12 +101,26 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 \usepackage[]{natbib}
 \bibliographystyle{apsr}
 
 \title{Trabajo final Estadística Avanzada}
 \author{Carlos Alberto Murillo M \and Luz Stella Florez \and Diana Carolina Benjumea \and Cindy Guerra}
-\date{octubre 30, 2020}
+\date{noviembre 27, 2020}
 
 \begin{document}
 \frontmatter
@@ -121,11 +135,12 @@
 \chapter*{Abstract}\label{abstract}}
 \addcontentsline{toc}{chapter}{Abstract}
 
-Este documento anliza los impactos de las variables macoreconómicas en
-los costos y gastos de una empresa en un determinado sector económico,
-para nuestro estudio seleccionamos el sector minero, el código de este
-trabajo se encuentra almacenado en el repositorio de Github :
-\url{https://github.com/cabymetal/TrabajoFinal_estadisticos_avanzados}
+Este documento analiza los impactos de las variables macroeconómicas en
+los costos y gastos de empresas del sector ``Extracción de oro y otros
+metales preciosos''. Para el análisis, se tomaron los datos de los años:
+2017, 2018 y 2019. El código de este trabajo se encuentra almacenado en
+el repositorio de Github:
+\url{https://github.com/cabymetal/TrabajoFinal_estadisticos_avanzados}.
 
 \hypertarget{objetivos-y-lineamientos}{%
 \chapter{Objetivos y Lineamientos}\label{objetivos-y-lineamientos}}
@@ -443,7 +458,7 @@ archivo 2018 tiene los datos de 2017 con la nueva norma.
 \CommentTok{#Eliminamos variable diferente a 2019}
 \NormalTok{datos_completos_}\DecValTok{2018}\NormalTok{ <-}\StringTok{ }\KeywordTok{select}\NormalTok{(datos_completos_}\DecValTok{2018}\NormalTok{, }\OperatorTok{-}\NormalTok{gastos_ventas)}
 
-\CommentTok{#UNimos los 2 dataframes}
+\CommentTok{#Se realizará el análisis con los periodos: Se realizará el análisis con los periodos: 2017, 2018, 2019}
 \NormalTok{datos_completos =}\StringTok{ }\KeywordTok{rbind}\NormalTok{(datos_completos, datos_completos_}\DecValTok{2018}\NormalTok{)}
 \NormalTok{datos_completos }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{( }\DataTypeTok{razon_social =} \KeywordTok{as.factor}\NormalTok{(razon_social), }
                             \DataTypeTok{CIIU =} \KeywordTok{as.factor}\NormalTok{(CIIU), }\DataTypeTok{ciudad =} \KeywordTok{as.factor}\NormalTok{(ciudad),}
@@ -452,6 +467,36 @@ archivo 2018 tiene los datos de 2017 con la nueva norma.
                           \DataTypeTok{situacion =} \KeywordTok{as.factor}\NormalTok{(situacion)) ->}\StringTok{ }\NormalTok{datos_completos}
 \end{Highlighting}
 \end{Shaded}
+
+Por lo tanto utilizaremos las siguientes variables:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{as.data.frame}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(datos_completos))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          colnames(datos_completos)
+## 1                              NIT
+## 2                     razon_social
+## 3                             CIIU
+## 4                           ciudad
+## 5                     departamento
+## 6                           estado
+## 7                        situacion
+## 8                organo_societario
+## 9                  etapa_situacion
+## 10                         Periodo
+## 11                    costo_ventas
+## 12           gastos_administracion
+## 13                    otros_gastos
+## 14              costos_financieros
+## 15                 gasto_impuestos
+## 16 ingresos_actividades_ordinarias
+## 17                  otros_ingresos
+## 18            ingresos_financieros
+\end{verbatim}
 
 \hypertarget{capuxedtulo-2.-lectura-y-consolidaciuxf3n-de-variables-econuxf3micas}{%
 \chapter{Capítulo 2. Lectura y consolidación de variables
@@ -711,6 +756,34 @@ Se unen los datos en un solo dataframe
 ## #   TIM_promedio <dbl>
 \end{verbatim}
 
+\textbf{Variables sector minero:} Se adicionan variables relacionadas
+con el sector minero, para mejorar la efectividad de los modelos
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(dplyr)}
+\CommentTok{#Se leen los datos -  }
+\NormalTok{dataset =}\StringTok{ }\KeywordTok{read_excel}\NormalTok{(}\StringTok{'./data/metales.xlsx'}\NormalTok{)}
+\NormalTok{dataset}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 7
+##    Anyo compra_Oro compra_Plata compra_Platino venta_Oro venta_Plata
+##   <dbl>      <dbl>        <dbl>          <dbl>     <dbl>       <dbl>
+## 1  2017    109846.        1294.         86790.   119398.       1617.
+## 2  2018    110854.        1191.         80470.   120494.       1489.
+## 3  2019    135384.        1370.         87958.   147157.       1712.
+## # ... with 1 more variable: venta_Platino <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OperatorTok{%>%}\StringTok{ }\KeywordTok{left_join}\NormalTok{(dataset, }\DataTypeTok{by=}\KeywordTok{c}\NormalTok{(}\StringTok{"Anyo"}\NormalTok{) ) ->}\StringTok{ }\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{capuxedtulo-3.-consolidaciuxf3n-de-la-base}{%
 \chapter{Capítulo 3. Consolidación de la
 base}\label{capuxedtulo-3.-consolidaciuxf3n-de-la-base}}
@@ -804,13 +877,21 @@ en una sola base
 ##  3rd Qu.:8.250   3rd Qu.:-2.50   3rd Qu.:-10241           3rd Qu.:6.130  
 ##  Max.   :8.250   Max.   :-2.50   Max.   :-10241           Max.   :6.130  
 ##                                                                          
-##  costos_gastos_totales ingresos_totales   
-##  Min.   :     2869     Min.   :        0  
-##  1st Qu.:   528039     1st Qu.:    24364  
-##  Median :  4175588     Median :   587346  
-##  Mean   : 43288150     Mean   : 36327665  
-##  3rd Qu.: 26972121     3rd Qu.:  3698197  
-##  Max.   :700560590     Max.   :967119965  
+##    compra_Oro      compra_Plata  compra_Platino    venta_Oro     
+##  Min.   :109846   Min.   :1191   Min.   :80470   Min.   :119398  
+##  1st Qu.:109846   1st Qu.:1191   1st Qu.:80470   1st Qu.:119398  
+##  Median :110854   Median :1294   Median :86790   Median :120494  
+##  Mean   :118288   Mean   :1283   Mean   :85002   Mean   :128574  
+##  3rd Qu.:135384   3rd Qu.:1370   3rd Qu.:87958   3rd Qu.:147157  
+##  Max.   :135384   Max.   :1370   Max.   :87958   Max.   :147157  
+##                                                                  
+##   venta_Plata   venta_Platino   costos_gastos_totales ingresos_totales   
+##  Min.   :1489   Min.   :83441   Min.   :     2869     Min.   :        0  
+##  1st Qu.:1489   1st Qu.:83441   1st Qu.:   528039     1st Qu.:    24364  
+##  Median :1617   Median :89994   Median :  4175588     Median :   587346  
+##  Mean   :1604   Mean   :88140   Mean   : 43288150     Mean   : 36327665  
+##  3rd Qu.:1712   3rd Qu.:91205   3rd Qu.: 26972121     3rd Qu.:  3698197  
+##  Max.   :1712   Max.   :91205   Max.   :700560590     Max.   :967119965  
 ## 
 \end{verbatim}
 
@@ -861,7 +942,7 @@ Análisis\_descriptivo}\label{capuxedtulo-4.-anuxe1lisis_descriptivo}}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-29-1.pdf}
+\includegraphics{index_files/figure-latex/unnamed-chunk-46-1.pdf}
 Podemos observar que hay empresas que no tienen los 3 periodos, solo
 trabajaremos con la empresas que tengan los periodos completos.
 
@@ -953,7 +1034,7 @@ ingresos y los costos por departamento.
 ## Warning: Ignoring unknown aesthetics: label
 \end{verbatim}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-31-1.pdf}
+\includegraphics{index_files/figure-latex/unnamed-chunk-48-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -965,7 +1046,7 @@ ingresos y los costos por departamento.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-32-1.pdf} Se
+\includegraphics{index_files/figure-latex/unnamed-chunk-49-1.pdf} Se
 pueden ver algunos comportamientos diferentes por departamento, sin
 embargo separemos el gráfico para ver mejor:
 
@@ -975,7 +1056,7 @@ embargo separemos el gráfico para ver mejor:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-33-1.pdf} El
+\includegraphics{index_files/figure-latex/unnamed-chunk-50-1.pdf} El
 gráfico anterior nos muestra que cada empresa tiene costos/gastos
 totales particulares. Adicionalmente, hay una empresa de Medellín que
 tiene costos/gastos totales mas altos, comparada con las otras. Tratemos
@@ -991,7 +1072,7 @@ las demás.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-34-1.pdf} Al
+\includegraphics{index_files/figure-latex/unnamed-chunk-51-1.pdf} Al
 parecer solo hay 1 empresa que tiene comportamiento de costos/gastos
 totales mucho mas diferente a las demás.
 
@@ -1007,7 +1088,7 @@ empresa que es mas diferente a las demas.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-35-1.pdf}
+\includegraphics{index_files/figure-latex/unnamed-chunk-52-1.pdf}
 Confirmamos que los costos/gastos totales son particulares de cada
 empresa. Cambiemos la escala de los datos y volvamos a graficar, para
 poder apreciar mejor el comportamiento de las otras empresas que tienen
@@ -1026,7 +1107,7 @@ costos/gastos totales mas bajos, pero con el set de empresas completo.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-36-1.pdf} Ahora
+\includegraphics{index_files/figure-latex/unnamed-chunk-53-1.pdf} Ahora
 podemos ver mejor que cada empresa tiene unos costos/gastos totales
 particulares, así como costos promedio diferentes. Además, encontramos
 que solamente hay 5 empresas que tienen un comportamiento general en sus
@@ -1042,7 +1123,7 @@ estado.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-37-1.pdf}
+\includegraphics{index_files/figure-latex/unnamed-chunk-54-1.pdf}
 
 Podemos ver que las empresas con estado inspección presentan
 costos/gastos totales menores que las empresas con estado vigilancia.
@@ -1058,9 +1139,68 @@ Veamos ahora la dispersion de nuestra variable objetivo.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-38-1.pdf} Con
+\includegraphics{index_files/figure-latex/unnamed-chunk-55-1.pdf} Con
 esto confirmamos que la dispersion de los costos/gastos totales no tiene
 un comportamiento general.
+
+\hypertarget{estandarizaciuxf3n-de-variables}{%
+\section{Estandarización de
+variables}\label{estandarizaciuxf3n-de-variables}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(scales)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'scales'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:purrr':
+## 
+##     discard
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:readr':
+## 
+##     col_factor
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(kableExtra)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'kableExtra' was built under R version 4.0.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'kableExtra'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:dplyr':
+## 
+##     group_rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tibble)}
+\NormalTok{base.escalada<-}\StringTok{ }\KeywordTok{scale}\NormalTok{(base_modelado[,}\KeywordTok{c}\NormalTok{(}\DecValTok{11}\NormalTok{,}\DecValTok{12}\NormalTok{, }\DecValTok{13}\NormalTok{,}\DecValTok{14}\NormalTok{,}\DecValTok{15}\NormalTok{,}\DecValTok{16}\NormalTok{,}\DecValTok{17}\NormalTok{,}\DecValTok{18}\NormalTok{,}\DecValTok{19}\NormalTok{,}\DecValTok{20}\NormalTok{,}\DecValTok{21}\NormalTok{,}\DecValTok{22}\NormalTok{,}\DecValTok{23}\NormalTok{,}\DecValTok{24}\NormalTok{,}\DecValTok{25}\NormalTok{,}\DecValTok{26}\NormalTok{,}\DecValTok{27}\NormalTok{,}\DecValTok{28}\NormalTok{,}\DecValTok{29}\NormalTok{,}\DecValTok{30}\NormalTok{,}\DecValTok{31}\NormalTok{,}\DecValTok{32}\NormalTok{,}\DecValTok{33}\NormalTok{,}\DecValTok{34}\NormalTok{,}\DecValTok{35}\NormalTok{,}\DecValTok{36}\NormalTok{)],}\DataTypeTok{center=}\NormalTok{T,}\DataTypeTok{scale=}\NormalTok{T)}
+\NormalTok{base.escalada<-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(base.escalada)}
+\NormalTok{base.escalada<-}\StringTok{ }\KeywordTok{rownames_to_column}\NormalTok{(base.escalada)}
+\NormalTok{tmp <-}\StringTok{ }\KeywordTok{rownames_to_column}\NormalTok{(base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"NIT"}\NormalTok{, }\StringTok{"razon_social"}\NormalTok{, }\StringTok{"CIIU"}\NormalTok{, }\StringTok{"ciudad"}\NormalTok{,}\StringTok{"departamento"}\NormalTok{, }\StringTok{"estado"}\NormalTok{, }\StringTok{"situacion"}\NormalTok{, }\StringTok{"organo_societario"}\NormalTok{, }\StringTok{"etapa_situacion"}\NormalTok{, }\StringTok{"Periodo"}\NormalTok{)))}
+\NormalTok{tmp }\OperatorTok{%>%}\StringTok{ }\KeywordTok{left_join}\NormalTok{(base.escalada, }\DataTypeTok{by=}\StringTok{"rowname"}\NormalTok{)}\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\KeywordTok{c}\NormalTok{(}\StringTok{"rowname"}\NormalTok{)) ->}\StringTok{ }\NormalTok{base_modelado}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{capuxedtulo-5.-correlaciones}{%
 \chapter{Capítulo 5. Correlaciones}\label{capuxedtulo-5.-correlaciones}}
@@ -1187,40 +1327,47 @@ Se presenta la base de datos
 ## 5 VIGILANCIA    ACTIVA ACTIVIDAD ECONOMICA DIFERENTE          ACTIVA    2019
 ## 6 INSPECCION    ACTIVA ACTIVIDAD ECONOMICA DIFERENTE          ACTIVA    2019
 ##   costo_ventas gastos_administracion otros_gastos costos_financieros
-## 1            0                 53823            0            3271606
-## 2            0               6963079     15986104                  0
-## 3     35455996                     0            0            2437764
-## 4     21785731                920119       418332            4972993
-## 5     95446409               2372895       621250            2425250
-## 6            0                     0      1053083            7160223
+## 1  -0.33867199            -0.4074151   -0.4014073        -0.01766357
+## 2  -0.33867199            -0.1245786    1.7804892        -0.41681165
+## 3   0.14621874            -0.4096184   -0.4014073        -0.11939539
+## 4  -0.04073369            -0.3719525   -0.3443104         0.18991196
+## 5   0.96663837            -0.3124819   -0.3166147        -0.12092215
+## 6  -0.33867199            -0.4096184   -0.2576751         0.45676213
 ##   gasto_impuestos ingresos_actividades_ordinarias otros_ingresos
-## 1           18725                               0         975059
-## 2           49834                               0         565503
-## 3               0                               0              0
-## 4        -6062218                        27158134         274473
-## 5         6473853                       117246642        1691325
-## 6            2414                               0              0
-##   ingresos_financieros TRM_media TRM_mediana PIB_M.E. Var.PIB Inflacion
-## 1                    0  3281.092     3277.14  255.416     2.1       3.8
-## 2                    0  3281.092     3277.14  255.416     2.1       3.8
-## 3                    0  3281.092     3277.14  255.416     2.1       3.8
-## 4               885317  3281.092     3277.14  255.416     2.1       3.8
-## 5              3104595  3281.092     3277.14  255.416     2.1       3.8
-## 6                    0  3281.092     3277.14  255.416     2.1       3.8
-##   Desempleo var.Desempleo  GNC Balance_Cuenta_Corriente TIM_promedio
-## 1      10.5          8.25 -2.5                -12036.18         4.25
-## 2      10.5          8.25 -2.5                -12036.18         4.25
-## 3      10.5          8.25 -2.5                -12036.18         4.25
-## 4      10.5          8.25 -2.5                -12036.18         4.25
-## 5      10.5          8.25 -2.5                -12036.18         4.25
-## 6      10.5          8.25 -2.5                -12036.18         4.25
+## 1     -0.22397057                     -0.23958426    0.005953155
+## 2     -0.22262585                     -0.23958426   -0.210004581
+## 3     -0.22477997                     -0.23958426   -0.508192736
+## 4     -0.48682468                     -0.06443343   -0.363463888
+## 5      0.05505802                      0.51657397    0.383638219
+## 6     -0.22467562                     -0.23958426   -0.508192736
+##   ingresos_financieros TRM_media TRM_mediana  PIB_M.E.   Var.PIB Inflacion
+## 1           -0.3515285    1.4038     1.39604 -1.385842 0.2183709 0.2877006
+## 2           -0.3515285    1.4038     1.39604 -1.385842 0.2183709 0.2877006
+## 3           -0.3515285    1.4038     1.39604 -1.385842 0.2183709 0.2877006
+## 4           -0.1320566    1.4038     1.39604 -1.385842 0.2183709 0.2877006
+## 5            0.4181071    1.4038     1.39604 -1.385842 0.2183709 0.2877006
+## 6           -0.3515285    1.4038     1.39604 -1.385842 0.2183709 0.2877006
+##   Desempleo var.Desempleo      GNC Balance_Cuenta_Corriente TIM_promedio
+## 1  1.354199      1.380845 1.250959               -0.1990925   -0.7586531
+## 2  1.354199      1.380845 1.250959               -0.1990925   -0.7586531
+## 3  1.354199      1.380845 1.250959               -0.1990925   -0.7586531
+## 4  1.354199      1.380845 1.250959               -0.1990925   -0.7586531
+## 5  1.354199      1.380845 1.250959               -0.1990925   -0.7586531
+## 6  1.354199      1.380845 1.250959               -0.1990925   -0.7586531
+##   compra_Oro compra_Plata compra_Platino venta_Oro venta_Plata venta_Platino
+## 1   1.403075     1.151478      0.8708067  1.403075     1.15238     0.8708068
+## 2   1.403075     1.151478      0.8708067  1.403075     1.15238     0.8708068
+## 3   1.403075     1.151478      0.8708067  1.403075     1.15238     0.8708068
+## 4   1.403075     1.151478      0.8708067  1.403075     1.15238     0.8708068
+## 5   1.403075     1.151478      0.8708067  1.403075     1.15238     0.8708068
+## 6   1.403075     1.151478      0.8708067  1.403075     1.15238     0.8708068
 ##   costos_gastos_totales ingresos_totales
-## 1                 72548           975059
-## 2              22999017           565503
-## 3              35455996                0
-## 4              17061964         28317924
-## 5             104914407        122042562
-## 6               1055497                0
+## 1           -0.36104643      -0.24581787
+## 2           -0.16782320      -0.24842906
+## 3           -0.06283635      -0.25203452
+## 4           -0.21786041      -0.07148885
+## 5            0.52255596       0.52606828
+## 6           -0.35276218      -0.25203452
 \end{verbatim}
 
 Para el análisis de correlaciones se toman las variables macroeconomicas
@@ -1231,27 +1378,34 @@ comparan respecto a los costos de ventas.
 \begin{Highlighting}[]
 \CommentTok{#A continuación se agrupan las variables de interés en un nuevo dataframe}
 
-\NormalTok{base =}\StringTok{ }\NormalTok{base_modelado[,}\DecValTok{19}\OperatorTok{:}\DecValTok{28}\NormalTok{]}
-\NormalTok{base[}\StringTok{'Var.objetivo'}\NormalTok{]=}\StringTok{ }\NormalTok{base_modelado[}\DecValTok{29}\NormalTok{]}
+\NormalTok{base =}\StringTok{ }\NormalTok{base_modelado[,}\DecValTok{19}\OperatorTok{:}\DecValTok{34}\NormalTok{]}
+\NormalTok{base[}\StringTok{'Var.objetivo'}\NormalTok{]=}\StringTok{ }\NormalTok{base_modelado[}\DecValTok{35}\NormalTok{]}
 \KeywordTok{head}\NormalTok{(base)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##   TRM_media TRM_mediana PIB_M.E. Var.PIB Inflacion Desempleo var.Desempleo  GNC
-## 1  3281.092     3277.14  255.416     2.1       3.8      10.5          8.25 -2.5
-## 2  3281.092     3277.14  255.416     2.1       3.8      10.5          8.25 -2.5
-## 3  3281.092     3277.14  255.416     2.1       3.8      10.5          8.25 -2.5
-## 4  3281.092     3277.14  255.416     2.1       3.8      10.5          8.25 -2.5
-## 5  3281.092     3277.14  255.416     2.1       3.8      10.5          8.25 -2.5
-## 6  3281.092     3277.14  255.416     2.1       3.8      10.5          8.25 -2.5
-##   Balance_Cuenta_Corriente TIM_promedio Var.objetivo
-## 1                -12036.18         4.25        72548
-## 2                -12036.18         4.25     22999017
-## 3                -12036.18         4.25     35455996
-## 4                -12036.18         4.25     17061964
-## 5                -12036.18         4.25    104914407
-## 6                -12036.18         4.25      1055497
+##   TRM_media TRM_mediana  PIB_M.E.   Var.PIB Inflacion Desempleo var.Desempleo
+## 1    1.4038     1.39604 -1.385842 0.2183709 0.2877006  1.354199      1.380845
+## 2    1.4038     1.39604 -1.385842 0.2183709 0.2877006  1.354199      1.380845
+## 3    1.4038     1.39604 -1.385842 0.2183709 0.2877006  1.354199      1.380845
+## 4    1.4038     1.39604 -1.385842 0.2183709 0.2877006  1.354199      1.380845
+## 5    1.4038     1.39604 -1.385842 0.2183709 0.2877006  1.354199      1.380845
+## 6    1.4038     1.39604 -1.385842 0.2183709 0.2877006  1.354199      1.380845
+##        GNC Balance_Cuenta_Corriente TIM_promedio compra_Oro compra_Plata
+## 1 1.250959               -0.1990925   -0.7586531   1.403075     1.151478
+## 2 1.250959               -0.1990925   -0.7586531   1.403075     1.151478
+## 3 1.250959               -0.1990925   -0.7586531   1.403075     1.151478
+## 4 1.250959               -0.1990925   -0.7586531   1.403075     1.151478
+## 5 1.250959               -0.1990925   -0.7586531   1.403075     1.151478
+## 6 1.250959               -0.1990925   -0.7586531   1.403075     1.151478
+##   compra_Platino venta_Oro venta_Plata venta_Platino Var.objetivo
+## 1      0.8708067  1.403075     1.15238     0.8708068  -0.36104643
+## 2      0.8708067  1.403075     1.15238     0.8708068  -0.16782320
+## 3      0.8708067  1.403075     1.15238     0.8708068  -0.06283635
+## 4      0.8708067  1.403075     1.15238     0.8708068  -0.21786041
+## 5      0.8708067  1.403075     1.15238     0.8708068   0.52255596
+## 6      0.8708067  1.403075     1.15238     0.8708068  -0.35276218
 \end{verbatim}
 
 \#Calcular el coeficiente de correlación Este comando calcula la matriz
@@ -1275,6 +1429,12 @@ de correlación:
 ## GNC                           0.90        0.84    -0.95   -0.31     -0.26
 ## Balance_Cuenta_Corriente     -0.13       -0.25    -0.02   -1.00     -1.00
 ## TIM_promedio                 -0.55       -0.45     0.67    0.75      0.71
+## compra_Oro                    1.00        0.99    -0.99    0.12      0.17
+## compra_Plata                  0.81        0.88    -0.72    0.69      0.73
+## compra_Platino                0.61        0.70    -0.49    0.87      0.89
+## venta_Oro                     1.00        0.99    -0.99    0.12      0.17
+## venta_Plata                   0.81        0.88    -0.72    0.69      0.73
+## venta_Platino                 0.61        0.70    -0.49    0.87      0.89
 ## Var.objetivo                  0.04        0.04    -0.04    0.00      0.01
 ##                          Desempleo var.Desempleo   GNC Balance_Cuenta_Corriente
 ## TRM_media                     0.97          0.99  0.90                    -0.13
@@ -1287,19 +1447,49 @@ de correlación:
 ## GNC                           0.98          0.96  1.00                     0.32
 ## Balance_Cuenta_Corriente      0.12          0.04  0.32                     1.00
 ## TIM_promedio                 -0.74         -0.68 -0.86                    -0.76
+## compra_Oro                    0.97          0.99  0.91                    -0.11
+## compra_Plata                  0.64          0.70  0.47                    -0.68
+## compra_Platino                0.39          0.47  0.20                    -0.86
+## venta_Oro                     0.97          0.99  0.91                    -0.11
+## venta_Plata                   0.64          0.70  0.47                    -0.68
+## venta_Platino                 0.39          0.47  0.20                    -0.86
 ## Var.objetivo                  0.04          0.04  0.03                     0.00
-##                          TIM_promedio Var.objetivo
-## TRM_media                       -0.55         0.04
-## TRM_mediana                     -0.45         0.04
-## PIB_M.E.                         0.67        -0.04
-## Var.PIB                          0.75         0.00
-## Inflacion                        0.71         0.01
-## Desempleo                       -0.74         0.04
-## var.Desempleo                   -0.68         0.04
-## GNC                             -0.86         0.03
-## Balance_Cuenta_Corriente        -0.76         0.00
-## TIM_promedio                     1.00        -0.02
-## Var.objetivo                    -0.02         1.00
+##                          TIM_promedio compra_Oro compra_Plata compra_Platino
+## TRM_media                       -0.55       1.00         0.81           0.61
+## TRM_mediana                     -0.45       0.99         0.88           0.70
+## PIB_M.E.                         0.67      -0.99        -0.72          -0.49
+## Var.PIB                          0.75       0.12         0.69           0.87
+## Inflacion                        0.71       0.17         0.73           0.89
+## Desempleo                       -0.74       0.97         0.64           0.39
+## var.Desempleo                   -0.68       0.99         0.70           0.47
+## GNC                             -0.86       0.91         0.47           0.20
+## Balance_Cuenta_Corriente        -0.76      -0.11        -0.68          -0.86
+## TIM_promedio                     1.00      -0.57         0.04           0.32
+## compra_Oro                      -0.57       1.00         0.80           0.59
+## compra_Plata                     0.04       0.80         1.00           0.96
+## compra_Platino                   0.32       0.59         0.96           1.00
+## venta_Oro                       -0.57       1.00         0.80           0.59
+## venta_Plata                      0.04       0.80         1.00           0.96
+## venta_Platino                    0.32       0.59         0.96           1.00
+## Var.objetivo                    -0.02       0.04         0.03           0.02
+##                          venta_Oro venta_Plata venta_Platino Var.objetivo
+## TRM_media                     1.00        0.81          0.61         0.04
+## TRM_mediana                   0.99        0.88          0.70         0.04
+## PIB_M.E.                     -0.99       -0.72         -0.49        -0.04
+## Var.PIB                       0.12        0.69          0.87         0.00
+## Inflacion                     0.17        0.73          0.89         0.01
+## Desempleo                     0.97        0.64          0.39         0.04
+## var.Desempleo                 0.99        0.70          0.47         0.04
+## GNC                           0.91        0.47          0.20         0.03
+## Balance_Cuenta_Corriente     -0.11       -0.68         -0.86         0.00
+## TIM_promedio                 -0.57        0.04          0.32        -0.02
+## compra_Oro                    1.00        0.80          0.59         0.04
+## compra_Plata                  0.80        1.00          0.96         0.03
+## compra_Platino                0.59        0.96          1.00         0.02
+## venta_Oro                     1.00        0.80          0.59         0.04
+## venta_Plata                   0.80        1.00          0.96         0.03
+## venta_Platino                 0.59        0.96          1.00         0.02
+## Var.objetivo                  0.04        0.03          0.02         1.00
 \end{verbatim}
 
 Podemos interpretar que, la correlación entre las varianbles
@@ -1321,8 +1511,14 @@ vamos a graficar los coeficientes.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-43-1.pdf} A
-continuación se grafican los datos de la Variable objetivo (costos y
+\includegraphics{index_files/figure-latex/unnamed-chunk-60-1.pdf} Se
+realizo un análisis de correlación con el estadístico de Pearson, con
+las variables originales y estandarizadas con el fin de evidenciar las
+variables explicativas de la variable objetivo construida, encontrando
+como resultado la no significancia para explicar el comportamiento de
+los costos y gastos del sector minero.
+
+A continuación se grafican los datos de la Variable objetivo (costos y
 gastos totales) con respecto a var.PIB (Variación del PIB)
 
 \begin{Shaded}
@@ -1331,7 +1527,19 @@ gastos totales) con respecto a var.PIB (Variación del PIB)
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-44-1.pdf}
+\begin{verbatim}
+## Warning in self$trans$transform(x): Se han producido NaNs
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Transformation introduced infinite values in continuous y-axis
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 55 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{index_files/figure-latex/unnamed-chunk-61-1.pdf}
 Podemos apreciar que no se presenta un comportamiento lineal entre las
 variables. Por tal motivo se decide no trabajar con las variables
 macroeconomicas en los modelos.
@@ -1340,14 +1548,14 @@ macroeconomicas en los modelos.
 \begin{Highlighting}[]
 \NormalTok{base_modelado }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(departamento, estado, Periodo, costos_gastos_totales,}
 \NormalTok{  ciudad, ingresos_totales, NIT, razon_social,otros_ingresos ,}
-\NormalTok{  ingresos_financieros) ->}\StringTok{ }\NormalTok{base_modelo_lineal}
+\NormalTok{  ingresos_financieros, compra_Oro, compra_Plata, compra_Platino, venta_Oro, venta_Plata, venta_Platino) ->}\StringTok{ }\NormalTok{base_modelo_lineal}
 
 \CommentTok{#definir variable de tamaño de la empresa}
 \NormalTok{bussiness_size <-}\StringTok{ }\KeywordTok{cut}\NormalTok{(base_modelo_lineal}\OperatorTok{$}\NormalTok{costos_gastos_totales, }\DataTypeTok{breaks=}\DecValTok{4}\NormalTok{)}
-\KeywordTok{levels}\NormalTok{(bussiness_size) <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\DataTypeTok{small =} \StringTok{"(-6.98e+05,1.75e+08]"}\NormalTok{, }
-                               \DataTypeTok{medium =} \StringTok{"(1.75e+08,3.5e+08]"}\NormalTok{, }
-                               \DataTypeTok{big =} \StringTok{"(3.5e+08,5.25e+08]"}\NormalTok{, }
-                               \DataTypeTok{very_big=}\StringTok{"(5.25e+08,7.01e+08]"}\NormalTok{)}
+\KeywordTok{levels}\NormalTok{(bussiness_size) <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\DataTypeTok{small =} \StringTok{"(-0.377,0.349]"}\NormalTok{, }
+                               \DataTypeTok{medium =} \StringTok{"(0.349,1.07]"}\NormalTok{, }
+                               \DataTypeTok{big =} \StringTok{"(1.07,1.8]"}\NormalTok{, }
+                               \DataTypeTok{very_big=}\StringTok{"(1.8,2.52]"}\NormalTok{)}
 \NormalTok{base_modelo_lineal[}\StringTok{'tamano_empresa'}\NormalTok{] <-}\StringTok{ }\NormalTok{bussiness_size}
 \NormalTok{base_modelo_lineal }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(NIT }\OperatorTok{!=}\StringTok{ }\DecValTok{900306309}\NormalTok{) ->}\StringTok{ }\NormalTok{base_modelo_lineal}
 \KeywordTok{head}\NormalTok{(base_modelo_lineal)}
@@ -1356,31 +1564,133 @@ macroeconomicas en los modelos.
 
 \begin{verbatim}
 ##    departamento     estado Periodo costos_gastos_totales       ciudad
-## 1     ANTIOQUIA INSPECCION    2019                 72548     MEDELLÍN
-## 2     SANTANDER INSPECCION    2019              22999017  BUCARAMANGA
-## 3 BOGOTÁ, D. C. VIGILANCIA    2019              35455996 BOGOTÁ, D.C.
-## 4 BOGOTÁ, D. C. VIGILANCIA    2019              17061964 BOGOTÁ, D.C.
-## 5     ANTIOQUIA VIGILANCIA    2019             104914407     MEDELLÍN
-## 6     ANTIOQUIA INSPECCION    2019               1055497     MEDELLÍN
+## 1     ANTIOQUIA INSPECCION    2019           -0.36104643     MEDELLÍN
+## 2     SANTANDER INSPECCION    2019           -0.16782320  BUCARAMANGA
+## 3 BOGOTÁ, D. C. VIGILANCIA    2019           -0.06283635 BOGOTÁ, D.C.
+## 4 BOGOTÁ, D. C. VIGILANCIA    2019           -0.21786041 BOGOTÁ, D.C.
+## 5     ANTIOQUIA VIGILANCIA    2019            0.52255596     MEDELLÍN
+## 6     ANTIOQUIA INSPECCION    2019           -0.35276218     MEDELLÍN
 ##   ingresos_totales       NIT                       razon_social otros_ingresos
-## 1           975059 811002172               MINERA CROESUS S.A.S         975059
-## 2           565503 830012565              ECO ORO MINERALS CORP         565503
-## 3                0 830127076    ANGLOGOLD ASHANTI COLOMBIA S.A.              0
-## 4         28317924 860507991               SANTIAGO OIL COMPANY         274473
-## 5        122042562 890114642         CALDAS GOLD MARMATO S.A.S.        1691325
-## 6                0 900039998 MINERALES ANDINOS DE OCCIDENTE S.A              0
-##   ingresos_financieros tamano_empresa
-## 1                    0          small
-## 2                    0          small
-## 3                    0          small
-## 4               885317          small
-## 5              3104595          small
-## 6                    0          small
+## 1      -0.24581787 811002172               MINERA CROESUS S.A.S    0.005953155
+## 2      -0.24842906 830012565              ECO ORO MINERALS CORP   -0.210004581
+## 3      -0.25203452 830127076    ANGLOGOLD ASHANTI COLOMBIA S.A.   -0.508192736
+## 4      -0.07148885 860507991               SANTIAGO OIL COMPANY   -0.363463888
+## 5       0.52606828 890114642         CALDAS GOLD MARMATO S.A.S.    0.383638219
+## 6      -0.25203452 900039998 MINERALES ANDINOS DE OCCIDENTE S.A   -0.508192736
+##   ingresos_financieros compra_Oro compra_Plata compra_Platino venta_Oro
+## 1           -0.3515285   1.403075     1.151478      0.8708067  1.403075
+## 2           -0.3515285   1.403075     1.151478      0.8708067  1.403075
+## 3           -0.3515285   1.403075     1.151478      0.8708067  1.403075
+## 4           -0.1320566   1.403075     1.151478      0.8708067  1.403075
+## 5            0.4181071   1.403075     1.151478      0.8708067  1.403075
+## 6           -0.3515285   1.403075     1.151478      0.8708067  1.403075
+##   venta_Plata venta_Platino tamano_empresa
+## 1     1.15238     0.8708068           <NA>
+## 2     1.15238     0.8708068           <NA>
+## 3     1.15238     0.8708068           <NA>
+## 4     1.15238     0.8708068           <NA>
+## 5     1.15238     0.8708068           <NA>
+## 6     1.15238     0.8708068           <NA>
 \end{verbatim}
 
 \hypertarget{capuxedtulo-6.-aplicaciuxf3n-de-modelo}{%
 \chapter{Capítulo 6. Aplicación de
 modelo}\label{capuxedtulo-6.-aplicaciuxf3n-de-modelo}}
+
+\hypertarget{modelo-regresiuxf3n-lineal---con-todas-las-variables-de-compra-y-venta-de-oro}{%
+\subsection{6.1. Modelo regresión Lineal - con todas las variables de
+compra y venta de
+oro}\label{modelo-regresiuxf3n-lineal---con-todas-las-variables-de-compra-y-venta-de-oro}}
+
+En este modelo se intenta explicar los costos y gastos en función de las
+variables de compra y venta de metales preciosos,
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(broom)}
+
+\NormalTok{mod1 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{  }\NormalTok{compra_Oro }\OperatorTok{+}\StringTok{ }\NormalTok{compra_Plata }\OperatorTok{+}\StringTok{ }\NormalTok{compra_Platino }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Oro }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Plata }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Platino }\OperatorTok{+}\StringTok{ }\NormalTok{ingresos_totales, }\DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
+\KeywordTok{anova}\NormalTok{(mod1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: costos_gastos_totales
+##                  Df  Sum Sq Mean Sq F value    Pr(>F)    
+## compra_Oro        1 0.00121 0.00121  0.0379    0.8462    
+## compra_Plata      1 0.00359 0.00359  0.1122    0.7388    
+## ingresos_totales  1 1.64429 1.64429 51.3861 1.098e-09 ***
+## Residuals        62 1.98392 0.03200                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+calculamos el resumen del modelo 1
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(mod1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = costos_gastos_totales ~ compra_Oro + compra_Plata + 
+##     compra_Platino + venta_Oro + venta_Plata + venta_Platino + 
+##     ingresos_totales, data = base_modelo_lineal)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.19751 -0.10238 -0.08597  0.06201  0.56114 
+## 
+## Coefficients: (4 not defined because of singularities)
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       0.02387    0.03855   0.619    0.538    
+## compra_Oro       -0.01201    0.03696  -0.325    0.746    
+## compra_Plata      0.01249    0.03695   0.338    0.736    
+## compra_Platino         NA         NA      NA       NA    
+## venta_Oro              NA         NA      NA       NA    
+## venta_Plata            NA         NA      NA       NA    
+## venta_Platino          NA         NA      NA       NA    
+## ingresos_totales  1.11327    0.15530   7.168  1.1e-09 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.1789 on 62 degrees of freedom
+## Multiple R-squared:  0.4539, Adjusted R-squared:  0.4275 
+## F-statistic: 17.18 on 3 and 62 DF,  p-value: 3.124e-08
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a <-}\StringTok{ }\KeywordTok{augment}\NormalTok{(mod1)}
+\KeywordTok{ggplot}\NormalTok{(a, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(.resid), }\DataTypeTok{y=}\NormalTok{.resid))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_hline}\NormalTok{(}\DataTypeTok{yintercept =} \DecValTok{0}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{, }\DataTypeTok{col=} \StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{index_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\hypertarget{aic-bic-y-r2}{%
+\subsection{AIC BIC y R2}\label{aic-bic-y-r2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{glance}\NormalTok{(mod1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 12
+##   r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC
+##       <dbl>         <dbl> <dbl>     <dbl>   <dbl> <dbl>  <dbl> <dbl> <dbl>
+## 1     0.454         0.427 0.179      17.2 3.12e-8     3   22.0 -34.0 -23.1
+## # ... with 3 more variables: deviance <dbl>, df.residual <int>, nobs <int>
+\end{verbatim}
 
 \hypertarget{modelo-regresiuxf3n-lineal}{%
 \subsection{6.1. Modelo regresión
@@ -1389,7 +1699,22 @@ Lineal}\label{modelo-regresiuxf3n-lineal}}
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(broom)}
+\KeywordTok{library}\NormalTok{(}\StringTok{"broom.mixed"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
+\begin{verbatim}
+## Warning: package 'broom.mixed' was built under R version 4.0.3
+\end{verbatim}
+
+\begin{verbatim}
+## Registered S3 method overwritten by 'broom.mixed':
+##   method      from 
+##   tidy.gamlss broom
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{mod1 <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{  }\NormalTok{estado, }\DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
 \KeywordTok{anova}\NormalTok{(mod1)}
 \end{Highlighting}
@@ -1399,9 +1724,9 @@ Lineal}\label{modelo-regresiuxf3n-lineal}}
 ## Analysis of Variance Table
 ## 
 ## Response: costos_gastos_totales
-##           Df     Sum Sq    Mean Sq F value    Pr(>F)    
-## estado     1 1.6640e+16 1.6640e+16  30.862 5.742e-07 ***
-## Residuals 64 3.4507e+16 5.3918e+14                      
+##           Df Sum Sq Mean Sq F value    Pr(>F)    
+## estado     1 1.1820  1.1820  30.862 5.742e-07 ***
+## Residuals 64 2.4511  0.0383                      
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 \end{verbatim}
@@ -1420,19 +1745,47 @@ calculamos el resumen del modelo 1
 ## lm(formula = costos_gastos_totales ~ estado, data = base_modelo_lineal)
 ## 
 ## Residuals:
-##       Min        1Q    Median        3Q       Max 
-## -34469500 -10761423  -2118984   3368677  70203031 
+##      Min       1Q   Median       3Q      Max 
+## -0.29051 -0.09070 -0.01786  0.02839  0.59167 
 ## 
 ## Coefficients:
 ##                  Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)       2954601    4042112   0.731    0.467    
-## estadoVIGILANCIA 31756775    5716409   5.555 5.74e-07 ***
+## (Intercept)      -0.33676    0.03407  -9.885 1.66e-14 ***
+## estadoVIGILANCIA  0.26764    0.04818   5.555 5.74e-07 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 23220000 on 64 degrees of freedom
+## Residual standard error: 0.1957 on 64 degrees of freedom
 ## Multiple R-squared:  0.3253, Adjusted R-squared:  0.3148 
 ## F-statistic: 30.86 on 1 and 64 DF,  p-value: 5.742e-07
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a <-}\StringTok{ }\KeywordTok{augment}\NormalTok{(mod1)}
+\KeywordTok{ggplot}\NormalTok{(a, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(.resid), }\DataTypeTok{y=}\NormalTok{.resid))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_hline}\NormalTok{(}\DataTypeTok{yintercept =} \DecValTok{0}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{, }\DataTypeTok{col=} \StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{index_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\hypertarget{aic-bic-y-r2-1}{%
+\subsection{AIC BIC y R2}\label{aic-bic-y-r2-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{glance}\NormalTok{(mod1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 12
+##   r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC
+##       <dbl>         <dbl> <dbl>     <dbl>   <dbl> <dbl>  <dbl> <dbl> <dbl>
+## 1     0.325         0.315 0.196      30.9 5.74e-7     1   15.0 -24.0 -17.5
+## # ... with 3 more variables: deviance <dbl>, df.residual <int>, nobs <int>
 \end{verbatim}
 
 \hypertarget{modelo-regresiuxf3n-lineal-sin-efectos-aleatorios}{%
@@ -1451,10 +1804,10 @@ aleatorios}\label{modelo-regresiuxf3n-lineal-sin-efectos-aleatorios}}
 ## Analysis of Variance Table
 ## 
 ## Response: costos_gastos_totales
-##                  Df     Sum Sq    Mean Sq F value    Pr(>F)    
-## estado            1 1.6640e+16 1.6640e+16  51.004 1.131e-09 ***
-## ingresos_totales  1 1.3953e+16 1.3953e+16  42.769 1.258e-08 ***
-## Residuals        63 2.0554e+16 3.2625e+14                      
+##                  Df  Sum Sq Mean Sq F value    Pr(>F)    
+## estado            1 1.18196 1.18196  51.004 1.131e-09 ***
+## ingresos_totales  1 0.99111 0.99111  42.769 1.258e-08 ***
+## Residuals        63 1.45995 0.02317                      
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 \end{verbatim}
@@ -1472,20 +1825,48 @@ aleatorios}\label{modelo-regresiuxf3n-lineal-sin-efectos-aleatorios}}
 ##     data = base_modelo_lineal)
 ## 
 ## Residuals:
-##       Min        1Q    Median        3Q       Max 
-## -30255617  -4992649  -1880040   2979397  55986413 
+##      Min       1Q   Median       3Q      Max 
+## -0.25499 -0.04208 -0.01584  0.02511  0.47185 
 ## 
 ## Coefficients:
-##                   Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)      2.471e+06  3.145e+06   0.786    0.435    
-## estadoVIGILANCIA 2.231e+07  4.675e+06   4.773 1.12e-05 ***
-## ingresos_totales 6.869e-01  1.050e-01   6.540 1.26e-08 ***
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       -0.1120     0.0434  -2.580   0.0122 *  
+## estadoVIGILANCIA   0.1881     0.0394   4.773 1.12e-05 ***
+## ingresos_totales   0.9080     0.1389   6.540 1.26e-08 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 18060000 on 63 degrees of freedom
+## Residual standard error: 0.1522 on 63 degrees of freedom
 ## Multiple R-squared:  0.5981, Adjusted R-squared:  0.5854 
 ## F-statistic: 46.89 on 2 and 63 DF,  p-value: 3.375e-13
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a <-}\StringTok{ }\KeywordTok{augment}\NormalTok{(mod2)}
+\KeywordTok{ggplot}\NormalTok{(a, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(.resid), }\DataTypeTok{y=}\NormalTok{.resid))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_hline}\NormalTok{(}\DataTypeTok{yintercept =} \DecValTok{0}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{, }\DataTypeTok{col=} \StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{index_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\hypertarget{aic-bic-y-r2-2}{%
+\subsection{AIC BIC y R2}\label{aic-bic-y-r2-2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{glance}\NormalTok{(mod2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 12
+##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
+##       <dbl>         <dbl> <dbl>     <dbl>    <dbl> <dbl>  <dbl> <dbl> <dbl>
+## 1     0.598         0.585 0.152      46.9 3.37e-13     2   32.1 -56.2 -47.5
+## # ... with 3 more variables: deviance <dbl>, df.residual <int>, nobs <int>
 \end{verbatim}
 
 \hypertarget{modelo-lineal-con-intercepto-aleatorio}{%
@@ -1525,11 +1906,6 @@ aleatorio}\label{modelo-lineal-con-intercepto-aleatorio}}
 \end{Shaded}
 
 \begin{verbatim}
-## Warning: Some predictor variables are on very different scales: consider
-## rescaling
-\end{verbatim}
-
-\begin{verbatim}
 ## boundary (singular) fit: see ?isSingular
 \end{verbatim}
 
@@ -1541,8 +1917,8 @@ aleatorio}\label{modelo-lineal-con-intercepto-aleatorio}}
 
 \begin{verbatim}
 ## Analysis of Variance Table
-##                  npar     Sum Sq    Mean Sq F value
-## ingresos_totales    1 2.3162e+16 2.3162e+16  52.967
+##                  npar Sum Sq Mean Sq F value
+## ingresos_totales    1 1.6452  1.6452  52.967
 \end{verbatim}
 
 \begin{Shaded}
@@ -1556,7 +1932,7 @@ aleatorio}\label{modelo-lineal-con-intercepto-aleatorio}}
 ## Formula: costos_gastos_totales ~ ingresos_totales + (1 | departamento)
 ##    Data: base_modelo_lineal
 ## 
-## REML criterion at convergence: 2381.4
+## REML criterion at convergence: -36.1
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
@@ -1564,23 +1940,167 @@ aleatorio}\label{modelo-lineal-con-intercepto-aleatorio}}
 ## 
 ## Random effects:
 ##  Groups       Name        Variance  Std.Dev. 
-##  departamento (Intercept) 1.290e-05 3.592e-03
-##  Residual                 4.373e+14 2.091e+07
+##  departamento (Intercept) 6.354e-23 7.971e-12
+##  Residual                 3.106e-02 1.762e-01
 ## Number of obs: 66, groups:  departamento, 3
 ## 
 ## Fixed effects:
-##                   Estimate Std. Error t value
-## (Intercept)      1.246e+07  2.719e+06   4.581
-## ingresos_totales 8.417e-01  1.157e-01   7.278
+##                  Estimate Std. Error t value
+## (Intercept)       0.02375    0.03796   0.626
+## ingresos_totales  1.11269    0.15289   7.278
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr)
-## ingrss_ttls -0.322
-## fit warnings:
-## Some predictor variables are on very different scales: consider rescaling
+## ingrss_ttls 0.821 
 ## convergence code: 0
 ## boundary (singular) fit: see ?isSingular
 \end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a <-}\StringTok{ }\NormalTok{broom.mixed}\OperatorTok{::}\KeywordTok{augment}\NormalTok{(mod4) }
+\KeywordTok{ggplot}\NormalTok{(a, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(.resid), }\DataTypeTok{y=}\NormalTok{.resid))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_hline}\NormalTok{(}\DataTypeTok{yintercept =} \DecValTok{0}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{, }\DataTypeTok{col=} \StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{index_files/figure-latex/unnamed-chunk-23-1.pdf}
+
+\hypertarget{aic-bic-y-r2-3}{%
+\subsection{AIC BIC y R2}\label{aic-bic-y-r2-3}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{broom.mixed}\OperatorTok{::}\KeywordTok{glance}\NormalTok{(mod4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 6
+##   sigma logLik   AIC   BIC REMLcrit df.residual
+##   <dbl>  <dbl> <dbl> <dbl>    <dbl>       <int>
+## 1 0.176   18.0 -28.1 -19.3    -36.1          62
+\end{verbatim}
+
+\hypertarget{modelo-lineal-con-intercepto-aleatorio-a-nivel-de-departamento}{%
+\subsection{6.4. Modelo Lineal con intercepto aleatorio a nivel de
+departamento}\label{modelo-lineal-con-intercepto-aleatorio-a-nivel-de-departamento}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(lme4)}
+\NormalTok{mod5 <-}\StringTok{ }\KeywordTok{lmer}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{ }\KeywordTok{I}\NormalTok{(ingresos_totales)}\OperatorTok{:}\NormalTok{estado }\OperatorTok{+}\StringTok{  }\NormalTok{compra_Oro }\OperatorTok{+}\StringTok{ }\NormalTok{compra_Plata }\OperatorTok{+}\StringTok{ }\NormalTok{compra_Platino }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Oro }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Plata }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Platino }\OperatorTok{+}\StringTok{ }\NormalTok{ingresos_totales}\OperatorTok{+}\NormalTok{(}\DecValTok{1}\OperatorTok{|}\NormalTok{NIT), }\DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## fixed-effect model matrix is rank deficient so dropping 5 columns / coefficients
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(mod5)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+##                            npar  Sum Sq Mean Sq F value
+## compra_Oro                    1 0.00121 0.00121  0.1053
+## compra_Plata                  1 0.00359 0.00359  0.3116
+## ingresos_totales              1 0.38617 0.38617 33.5135
+## I(ingresos_totales):estado    1 0.11916 0.11916 10.3416
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(mod5)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: costos_gastos_totales ~ I(ingresos_totales):estado + compra_Oro +  
+##     compra_Plata + compra_Platino + venta_Oro + venta_Plata +  
+##     venta_Platino + ingresos_totales + (1 | NIT)
+##    Data: base_modelo_lineal
+## 
+## REML criterion at convergence: -59.1
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -1.72445 -0.36330 -0.07757  0.08930  3.06148 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  NIT      (Intercept) 0.01317  0.1148  
+##  Residual             0.01152  0.1073  
+## Number of obs: 66, groups:  NIT, 22
+## 
+## Fixed effects:
+##                                      Estimate Std. Error t value
+## (Intercept)                           0.07261    0.05017   1.447
+## compra_Oro                           -0.01144    0.02220  -0.515
+## compra_Plata                          0.01410    0.02218   0.636
+## ingresos_totales                      0.89353    0.19598   4.559
+## I(ingresos_totales):estadoINSPECCION  0.75545    0.23492   3.216
+## 
+## Correlation of Fixed Effects:
+##             (Intr) cmpr_O cmpr_P ingrs_
+## compra_Oro  -0.035                     
+## compra_Plat  0.008 -0.799              
+## ingrss_ttls  0.622 -0.048 -0.006       
+## I(_):INSPEC  0.341  0.006  0.023 -0.300
+## fit warnings:
+## fixed-effect model matrix is rank deficient so dropping 5 columns / coefficients
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a <-}\StringTok{ }\NormalTok{broom.mixed}\OperatorTok{::}\KeywordTok{augment}\NormalTok{(mod5)}
+\KeywordTok{ggplot}\NormalTok{(a, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(.resid), }\DataTypeTok{y=}\NormalTok{.resid))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_hline}\NormalTok{(}\DataTypeTok{yintercept =} \DecValTok{0}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{, }\DataTypeTok{col=} \StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{index_files/figure-latex/unnamed-chunk-27-1.pdf}
+
+\hypertarget{aic-bic-y-r2-4}{%
+\subsection{AIC BIC y R2}\label{aic-bic-y-r2-4}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{broom.mixed}\OperatorTok{::}\KeywordTok{glance}\NormalTok{(mod5)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 6
+##   sigma logLik   AIC   BIC REMLcrit df.residual
+##   <dbl>  <dbl> <dbl> <dbl>    <dbl>       <int>
+## 1 0.107   29.5 -45.1 -29.7    -59.1          59
+\end{verbatim}
+
+Se verificaron seis modelos. El primero, con una sola variable
+explicativa llamada ``estado'' tiene un aporte al costo y al gasto de
+forma positiva. Este modelo tiene un R2 de 19.85\% y un AIC de 74, lo
+cual nos da el peor modelo. En el segundo modelo, se encuentra que,
+agregando la variable de ingresos totales y el estado, el modelo
+presenta un mejor ajuste para la explicación de los costos y gastos
+(variable objetivo) para el sector minero. Este modelo tiene un R2 de
+37.68\% y un AIC de 57, con lo cual obtenemos el mejor modelo. El
+comportamiento de los residuales del modelo 2, también evidencian un
+mejor comportamiento, al acercarse a cero. Para el tercer modelo, que es
+el que tiene ``departamento'' evidenciamos que no es un modelo apropiado
+para predecir los costos y gastos del sector minero, debido a que las
+variables no son significativas. Los otros modelos evaluados, no
+presentan mejoría al ingresarle las variables macroeconómicas
+estandarizadas y ejecutar el modelo con efectos aleatorios en función de
+cada compañía y/o el departamento. Por lo anterior, se selecciona como
+un posible modelo el modelo ``número 2 sin efecto aleatorio'' el cual
+presenta el menor residual.
 
 \hypertarget{capuxedtulo-7.-estimaciuxf3n-de-esfuerzo}{%
 \chapter{Capítulo 7. Estimación de
@@ -1592,29 +2112,43 @@ Para las actividades se realiza la siguiente estimación de esfuerzo:
 \def\labelenumi{\arabic{enumi})}
 \tightlist
 \item
-  Consolidación de información: 14h
+  Consolidación de información: 18h
 \item
-  Transformación de varibles y análisis descriptivo: 7h
+  Transformación de variables y análisis descriptivo: 10h
 \item
-  Ajuste y validación de modelos 8h
+  Ajuste y validación de modelos 15h
 \item
-  Redacción del reporte: 8h
+  Redacción del reporte: 12h
 \end{enumerate}
 
 \hypertarget{capuxedtulo-8.-conclusiones}{%
 \chapter{Capítulo 8. Conclusiones}\label{capuxedtulo-8.-conclusiones}}
 
-Se verificaron tres tipos de modelos el primero con una sola variable
-explicativa llamada \texttt{estado} el cual tiene un aporte al costo y
-al gasto de forma positiva, el segundo modelo se encuentra que agregando
-la variable de ingresos totales y el estado el modelo un mejor ajuste de
-explicación del gasto y el costo para el sector minero. Para el tercer
-modelo que es el que tiene \texttt{departamento} evidenciamos que no es
-un modelo apropiado para predecir los costos y gastos del sector minero
-trabajado, debido a que las variables no son significativas. Por lo
-anterior se selecciona como un posible modelo el modelo
-\texttt{número\ 2\ sin\ efecto\ aleatorio} el cual presenta el menor
-residual.
+\begin{itemize}
+\tightlist
+\item
+  Cuando los datos están concebidos y correlacionados históricamente,
+  los modelos lineales mixtos son una herramienta muy robusta de
+  análisis estadístico.
+\item
+  Para la variable objetivo propuesta ``costos\_gastos\_totales'', se
+  evidencia que no es explicada por las variables macroeconómicas del
+  país, dado que ésta no tiene un efecto volátil durante el año, sino
+  que es constante. Este proceso se ve reflejado en el momento de
+  evaluar las correlaciones con las variables sin transformar, así como
+  con las variables estandarizadas.
+\item
+  Al adicionar variables económicas relacionadas al sector estudiado,
+  como la compra y venta de materiales preciosos, no se evidencia que
+  éstas expliquen, nuestra variable objetivo planteada.
+\item
+  El ejercicio de verificación con un modelo de regresión lineal simple,
+  evidencia que ninguna variable, incluyendo las del sector son
+  significativas, obteniendo modelos con R2 inferiores al 30\%,
+  solamente quedando la variable ingresos totales como significativa.
+\item
+  Se recomieda para los datos trabajados, un acercamiento distinto.
+\end{itemize}
 
 \hypertarget{referencias}{%
 \chapter{REFERENCIAS:}\label{referencias}}

@@ -102,6 +102,7 @@ library(visdat)
 vis_miss(base_modelado)
 ```
 Esta gráfica nos ayuda a visualizar que no hay datos perdidos en la data.
+
 # Capítulo 4. Análisis descriptivo
 
 A continuación se realiza un análisis descriptivo de los datos

@@ -49,6 +49,9 @@ correlacion<-round(cor(base), 1)
 
 corrplot(correlacion, method="number", type="upper")
 ```
+Se realizo un análisis de correlación con el estadístico de Pearson, con las variables originales y estandarizadas con el fin de evidenciar las variables explicativas de la variable objetivo construida, encontrando como resultado
+la no significancia para explicar el comportamiento de los costos y gastos del sector minero.
+
 A continuación se grafican los datos de la Variable objetivo (costos y gastos totales) con respecto a var.PIB (Variación del PIB)
 
 ```{r}

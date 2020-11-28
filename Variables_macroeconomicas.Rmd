@@ -135,7 +135,7 @@ head(df)
 ```
 
 
-
+\textbf{Variables sector minero:} Se adicionan variables relacionadas con el sector minero, para mejorar la efectividad de los modelos
 
 ```{r}
 library(dplyr)

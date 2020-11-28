@@ -229,7 +229,7 @@ datos_completos <- filter(datos_completos, Periodo == "2019")
 #Eliminamos variable diferente a 2019
 datos_completos_2018 <- select(datos_completos_2018, -gastos_ventas)
 
-#UNimos los 2 dataframes
+#Se realizará el análisis con los periodos: Se realizará el análisis con los periodos: 2017, 2018, 2019
 datos_completos = rbind(datos_completos, datos_completos_2018)
 datos_completos %>% mutate( razon_social = as.factor(razon_social), 
                             CIIU = as.factor(CIIU), ciudad = as.factor(ciudad),
@@ -237,6 +237,10 @@ datos_completos %>% mutate( razon_social = as.factor(razon_social),
                           estado =as.factor(estado), Periodo = as.factor(Periodo),
                           situacion = as.factor(situacion)) -> datos_completos
 
+```
+Por lo tanto utilizaremos las siguientes variables:
+```{r}
+as.data.frame(colnames(datos_completos))
 ```
 
 

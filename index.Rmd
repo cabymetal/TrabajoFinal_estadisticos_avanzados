@@ -1,26 +1,28 @@
 ---
-output: 
-  pdf_document:
-    citation_package: natbib
-    keep_tex: true
-    fig_caption: true
-    latex_engine: pdflatex
-    toc: false
 title: "Trabajo final Estadística Avanzada"
 author:
-  - Carlos Alberto Murillo M
-  - Luz Stella Florez
-  - Diana Carolina Benjumea
-  - Cindy Guerra
-keywords: "Maestria Ciencia Datos, , "
+- Carlos Alberto Murillo M
+- Luz Stella Florez
+- Diana Carolina Benjumea
+- Cindy Guerra
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-geometry: margin=1in
+output:
+  html_document:
+    df_print: paged
+    toc: no
+  pdf_document:
+    citation_package: natbib
+    fig_caption: yes
+    keep_tex: yes
+    latex_engine: pdflatex
+    toc: no
 fontfamily: mathpazo
 fontsize: 11pt
-toc: yes
-# spacing: double
-biblio-style: apsr
+geometry: margin=1in
+keywords: 'Maestria Ciencia Datos, , '
 documentclass: book
+biblio-style: apsr
+toc: yes
 ---
 
 # Abstract {-}
@@ -89,6 +91,7 @@ summary(base_modelado)
 
 ```
 
+
 ```{r}
 library(visdat)
 vis_miss(base_modelado)
@@ -98,6 +101,18 @@ Esta gráfica nos ayuda a visualizar que no hay datos perdidos en la data.
 # Capítulo 4. Análisis_descriptivo
 ```{r child= 'analisis_descriptivo.Rmd'}
 ```
+
+## Estandarización de variables
+```{r}
+library(scales)
+library(kableExtra)
+library(tibble)
+base.escalada<- scale(base_modelado[,c(11,12, 13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36)],center=T,scale=T)
+base.escalada<- as.data.frame(base.escalada)
+base.escalada<- rownames_to_column(base.escalada)
+tmp <- rownames_to_column(base_modelado %>% select(c("NIT", "razon_social", "CIIU", "ciudad","departamento", "estado", "situacion", "organo_societario", "etapa_situacion", "Periodo")))
+tmp %>% left_join(base.escalada, by="rowname")%>% select(-c("rowname")) -> base_modelado
+```
 # Capítulo 5. Correlaciones
 ```{r child='Correlaciones.Rmd'}
 
@@ -106,14 +121,14 @@ Esta gráfica nos ayuda a visualizar que no hay datos perdidos en la data.
 ```{r}
 base_modelado %>% select(departamento, estado, Periodo, costos_gastos_totales,
   ciudad, ingresos_totales, NIT, razon_social,otros_ingresos ,
-  ingresos_financieros) -> base_modelo_lineal
+  ingresos_financieros, compra_Oro, compra_Plata, compra_Platino, venta_Oro, venta_Plata, venta_Platino) -> base_modelo_lineal
 
 #definir variable de tamaño de la empresa
 bussiness_size <- cut(base_modelo_lineal$costos_gastos_totales, breaks=4)
-levels(bussiness_size) <- list(small = "(-6.98e+05,1.75e+08]", 
-                               medium = "(1.75e+08,3.5e+08]", 
-                               big = "(3.5e+08,5.25e+08]", 
-                               very_big="(5.25e+08,7.01e+08]")
+levels(bussiness_size) <- list(small = "(-0.377,0.349]", 
+                               medium = "(0.349,1.07]", 
+                               big = "(1.07,1.8]", 
+                               very_big="(1.8,2.52]")
 base_modelo_lineal['tamano_empresa'] <- bussiness_size
 base_modelo_lineal %>% filter(NIT != 900306309) -> base_modelo_lineal
 head(base_modelo_lineal)
@@ -121,10 +136,46 @@ head(base_modelo_lineal)
 
 # Capítulo 6. Aplicación de modelo
 
+### 6.1. Modelo regresión Lineal - con todas las variables de compra y venta de oro
+
+
+En este modelo se intenta explicar los costos y gastos en función de las variables de compra y venta de metales preciosos, 
+
+```{r}
+library(broom)
+
+mod1 <- lm(costos_gastos_totales ~  compra_Oro + compra_Plata + compra_Platino + venta_Oro + venta_Plata + venta_Platino + ingresos_totales, data= base_modelo_lineal) 
+anova(mod1)
+```
+
+calculamos el resumen del modelo 1
+```{r}
+summary(mod1)
+```
+
+
+```{r}
+
+ggplot(augment(mod1), aes(x=1:79, y=.resid))+
+  geom_point() + 
+  geom_hline(yintercept = 0, lwd=2, col= "red")
+
+```
+
+### AIC BIC y R2
+```{r}
+glance(mod1)
+```
+
+
+
+
+
 
 ### 6.1. Modelo regresión Lineal
 ```{r}
 library(broom)
+library("broom.mixed")
 
 mod1 <- lm(costos_gastos_totales ~  estado, data= base_modelo_lineal) 
 anova(mod1)
@@ -135,6 +186,21 @@ calculamos el resumen del modelo 1
 summary(mod1)
 ```
 
+
+
+```{r}
+
+ggplot(augment(mod1), aes(x=1:79, y=.resid))+
+  geom_point() + 
+  geom_hline(yintercept = 0, lwd=2, col= "red")
+
+```
+
+### AIC BIC y R2
+```{r}
+glance(mod1)
+
+```
 ### 6.2. Modelo Regresión lineal Sin efectos aleatorios
 
 ```{r}
@@ -146,6 +212,30 @@ anova(mod2)
 summary(mod2)
 ```
 
+```{r}
+
+ggplot(augment(mod2), aes(x=1:79, y=.resid))+
+  geom_point() + 
+  geom_hline(yintercept = 0, lwd=2, col= "red")
+
+```
+
+### AIC BIC y R2
+```{r}
+glance(mod2)
+
+```
+
+
+
+
+
+
+
+
+
+
+
 ### 6.3. Modelo lineal con intercepto aleatorio
 
 ```{r}
@@ -154,10 +244,69 @@ mod4 <- lmer(costos_gastos_totales ~ ingresos_totales + (1|departamento),
              data= base_modelo_lineal) 
 
 anova(mod4)
+
 ```
+
 ```{r}
 summary(mod4)
 ```
+
+
+```{r}
+
+ggplot(broom.mixed::augment(mod4), aes(x=1:79, y=.resid))+
+  geom_point() + 
+  geom_hline(yintercept = 0, lwd=2, col= "red")
+
+```
+
+### AIC BIC y R2
+```{r}
+broom.mixed::glance(mod4)
+
+```
+
+
+
+
+
+
+### 6.4. Modelo Lineal con intercepto aleatorio a nivel de departamento
+```{r}
+
+library(lme4)
+mod5 <- lmer(costos_gastos_totales ~ I(ingresos_totales):estado +  compra_Oro + compra_Plata + compra_Platino + venta_Oro + venta_Plata + venta_Platino + ingresos_totales+(1|NIT), data= base_modelo_lineal) 
+
+anova(mod5)
+```
+```{r}
+summary(mod5)
+```
+
+
+```{r}
+
+ggplot(broom.mixed::augment(mod5), aes(x=1:79, y=.resid))+
+  geom_point() + 
+  geom_hline(yintercept = 0, lwd=2, col= "red")
+
+```
+
+### AIC BIC y R2
+```{r}
+broom.mixed::glance(mod5)
+
+```
+
+
+
+
+
+
+
+
+
+
 
 
 # Capítulo 7. Estimación de esfuerzo

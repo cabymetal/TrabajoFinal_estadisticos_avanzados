@@ -26,8 +26,8 @@ Para el análisis de correlaciones se toman las variables macroeconomicas (PIB, 
 ```{r}
 #A continuación se agrupan las variables de interés en un nuevo dataframe
 
-base = base_modelado[,19:28]
-base['Var.objetivo']= base_modelado[29]
+base = base_modelado[,19:34]
+base['Var.objetivo']= base_modelado[35]
 head(base)
 ```
 

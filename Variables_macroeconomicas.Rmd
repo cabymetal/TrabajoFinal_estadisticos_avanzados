@@ -117,6 +117,9 @@ colnames(df)[2] <- 'TRM_media'
 df['TRM_mediana'] <- mediana[2]
 df
 ```
+
+
+
 Se unen los datos en un solo dataframe
 
 ```{r}
@@ -131,3 +134,15 @@ df['TIM_promedio'] = TIM[2]
 head(df)
 ```
 
+
+
+
+```{r}
+library(dplyr)
+#Se leen los datos -  
+dataset = read_excel('./data/metales.xlsx')
+dataset
+
+df %>% left_join(dataset, by=c("Anyo") ) -> df
+
+```

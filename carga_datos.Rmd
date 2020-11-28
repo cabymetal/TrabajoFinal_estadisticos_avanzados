@@ -96,7 +96,7 @@ Esta clase excluye:
 
 ## Proceso de carga de los datos
 
-
+En este capítulo explicaremos el proceso de la carga de los datos de las empresas.
 
 
 ```{r message=FALSE, warning=FALSE}
@@ -131,7 +131,7 @@ head(pd_datos_basicos)
 
 ```
 
-2. Filtramos los datos del CIIU seleccionado
+2. Filtramos los datos del CIIU seleccionado y de las empresas que se encuentren en situación activa.
 ```{r}
 library(dplyr)
 
@@ -205,7 +205,6 @@ datos_completos_2018$Periodo[datos_completos_2018$Periodo == "Periodo Actual"] <
 pd_datos_fin_2019 <- read_excel("./data/Plenas - Individuales2019.xlsx",
                                 sheet = "ERI" )
 
-#Revisar Costos de distribución
 pd_datos_fin_2019 <- pd_datos_fin_2019[,c("Nit", "Periodo", "Costo de ventas", 
   "Gastos de administración", "Otros gastos", "Costos financieros", 
   "Ingreso (gasto) por impuestos", "Ingresos de actividades ordinarias", 
@@ -224,7 +223,7 @@ datos_completos$Periodo[datos_completos$Periodo == "Periodo Actual"] <- "2019"
 datos_completos <- filter(datos_completos, Periodo == "2019")
 
 ```
-Se realizará el análisis con los periodos: Se realizará el análisis con los periodos: 2017, 2018, 2019
+Se realizará el análisis con los periodos: 2017, 2018, 2019
 ```{r}
 #Eliminamos variable diferente a 2019
 datos_completos_2018 <- select(datos_completos_2018, -gastos_ventas)

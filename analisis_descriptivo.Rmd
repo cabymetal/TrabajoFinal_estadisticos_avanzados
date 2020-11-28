@@ -75,7 +75,6 @@ qplot(NIT, costos_gastos_totales, facets = . ~ departamento,
       colour = NIT, geom = "boxplot", data = base_modelado)
 ```
 Al parecer solo hay 1 empresa que tiene comportamiento de costos/gastos totales mucho mas diferente a las demás.
-
 Realizaremos el ejercicio de eliminar (solo para efectos visuales) la empresa que es mas diferente a las demas.
 
 ```{r}
@@ -86,7 +85,7 @@ p1+geom_line()+facet_grid(.~departamento)
 ```
 Confirmamos que los costos/gastos totales son particulares de cada empresa.
 Cambiemos la escala de los datos y volvamos a graficar, para poder apreciar mejor el comportamiento de las otras empresas que tienen costos/gastos totales mas bajos, pero con el set de empresas completo.
-```{r}
+```{r warning=FALSE, message=FALSE}
 theme_set(theme_bw(base_size = 8))
 
 qplot(NIT, costos_gastos_totales, facets = . ~ departamento, 
@@ -106,9 +105,7 @@ qplot(NIT, costos_gastos_totales/1000, facets = . ~ estado,
       colour = NIT, geom = "boxplot", data = base_modelado) 
 
 ```
-
 Podemos ver que las empresas con estado inspección presentan costos/gastos totales menores que las empresas con estado vigilancia.
-
 Veamos ahora la dispersion de nuestra variable objetivo.
 
 ```{r}

@@ -121,7 +121,7 @@
 
 \title{Trabajo final Estadística Avanzada}
 \author{Carlos Alberto Murillo M \and Luz Stella Florez \and Diana Carolina Benjumea \and Cindy Guerra}
-\date{noviembre 27, 2020}
+\date{noviembre 28, 2020}
 
 \begin{document}
 \frontmatter
@@ -269,6 +269,9 @@ Esta clase excluye:
 \section{Proceso de carga de los
 datos}\label{proceso-de-carga-de-los-datos}}
 
+En este capítulo explicaremos el proceso de la carga de los datos de las
+empresas.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(tidyverse)}
@@ -333,7 +336,8 @@ datos}\label{proceso-de-carga-de-los-datos}}
 \setcounter{enumi}{1}
 \tightlist
 \item
-  Filtramos los datos del CIIU seleccionado
+  Filtramos los datos del CIIU seleccionado y de las empresas que se
+  encuentren en situación activa.
 \end{enumerate}
 
 \begin{Shaded}
@@ -432,7 +436,6 @@ archivo 2018 tiene los datos de 2017 con la nueva norma.
 \NormalTok{pd_datos_fin_}\DecValTok{2019}\NormalTok{ <-}\StringTok{ }\KeywordTok{read_excel}\NormalTok{(}\StringTok{"./data/Plenas - Individuales2019.xlsx"}\NormalTok{,}
                                 \DataTypeTok{sheet =} \StringTok{"ERI"}\NormalTok{ )}
 
-\CommentTok{#Revisar Costos de distribución}
 \NormalTok{pd_datos_fin_}\DecValTok{2019}\NormalTok{ <-}\StringTok{ }\NormalTok{pd_datos_fin_}\DecValTok{2019}\NormalTok{[,}\KeywordTok{c}\NormalTok{(}\StringTok{"Nit"}\NormalTok{, }\StringTok{"Periodo"}\NormalTok{, }\StringTok{"Costo de ventas"}\NormalTok{, }
   \StringTok{"Gastos de administración", "}\NormalTok{Otros gastos}\StringTok{", "}\NormalTok{Costos financieros}\StringTok{", }
 \StringTok{  "}\KeywordTok{Ingreso}\NormalTok{ (gasto) por impuestos}\StringTok{", "}\NormalTok{Ingresos de actividades ordinarias}\StringTok{", }
@@ -452,8 +455,7 @@ archivo 2018 tiene los datos de 2017 con la nueva norma.
 \end{Highlighting}
 \end{Shaded}
 
-Se realizará el análisis con los periodos: Se realizará el análisis con
-los periodos: 2017, 2018, 2019
+Se realizará el análisis con los periodos: 2017, 2018, 2019
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -504,16 +506,17 @@ Utilizaremos las siguientes variables:
 \chapter{Capítulo 2. Lectura y consolidación de variables
 económicas}\label{capuxedtulo-2.-lectura-y-consolidaciuxf3n-de-variables-econuxf3micas}}
 
-A continuación se preseenta el proceso que se ejecutó para generar un
-dataframe con las variables de PIB, Inflación, Desempleo, Balance
-Fiscal, Balance en Cuenta Corriente, Tasa de intervención, TRM
+A continuación se presenta el proceso que se ejecutó para generar un
+dataframe con las variables: PIB, Inflación, Desempleo, Balance Fiscal,
+Balance en Cuenta Corriente, Tasa de intervención y TRM.
 
 \textbf{PIB:} Es un indicador económico que refleja el valor monetario
 de todos los bienes y servicios finales producidos por un país o región
 en un determinado periodo de tiempo, normalmente un año. Se utiliza para
-medir la riqueza que genera un país.
+medir la riqueza que genera un país. Para cada año se tomó el promedio
+de los datos diarios.
 \href{https://datosmacro.expansion.com/pib/colombia}{Datos tomados de
-aquí}. Para cada año se tomó el promedio de los datos diarios.
+aquí}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -537,10 +540,10 @@ aquí}. Para cada año se tomó el promedio de los datos diarios.
 ## 4 2019  255.416     2.1
 \end{verbatim}
 
-\textbf{Inflación:} La inflación es un fenómeno que se observa en la
-economía de un país y está relacionado con el aumento desordenado de los
-precios de la mayor parte de los bienes y servicios que se comercian en
-sus mercados, por un periodo de tiempo prolongado.
+\textbf{Inflación:} Es un fenómeno que se observa en la economía de un
+país y está relacionado con el aumento desordenado de los precios de la
+mayor parte de los bienes y servicios que se comercian en sus mercados,
+por un periodo de tiempo prolongado.
 \href{https://es.wikipedia.org/wiki/Anexo:Variaci\%C3\%B3n_de_la_inflaci\%C3\%B3n_de_Colombia_desde_1946}{Datos
 tomados de aquí}
 
@@ -566,9 +569,10 @@ tomados de aquí}
 \textbf{Desempleo:} Es otra de las variables mas importantes de la
 macroeconomía, porque afecta directamente el bienestar de las personas.
 El desempleo es el porcentaje de la fuerza de trabajo que está buscando
-trabajo activamente y que actualmente se encuentra desempleada.
+trabajo activamente y que actualmente se encuentra desempleada. Se toma
+el promedio anual.
 \href{https://www.dane.gov.co/index.php/estadisticas-por-tema/mercado-laboral/empleo-y-desempleo}{Datos
-tomados de aquí}. Se toma el promedio anual
+tomados de aquí}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -617,10 +621,10 @@ tomados de aquí}
 \textbf{Balance en cuenta corriente:} Es el conjunto de transacciones de
 intercambio de bienes y servicios, rentas y transferencias (tanto
 corrientes como de capital), su saldo determina la capacidad o necesidad
-de financiación de un país.
+de financiación de un país. El dato fue tomado de la cuenta corriente de
+la balanza de pagos de periodicidad anual.
 \href{https://www.banrep.gov.co/es/estadisticas/balanza-pagos}{Datos
-tomados aquí}. El dato fue tomado de la cuenta corriente de la balanza
-de pagos de periodicidad anual
+tomados aquí}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -645,9 +649,10 @@ de pagos de periodicidad anual
 que le cobra el Banco de la República a las entidades financieras por
 los préstamos que les concede generalmente a un día y, además, sirve
 como referencia para establecer la tasa de interés máxima que les paga
-por recibirles dinero que tengan como excedente.
+por recibirles dinero que tengan como excedente. Se toma promedio anual
+de datos diarias.
 \href{https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria}{Datos
-tomados de aquí}. Se toma promedio anual de datos diarias
+tomados de aquí}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -678,7 +683,7 @@ negociación de las divisas.
 Actualmente la Superintendencia Financiera de Colombia es la que calcula
 y certifica diariamente la TRM con base en las operaciones registradas
 el día hábil inmediatamente anterior.
-\href{https://www.dolar-colombia.com/historico}{datos tomados de aquí}
+\href{https://www.dolar-colombia.com/historico}{Datos tomados de aquí}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -696,29 +701,13 @@ el día hábil inmediatamente anterior.
 \NormalTok{media =}\StringTok{ }\NormalTok{media }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{group_by}\NormalTok{(media[}\DecValTok{1}\NormalTok{]) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{summarise}\NormalTok{(}\KeywordTok{across}\NormalTok{(}\DataTypeTok{.cols =} \KeywordTok{everything}\NormalTok{(), }\DataTypeTok{.fns =}\NormalTok{ mean))}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-## `summarise()` ungrouping output (override with `.groups` argument)
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{#para la mediana}
 \NormalTok{mediana =}\StringTok{ }\NormalTok{df}
 \NormalTok{mediana =}\StringTok{ }\NormalTok{mediana }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{group_by}\NormalTok{(mediana[}\DecValTok{1}\NormalTok{]) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{summarise}\NormalTok{(}\KeywordTok{across}\NormalTok{(}\DataTypeTok{.cols =} \KeywordTok{everything}\NormalTok{(), }\DataTypeTok{.fns =}\NormalTok{ median))}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-## `summarise()` ungrouping output (override with `.groups` argument)
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{#Se genera un dataframe con los datos obtenidos}
 \NormalTok{df =}\StringTok{ }\NormalTok{media}
 \KeywordTok{colnames}\NormalTok{(df)[}\DecValTok{2}\NormalTok{] <-}\StringTok{ 'TRM_media'}
@@ -766,9 +755,10 @@ Se unen los datos en un solo dataframe
 \end{verbatim}
 
 \textbf{Variables sector minero:} Se adicionan variables relacionadas
-con el sector minero, para mejorar la efectividad de los modelos.
+con el sector minero, para mejorar la efectividad de los modelos. Para
+cada año se toma el promedio de los datos diarios.
 \href{https://www.banrep.gov.co/es/estadisticas/precios-del-dia-para-el-gramo-oro-plata-y-platino}{Datos
-tomados de aquí}. Para cada año se toma el promedio de los datos diarios
+tomados de aquí}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -913,12 +903,9 @@ en una sola base
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-4-1.pdf} Esta
-gráfica nos ayuda a visualizar que no hay datos perdidos en la data.
-
-\hypertarget{capuxedtulo-4.-anuxe1lisis-descriptivo}{%
-\chapter{Capítulo 4. Análisis
-descriptivo}\label{capuxedtulo-4.-anuxe1lisis-descriptivo}}
+\includegraphics{index_files/figure-latex/unnamed-chunk-5-1.pdf} Esta
+gráfica nos ayuda a visualizar que no hay datos perdidos en la data. \#
+Capítulo 4. Análisis descriptivo
 
 A continuación se realiza un análisis descriptivo de los datos
 
@@ -938,7 +925,7 @@ A continuación se realiza un análisis descriptivo de los datos
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-46-1.pdf}
+\includegraphics{index_files/figure-latex/unnamed-chunk-47-1.pdf}
 Podemos observar que hay empresas que no tienen los 3 periodos, solo
 trabajaremos con la empresas que tengan los periodos completos.
 
@@ -1007,7 +994,7 @@ ingresos y los costos por departamento.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-48-1.pdf}
+\includegraphics{index_files/figure-latex/unnamed-chunk-49-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1019,7 +1006,7 @@ ingresos y los costos por departamento.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-49-1.pdf} Se
+\includegraphics{index_files/figure-latex/unnamed-chunk-50-1.pdf} Se
 pueden ver algunos comportamientos diferentes por departamento, sin
 embargo separemos el gráfico para ver mejor:
 
@@ -1029,7 +1016,7 @@ embargo separemos el gráfico para ver mejor:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-50-1.pdf} El
+\includegraphics{index_files/figure-latex/unnamed-chunk-51-1.pdf} El
 gráfico anterior nos muestra que cada empresa tiene costos/gastos
 totales particulares. Adicionalmente, hay una empresa de Medellín que
 tiene costos/gastos totales mas altos, comparada con las otras. Tratemos
@@ -1045,12 +1032,11 @@ las demás.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-51-1.pdf} Al
+\includegraphics{index_files/figure-latex/unnamed-chunk-52-1.pdf} Al
 parecer solo hay 1 empresa que tiene comportamiento de costos/gastos
-totales mucho mas diferente a las demás.
-
-Realizaremos el ejercicio de eliminar (solo para efectos visuales) la
-empresa que es mas diferente a las demas.
+totales mucho mas diferente a las demás. Realizaremos el ejercicio de
+eliminar (solo para efectos visuales) la empresa que es mas diferente a
+las demas.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1061,7 +1047,7 @@ empresa que es mas diferente a las demas.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-52-1.pdf}
+\includegraphics{index_files/figure-latex/unnamed-chunk-53-1.pdf}
 Confirmamos que los costos/gastos totales son particulares de cada
 empresa. Cambiemos la escala de los datos y volvamos a graficar, para
 poder apreciar mejor el comportamiento de las otras empresas que tienen
@@ -1080,7 +1066,7 @@ costos/gastos totales mas bajos, pero con el set de empresas completo.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-53-1.pdf} Ahora
+\includegraphics{index_files/figure-latex/unnamed-chunk-54-1.pdf} Ahora
 podemos ver mejor que cada empresa tiene unos costos/gastos totales
 particulares, así como costos promedio diferentes. Además, encontramos
 que solamente hay 5 empresas que tienen un comportamiento general en sus
@@ -1096,11 +1082,9 @@ estado.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-54-1.pdf}
-
+\includegraphics{index_files/figure-latex/unnamed-chunk-55-1.pdf}
 Podemos ver que las empresas con estado inspección presentan
 costos/gastos totales menores que las empresas con estado vigilancia.
-
 Veamos ahora la dispersion de nuestra variable objetivo.
 
 \begin{Shaded}
@@ -1112,13 +1096,16 @@ Veamos ahora la dispersion de nuestra variable objetivo.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-55-1.pdf} Con
+\includegraphics{index_files/figure-latex/unnamed-chunk-56-1.pdf} Con
 esto confirmamos que la dispersion de los costos/gastos totales no tiene
 un comportamiento general.
 
 \hypertarget{estandarizaciuxf3n-de-variables}{%
 \section{Estandarización de
 variables}\label{estandarizaciuxf3n-de-variables}}
+
+A continuación se realiza un reescalamiento de las variables para que
+sean comparables y así apuntarle a mejorar la calidad de los modelos
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1140,81 +1127,12 @@ variables}\label{estandarizaciuxf3n-de-variables}}
 \hypertarget{capuxedtulo-5.-correlaciones}{%
 \chapter{Capítulo 5. Correlaciones}\label{capuxedtulo-5.-correlaciones}}
 
-\begin{verbatim}
-## Loading required package: lattice
-\end{verbatim}
+En este capítulo realizaremos un análisis de las correlaciones entre las
+variables que nos ayudarán a decidir que variables pueden ser las
+mejores candidatas para nuestro modelo.
 
-\begin{verbatim}
-## Loading required package: survival
-\end{verbatim}
-
-\begin{verbatim}
-## Loading required package: Formula
-\end{verbatim}
-
-\begin{verbatim}
-## 
-## Attaching package: 'Hmisc'
-\end{verbatim}
-
-\begin{verbatim}
-## The following objects are masked from 'package:dplyr':
-## 
-##     src, summarize
-\end{verbatim}
-
-\begin{verbatim}
-## The following objects are masked from 'package:base':
-## 
-##     format.pval, units
-\end{verbatim}
-
-\begin{verbatim}
-## corrplot 0.84 loaded
-\end{verbatim}
-
-\begin{verbatim}
-## Loading required package: xts
-\end{verbatim}
-
-\begin{verbatim}
-## Loading required package: zoo
-\end{verbatim}
-
-\begin{verbatim}
-## 
-## Attaching package: 'zoo'
-\end{verbatim}
-
-\begin{verbatim}
-## The following objects are masked from 'package:base':
-## 
-##     as.Date, as.Date.numeric
-\end{verbatim}
-
-\begin{verbatim}
-## 
-## Attaching package: 'xts'
-\end{verbatim}
-
-\begin{verbatim}
-## The following objects are masked from 'package:dplyr':
-## 
-##     first, last
-\end{verbatim}
-
-\begin{verbatim}
-## 
-## Attaching package: 'PerformanceAnalytics'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:graphics':
-## 
-##     legend
-\end{verbatim}
-
-Se presenta la base de datos
+La base de datos que utilizaremos es \texttt{base\_modelado} la misma
+que visualizamos en la página 15
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1281,13 +1199,16 @@ Se presenta la base de datos
 ## 6           -0.35276218      -0.25203452
 \end{verbatim}
 
-Para el análisis de correlaciones se toman las variables macroeconomicas
-(PIB, Inflación, Desempleo, GNC, Balance de cuenta corriente y TIM),
-compa y venta de metales preciosos y se comparan respecto a la variable
-objetivo.
+Para el análisis de correlaciones, se toman las variables
+macroeconómicas (PIB, Inflación, Desempleo, GNC, Balance de cuenta
+corriente y TRM), compra y venta de metales preciosos y se compara con
+la variable objetivo.
 
-\#Calcular el coeficiente de correlación Este comando calcula la matriz
-de correlación:
+\hypertarget{calcular-el-coeficiente-de-correlaciuxf3n}{%
+\subsection{Calcular el coeficiente de
+correlación}\label{calcular-el-coeficiente-de-correlaciuxf3n}}
+
+Este comando calcula la matriz de correlación:
 
 \begin{verbatim}
 ##                          TRM_media TRM_mediana PIB_M.E. Var.PIB Inflacion
@@ -1364,18 +1285,22 @@ de correlación:
 ## Var.objetivo                  0.04        0.03          0.02         1.00
 \end{verbatim}
 
-Podemos interpretar que, la correlación entre las varianbles
-macroeconomicas, compra y venta de metales preciosos con la variable
-objetivo no son explicativas, si nivel de significancia es cercano a
-cero. Es decir, no hay una ascociación entre estas variables y la
-variable objetivo, que nos ayude a predecir o explicar el comportamiento
-de los costos y gastos totales.
+Con el resultado de la correlación, podemos interpretar que las
+variables macroeconomicas, compra y venta de metales preciosos no
+explican la variable objetivo, ya que el nivel de significancia es
+cercano a cero. Es decir, no encontramos una ascociación entre estas
+variables y la variable objetivo, que nos ayude a predecir o explicar el
+comportamiento de los costos y gastos totales de las empresas del sector
+``extracción de oro y otros metales preciosos''.
 
-\#Visualizar matriz de correlación
+\hypertarget{visualizar-matriz-de-correlaciuxf3n}{%
+\subsection{Visualizar matriz de
+correlación}\label{visualizar-matriz-de-correlaciuxf3n}}
 
-Podemos utilizar el comando corrplot. Lo primero es calcular la matriz
-de correlación y guardarla en un objeto y luego graficarlo. En este caso
-vamos a graficar los coeficientes.
+Utilizaremos el comando corrplot para visualizar la matriz de
+correlaciones. Lo primero es calcular la matriz, guardarla en un objeto
+y luego graficarla. En este caso vamos a graficar los coeficientes
+resultantes.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1385,12 +1310,12 @@ vamos a graficar los coeficientes.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-60-1.pdf} Se
+\includegraphics{index_files/figure-latex/unnamed-chunk-61-1.pdf} Se
 realizó el análisis de correlación con el estadístico de Pearson, con
-las variables originales y estandarizadas con el fin de evidenciar las
+las variables originales y estandarizadas, con el fin de evidenciar las
 variables explicativas de la variable objetivo construida, encontrando
 como resultado la no significancia para explicar el comportamiento de
-los costos y gastos del sector minero.
+los costos y gastos del sector que estamos estudiando.
 
 A continuación se grafican los datos de la Variable objetivo (costos y
 gastos totales) con respecto a var.PIB (Variación del PIB)
@@ -1401,22 +1326,16 @@ gastos totales) con respecto a var.PIB (Variación del PIB)
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## Warning in self$trans$transform(x): Se han producido NaNs
-\end{verbatim}
-
-\begin{verbatim}
-## Warning: Transformation introduced infinite values in continuous y-axis
-\end{verbatim}
-
-\begin{verbatim}
-## Warning: Removed 55 rows containing missing values (geom_point).
-\end{verbatim}
-
-\includegraphics{index_files/figure-latex/unnamed-chunk-61-1.pdf}
+\includegraphics{index_files/figure-latex/unnamed-chunk-62-1.pdf}
 Podemos apreciar que no se presenta un comportamiento lineal entre las
-variables. Por tal motivo se decide no trabajar con las variables
-macroeconomicas venta y compra de metales preciosos en los modelos.
+variables, por lo tanto la variable PIB no es una buena candidata para
+utilizar en nuestro modelo. De forma general encontramos que las
+macroeconómicas no explican la variable objetivo. Por tal motivo se
+decide no trabajar con las variables macroeconomicas venta y compra de
+metales preciosos en los modelos.
+
+Sin embargo adicionamos a nuestra base de datos estas variables
+económicas que servirán de insumo para la fase de modelado.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1478,7 +1397,7 @@ compra y venta de
 oro}\label{modelo-regresiuxf3n-lineal---con-todas-las-variables-de-compra-y-venta-de-oro}}
 
 En este modelo se intenta explicar los costos y gastos en función de las
-variables de compra y venta de metales preciosos,
+variables de compra y venta de metales preciosos.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1504,7 +1423,7 @@ variables de compra y venta de metales preciosos,
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 \end{verbatim}
 
-calculamos el resumen del modelo 1
+Calculamos el resumen del modelo 1:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1550,15 +1469,16 @@ calculamos el resumen del modelo 1
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-11-1.pdf}
+\includegraphics{index_files/figure-latex/unnamed-chunk-12-1.pdf}
 
-Evaluación de los modelos: AIC BIC y R2.
+Evaluación de los modelos: AIC, BIC y R2.
 
-El AIC NO es una prueba de hipótesis sobre el ajuste de un modelo sino
+El AIC NO es una prueba de hipótesis sobre el ajuste de un modelo, sino
 más bien un criterio paramétrico comparativo entre modelos y representa
 por esto una herramienta para selección de modelos. Dado un conjunto de
 datos, es posible encontrar varios modelos que se ajustan a ellos. La
-idea es ranquearlos de acuerdo al AIC.
+idea es ranquearlos de acuerdo al AIC. El modelo que esté asociado al
+menor AIC, se considera mejor entre aquellos que se ajustan.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1599,7 +1519,7 @@ Lineal}\label{modelo-regresiuxf3n-lineal}}
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 \end{verbatim}
 
-calculamos el resumen del modelo 1
+Calculamos el resumen del modelo 1
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1637,9 +1557,9 @@ calculamos el resumen del modelo 1
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-15-1.pdf}
+\includegraphics{index_files/figure-latex/unnamed-chunk-16-1.pdf}
 
-Evaluación de los modelos: AIC, BIC y R2
+Evaluación de los modelos: AIC, BIC y R2.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1656,8 +1576,11 @@ Evaluación de los modelos: AIC, BIC y R2
 \end{verbatim}
 
 \hypertarget{modelo-regresiuxf3n-lineal-sin-efectos-aleatorios}{%
-\subsection{6.2. Modelo Regresión lineal Sin efectos
+\subsection{6.2. Modelo Regresión lineal sin efectos
 aleatorios}\label{modelo-regresiuxf3n-lineal-sin-efectos-aleatorios}}
+
+En este modelo utilizamos una fórmula sin el componente aleatorio. Un
+modelo lineal simple
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1717,9 +1640,9 @@ aleatorios}\label{modelo-regresiuxf3n-lineal-sin-efectos-aleatorios}}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-19-1.pdf}
+\includegraphics{index_files/figure-latex/unnamed-chunk-20-1.pdf}
 
-Evaluación de los modelos: AIC, BIC y R2
+Evaluación de los modelos: AIC, BIC y R2.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1738,6 +1661,9 @@ Evaluación de los modelos: AIC, BIC y R2
 \hypertarget{modelo-lineal-con-intercepto-aleatorio}{%
 \subsection{6.3. Modelo lineal con intercepto
 aleatorio}\label{modelo-lineal-con-intercepto-aleatorio}}
+
+En este modelo utilizamos una fórmula con el componente aleatorio por
+departamento
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1799,9 +1725,9 @@ aleatorio}\label{modelo-lineal-con-intercepto-aleatorio}}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-23-1.pdf}
+\includegraphics{index_files/figure-latex/unnamed-chunk-24-1.pdf}
 
-Evaluación de los modelos: AIC, BIC y R2
+Evaluación de los modelos: AIC, BIC y R2.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1816,14 +1742,21 @@ Evaluación de los modelos: AIC, BIC y R2
 ## 1 0.176   18.0 -28.1 -19.3    -36.1          62
 \end{verbatim}
 
-\hypertarget{modelo-lineal-con-intercepto-aleatorio-a-nivel-de-departamento}{%
+\hypertarget{modelo-lineal-con-intercepto-aleatorio-a-nivel-de-nit}{%
 \subsection{6.4. Modelo Lineal con intercepto aleatorio a nivel de
-departamento}\label{modelo-lineal-con-intercepto-aleatorio-a-nivel-de-departamento}}
+NIT}\label{modelo-lineal-con-intercepto-aleatorio-a-nivel-de-nit}}
+
+En este modelo utilizamos una fórmula con el componente aleatorio por
+NIT, además contiene una interacción entre los ingresos totales y el
+estado
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(lme4)}
-\NormalTok{mod5 <-}\StringTok{ }\KeywordTok{lmer}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{ }\KeywordTok{I}\NormalTok{(ingresos_totales)}\OperatorTok{:}\NormalTok{estado }\OperatorTok{+}\StringTok{  }\NormalTok{compra_Oro }\OperatorTok{+}\StringTok{ }\NormalTok{compra_Plata }\OperatorTok{+}\StringTok{ }\NormalTok{compra_Platino }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Oro }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Plata }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Platino }\OperatorTok{+}\StringTok{ }\NormalTok{ingresos_totales}\OperatorTok{+}\NormalTok{(}\DecValTok{1}\OperatorTok{|}\NormalTok{NIT), }\DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
+\NormalTok{mod5 <-}\StringTok{ }\KeywordTok{lmer}\NormalTok{(costos_gastos_totales }\OperatorTok{~}\StringTok{ }\KeywordTok{I}\NormalTok{(ingresos_totales)}\OperatorTok{:}\NormalTok{estado }\OperatorTok{+}\StringTok{  }\NormalTok{compra_Oro }
+             \OperatorTok{+}\StringTok{ }\NormalTok{compra_Plata }\OperatorTok{+}\StringTok{ }\NormalTok{compra_Platino }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Oro }\OperatorTok{+}\StringTok{ }\NormalTok{venta_Plata }\OperatorTok{+}\StringTok{ }
+\StringTok{               }\NormalTok{venta_Platino }\OperatorTok{+}\StringTok{ }\NormalTok{ingresos_totales}\OperatorTok{+}\NormalTok{(}\DecValTok{1}\OperatorTok{|}\NormalTok{NIT), }
+             \DataTypeTok{data=}\NormalTok{ base_modelo_lineal) }
 
 \KeywordTok{anova}\NormalTok{(mod5)}
 \end{Highlighting}
@@ -1890,8 +1823,8 @@ departamento}\label{modelo-lineal-con-intercepto-aleatorio-a-nivel-de-departamen
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{index_files/figure-latex/unnamed-chunk-27-1.pdf}
-Evaluación de los modelos: AIC, BIC y R2
+\includegraphics{index_files/figure-latex/unnamed-chunk-28-1.pdf}
+Evaluación de los modelos: AIC, BIC y R2.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1922,8 +1855,8 @@ variables no son significativas. Los otros modelos evaluados, no
 presentan mejoría al ingresarle las variables macroeconómicas
 estandarizadas y ejecutar el modelo con efectos aleatorios en función de
 cada compañía y/o el departamento. Por lo anterior, se selecciona como
-un posible modelo el modelo ``número 2 sin efecto aleatorio'' el cual
-presenta el menor residual.
+un posible modelo el modelo número 2 \texttt{sin\ efecto\ aleatorio}, el
+cual presenta el menor residual y mejor AIC.
 
 \hypertarget{capuxedtulo-7.-estimaciuxf3n-de-esfuerzo}{%
 \chapter{Capítulo 7. Estimación de
@@ -1941,7 +1874,7 @@ Para las actividades se realiza la siguiente estimación de esfuerzo:
 \item
   Ajuste y validación de modelos 15h
 \item
-  Redacción del reporte: 12h
+  Redacción del reporte: 16h
 \end{enumerate}
 
 \hypertarget{capuxedtulo-8.-conclusiones}{%
@@ -1949,10 +1882,6 @@ Para las actividades se realiza la siguiente estimación de esfuerzo:
 
 \begin{itemize}
 \tightlist
-\item
-  Cuando los datos están concebidos y correlacionados históricamente,
-  los modelos lineales mixtos son una herramienta muy robusta de
-  análisis estadístico.
 \item
   Para la variable objetivo propuesta ``costos\_gastos\_totales'', se
   evidencia que no es explicada por las variables macroeconómicas del
@@ -1971,20 +1900,27 @@ Para las actividades se realiza la siguiente estimación de esfuerzo:
   solamente quedando la variable ingresos totales como significativa.
 \item
   Se recomieda para los datos trabajados, un acercamiento distinto.
+\item
+  Cuando los datos están concebidos y correlacionados históricamente,
+  los modelos lineales mixtos son una herramienta muy robusta de
+  análisis estadístico.
 \end{itemize}
 
 \hypertarget{referencias}{%
-\chapter{REFERENCIAS:}\label{referencias}}
+\chapter{REFERENCIAS}\label{referencias}}
 
-\url{https://www.dian.gov.co/ciiu/Documents/Resolucion_000139_21_Nov_2012.pdf}
-
-\url{https://linea.ccb.org.co/descripcionciiu/}
-
-\url{https://siis.ia.supersociedades.gov.co/}
-
-\url{https://www.supersociedades.gov.co/delegatura_aec/Paginas/Base-completa-EF-2019.aspx}
-
-\url{https://www.researchgate.net/publication/314536942_Introduccion_a_los_modelos_mixtos_Introduction_to_mixed_models}
+\begin{itemize}
+\item
+  \url{https://www.dian.gov.co/ciiu/Documents/Resolucion_000139_21_Nov_2012.pdf}
+\item
+  \url{https://linea.ccb.org.co/descripcionciiu/}
+\item
+  \url{https://siis.ia.supersociedades.gov.co/}
+\item
+  \url{https://www.supersociedades.gov.co/delegatura_aec/Paginas/Base-completa-EF-2019.aspx}
+\item
+  \url{https://www.researchgate.net/publication/314536942_Introduccion_a_los_modelos_mixtos_Introduction_to_mixed_models}
+\end{itemize}
 
 \backmatter
 \end{document}

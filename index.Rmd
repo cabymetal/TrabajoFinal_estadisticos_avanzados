@@ -63,6 +63,10 @@ JavaScript (por ejemplo hmtl a partir de Rmarkdown). El código se debe subir a 
 Para acceder a los datos de costos y gastos de ventas:
 • Entrar a http://pie.supersociedades.gov.co > MENÚ > Descarga Masiva de
 Información Descargar la información de los años 2016 a 2019
+```{r echo=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=4) 
+```
+
 
 # Capítulo 1. Lectura de variables de empresa
 ```{r child= 'carga_datos.Rmd'}
@@ -98,7 +102,6 @@ library(visdat)
 vis_miss(base_modelado)
 ```
 Esta gráfica nos ayuda a visualizar que no hay datos perdidos en la data.
-
 # Capítulo 4. Análisis descriptivo
 
 A continuación se realiza un análisis descriptivo de los datos
@@ -107,6 +110,7 @@ A continuación se realiza un análisis descriptivo de los datos
 ```
 
 ## Estandarización de variables
+A continuación se realiza un reescalamiento de las variables para que sean comparables y así apuntarle a mejorar la calidad de los modelos
 ```{r  warning=FALSE, , message=FALSE}
 library(scales)
 library(kableExtra)
@@ -125,6 +129,8 @@ base_modelado <- tmp %>% left_join(base.escalada, by="rowname") %>%
 ```{r child='Correlaciones.Rmd'}
 
 ```
+
+Sin embargo adicionamos a nuestra base de datos estas variables económicas que servirán de insumo para la fase de modelado.
 
 ```{r}
 base_modelado %>% select(departamento, estado, Periodo, costos_gastos_totales,
@@ -148,7 +154,7 @@ head(base_modelo_lineal)
 ### 6.1. Modelo regresión Lineal - con todas las variables de compra y venta de oro
 
 
-En este modelo se intenta explicar los costos y gastos en función de las variables de compra y venta de metales preciosos, 
+En este modelo se intenta explicar los costos y gastos en función de las variables de compra y venta de metales preciosos.
 
 ```{r}
 library(broom)
@@ -159,7 +165,7 @@ mod1 <- lm(costos_gastos_totales ~  compra_Oro + compra_Plata + compra_Platino +
 anova(mod1)
 ```
 
-calculamos el resumen del modelo 1
+Calculamos el resumen del modelo 1:
 ```{r}
 summary(mod1)
 ```
@@ -173,9 +179,13 @@ ggplot(a, aes(x=1:length(.resid), y=.resid))+
 
 ```
 
-Evaluación de los modelos: AIC BIC y R2.
+Evaluación de los modelos: AIC, BIC y R2.
 
-El AIC NO es una prueba de hipótesis sobre el ajuste de un modelo sino más bien un criterio paramétrico comparativo entre modelos y representa por esto una herramienta para selección de modelos. Dado un conjunto de datos, es posible encontrar varios modelos que se ajustan a ellos. La idea es ranquearlos de acuerdo al AIC.
+El AIC NO es una prueba de hipótesis sobre el ajuste de un modelo, sino más bien un criterio
+paramétrico comparativo entre modelos y representa por esto una herramienta para selección
+de modelos. Dado un conjunto de datos, es posible encontrar varios modelos que se ajustan a
+ellos. La idea es ranquearlos de acuerdo al AIC. El modelo que esté asociado al menor
+AIC, se considera mejor entre aquellos que se ajustan.
 ```{r}
 glance(mod1)
 ```
@@ -194,7 +204,7 @@ mod1 <- lm(costos_gastos_totales ~  estado, data= base_modelo_lineal)
 anova(mod1)
 ```
 
-calculamos el resumen del modelo 1
+Calculamos el resumen del modelo 1
 ```{r}
 summary(mod1)
 ```
@@ -209,13 +219,14 @@ ggplot(a, aes(x=1:length(.resid), y=.resid))+
 
 ```
 
-Evaluación de los modelos: AIC, BIC y R2
+Evaluación de los modelos: AIC, BIC y R2.
 ```{r}
 glance(mod1)
 
 ```
-### 6.2. Modelo Regresión lineal Sin efectos aleatorios
+### 6.2. Modelo Regresión lineal sin efectos aleatorios
 
+En este modelo utilizamos una fórmula sin el componente aleatorio. Un modelo lineal simple
 ```{r}
 mod2 <- lm(costos_gastos_totales ~ estado + ingresos_totales, 
            data= base_modelo_lineal) 
@@ -233,7 +244,7 @@ ggplot(a, aes(x=1:length(.resid), y=.resid))+
 
 ```
 
-Evaluación de los modelos: AIC, BIC y R2
+Evaluación de los modelos: AIC, BIC y R2.
 ```{r}
 glance(mod2)
 
@@ -242,6 +253,7 @@ glance(mod2)
 
 ### 6.3. Modelo lineal con intercepto aleatorio
 
+En este modelo utilizamos una fórmula con el componente aleatorio por departamento
 ```{r warning=FALSE, message=FALSE}
 library(lme4)
 mod4 <- lmer(costos_gastos_totales ~ ingresos_totales + (1|departamento), 
@@ -264,7 +276,7 @@ ggplot(a, aes(x=1:length(.resid), y=.resid))+
 
 ```
 
-Evaluación de los modelos: AIC, BIC y R2
+Evaluación de los modelos: AIC, BIC y R2.
 
 ```{r}
 broom.mixed::glance(mod4)
@@ -276,11 +288,16 @@ broom.mixed::glance(mod4)
 
 
 
-### 6.4. Modelo Lineal con intercepto aleatorio a nivel de departamento
+### 6.4. Modelo Lineal con intercepto aleatorio a nivel de NIT
+
+En este modelo utilizamos una fórmula con el componente aleatorio por NIT, además contiene una interacción entre los ingresos totales y el estado
 ```{r warning=FALSE, message=FALSE}
 
 library(lme4)
-mod5 <- lmer(costos_gastos_totales ~ I(ingresos_totales):estado +  compra_Oro + compra_Plata + compra_Platino + venta_Oro + venta_Plata + venta_Platino + ingresos_totales+(1|NIT), data= base_modelo_lineal) 
+mod5 <- lmer(costos_gastos_totales ~ I(ingresos_totales):estado +  compra_Oro 
+             + compra_Plata + compra_Platino + venta_Oro + venta_Plata + 
+               venta_Platino + ingresos_totales+(1|NIT), 
+             data= base_modelo_lineal) 
 
 anova(mod5)
 ```
@@ -296,7 +313,7 @@ ggplot(a, aes(x=1:length(.resid), y=.resid))+
   geom_hline(yintercept = 0, lwd=2, col= "red")
 
 ```
-Evaluación de los modelos: AIC, BIC y R2
+Evaluación de los modelos: AIC, BIC y R2.
 ```{r}
 broom.mixed::glance(mod5)
 
@@ -308,7 +325,7 @@ Se verificaron seis modelos. El primero, con una sola variable explicativa llama
 En el segundo modelo, se encuentra que, agregando la variable de ingresos totales y el estado, el modelo presenta un mejor ajuste para la explicación de los costos y gastos (variable objetivo) para el sector minero. Este modelo tiene un R2 de 37.68% y un AIC de 57, con lo cual obtenemos el mejor modelo. El comportamiento de los residuales del modelo 2, también evidencian un mejor comportamiento, al acercarse a cero.
 Para el tercer modelo, que es el que tiene "departamento" evidenciamos que no es un modelo apropiado para predecir los costos y gastos del sector minero, debido a que las variables no son significativas. 
 Los otros modelos evaluados, no presentan mejoría al ingresarle las variables macroeconómicas estandarizadas y ejecutar el modelo con efectos aleatorios en función de cada compañía y/o el departamento.
-Por lo anterior, se selecciona como un posible modelo el modelo "número 2 sin efecto aleatorio" el cual presenta el menor residual.
+Por lo anterior, se selecciona como un posible modelo el modelo número 2 `sin efecto aleatorio`, el cual presenta el menor residual y mejor AIC.
 
 
 
@@ -328,37 +345,37 @@ Para las actividades se realiza la siguiente estimación de esfuerzo:
 1) Consolidación de información: 18h
 2) Transformación de variables y análisis descriptivo: 10h
 3) Ajuste y validación de modelos 15h
-4) Redacción del reporte: 12h
+4) Redacción del reporte: 16h
 
 
 # Capítulo 8. Conclusiones
 
     
-- Cuando los datos están concebidos y correlacionados históricamente, los modelos lineales mixtos son una herramienta muy robusta de análisis estadístico.
 - Para la variable objetivo propuesta "costos_gastos_totales", se evidencia que no es explicada por las variables macroeconómicas del país, dado que ésta no tiene un efecto volátil durante el año, sino que es constante. Este proceso se ve reflejado en el momento de evaluar las correlaciones con las variables sin transformar, así como con las variables estandarizadas. 
 - Al adicionar variables económicas relacionadas al sector estudiado, como la compra y venta de materiales preciosos, no se evidencia que éstas expliquen, nuestra variable objetivo planteada.
 - El ejercicio de verificación con un modelo de regresión lineal simple, evidencia que ninguna variable, incluyendo las del sector son significativas, obteniendo modelos con R2 inferiores al 30%, solamente quedando la variable ingresos totales como significativa.
 - Se recomieda para los datos trabajados, un acercamiento distinto.
+- Cuando los datos están concebidos y correlacionados históricamente, los modelos lineales mixtos son una herramienta muy robusta de análisis estadístico.
 
 
-# REFERENCIAS:
-
-
-
-https://www.dian.gov.co/ciiu/Documents/Resolucion_000139_21_Nov_2012.pdf
+# REFERENCIAS
 
 
 
-https://linea.ccb.org.co/descripcionciiu/
+- https://www.dian.gov.co/ciiu/Documents/Resolucion_000139_21_Nov_2012.pdf
 
 
 
-https://siis.ia.supersociedades.gov.co/
+- https://linea.ccb.org.co/descripcionciiu/
 
 
 
-https://www.supersociedades.gov.co/delegatura_aec/Paginas/Base-completa-EF-2019.aspx
+- https://siis.ia.supersociedades.gov.co/
 
 
 
-https://www.researchgate.net/publication/314536942_Introduccion_a_los_modelos_mixtos_Introduction_to_mixed_models
+- https://www.supersociedades.gov.co/delegatura_aec/Paginas/Base-completa-EF-2019.aspx
+
+
+
+- https://www.researchgate.net/publication/314536942_Introduccion_a_los_modelos_mixtos_Introduction_to_mixed_models
